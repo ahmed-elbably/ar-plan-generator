@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Plan Generator — AI floor plans for Claude: brief → 2D plan → 3D, DXF &amp; IFC</title>
+<meta name="description" content="A Claude plugin that turns a written brief or a sketch into an architectural floor plan, lifts it into 3D and exports layered DXF and IFC4 you can link straight into Revit, AutoCAD or Navisworks.">
+<link rel="canonical" href="https://ahmed-elbably.github.io/ar-plan-generator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AR Plan Generator — from brief to BIM-ready floor plan">
+<meta property="og:description" content="Describe the building. Claude lays it out, a bundled engine draws it, checks it for MEP readiness and exports DXF, IFC4, a 3D model and a build replay.">
+<meta property="og:url" content="https://ahmed-elbably.github.io/ar-plan-generator/">
+<meta property="og:image" content="https://ahmed-elbably.github.io/ar-plan-generator/media/uae-villa-4br-plan.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1F5FBF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231F5FBF'/%3E%3Cpath d='M7 7h18v18H7z M7 16h10 M17 7v18 M17 20h8' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* One visual world, shared with AR Plan Studio and the 3D viewer: drafting paper, ink, technical blue. */
+:root{
+  --paper:#E9ECE6;
+  --sheet:#F7F8F5;
+  --panel:#FCFCFA;
+  --ink:#1B1D1A;
+  --muted:#676B64;
+  --line:#D6D9D1;
+  --grid:rgba(27,29,26,.07);
+  --accent:#1F5FBF;
+  --accent-ink:#fff;
+  --accent-soft:#E2EBF9;
+  --good:#2F8A55;
+  --good-soft:#E3F2E8;
+  --warn:#B9770E;
+  --code-bg:#1B1D1A;
+  --code-ink:#E9ECE6;
+  --shadow:0 1px 2px rgba(27,29,26,.06),0 12px 32px -16px rgba(27,29,26,.25);
+  --fb:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fm:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --r:10px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15171A;--sheet:#1C1F23;--panel:#22262B;--ink:#ECEDE8;--muted:#9BA09A;--line:#30353B;
+    --grid:rgba(236,237,232,.06);--accent:#7FAEF5;--accent-ink:#0F1A2E;--accent-soft:#1B2A44;
+    --good:#6CCB92;--good-soft:#17311F;--code-bg:#0E1013;--code-ink:#E3E6E0;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -16px rgba(0,0,0,.7);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15171A;--sheet:#1C1F23;--panel:#22262B;--ink:#ECEDE8;--muted:#9BA09A;--line:#30353B;
+  --grid:rgba(236,237,232,.06);--accent:#7FAEF5;--accent-ink:#0F1A2E;--accent-soft:#1B2A44;
+  --good:#6CCB92;--good-soft:#17311F;--code-bg:#0E1013;--code-ink:#E3E6E0;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -16px rgba(0,0,0,.7);color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+img,video{max-width:100%;display:block}
+code,kbd,pre,.mono{font-family:var(--fm)}
+h1,h2,h3,h4{margin:0;line-height:1.15;letter-spacing:-.01em;font-weight:600}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+.wrap{width:min(1120px,100% - 32px);margin-inline:auto}
+.eyebrow{font-family:var(--fm);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{color:var(--accent);font-weight:500}
+section{padding:72px 0}
+.section-head{display:flex;flex-direction:column;gap:10px;max-width:720px;margin-bottom:36px}
+.section-head h2{font-size:clamp(26px,3.2vw,34px)}
+.section-head p{color:var(--muted);font-size:17px}
+.muted{color:var(--muted)}
+.rule{height:1px;background:var(--line)}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:600;letter-spacing:-.01em}
+.brand:hover{text-decoration:none}
+.brand svg{width:26px;height:26px;flex:none}
+.brand .v{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 7px}
+nav.links{display:flex;gap:4px;margin-left:auto}
+nav.links a{color:var(--muted);font-size:14px;padding:7px 10px;border-radius:7px}
+nav.links a:hover{color:var(--ink);background:var(--sheet);text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid transparent;white-space:nowrap;cursor:pointer;font-family:inherit;line-height:1}
+.btn:hover{text-decoration:none}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--muted)}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:7px}
+.btn svg{width:16px;height:16px}
+.top .btn{margin-left:4px}
+
+/* hero */
+.hero{position:relative;padding:72px 0 64px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(180deg,rgba(0,0,0,.9),transparent 92%);-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),transparent 92%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center}
+.hero h1{font-size:clamp(34px,4.6vw,56px);font-weight:700;letter-spacing:-.025em;margin:14px 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:560px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .fine{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:13px;color:var(--muted)}
+.hero .fine span{display:inline-flex;align-items:center;gap:6px}
+.hero .fine svg{width:14px;height:14px;color:var(--good)}
+
+/* drawing sheet frame */
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.sheet .media{position:relative;background:#EFEDE7;aspect-ratio:16/9}
+.sheet .media video,.sheet .media img,.sheet .media iframe{width:100%;height:100%;object-fit:cover;border:0;display:block}
+.sheet .title-block{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;border-top:1px solid var(--line);font-family:var(--fm);font-size:11.5px;letter-spacing:.02em;color:var(--muted);background:var(--panel)}
+.sheet .title-block b{color:var(--ink);font-weight:500}
+.sheet .title-block .cells{display:flex;flex-wrap:wrap;gap:4px 16px}
+.sheet .title-block a{white-space:nowrap}
+
+/* brief + stats */
+.brief{padding:0 0 72px}
+.brief .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:28px 30px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:center}
+blockquote{margin:0;padding-left:18px;border-left:3px solid var(--accent);font-size:18px;line-height:1.5}
+blockquote footer{margin-top:10px;font-size:13px;color:var(--muted);font-family:var(--fm)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stat{background:var(--sheet);padding:14px 16px}
+.stat .n{font-family:var(--fm);font-size:24px;font-weight:500;letter-spacing:-.02em;line-height:1}
+.stat .n.good{color:var(--good)}
+.stat .l{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* grids */
+.grid{display:grid;gap:16px}
+.cols-2{grid-template-columns:repeat(2,1fr)}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.card h3{font-size:17px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px}
+.card .ask{font-family:var(--fm);font-size:13px;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:7px;padding:10px 12px;margin-bottom:14px;line-height:1.45}
+.card .ask::before{content:"› ";color:var(--accent)}
+.card .get{font-size:14px;color:var(--muted)}
+.card .get b{color:var(--ink);font-weight:600}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:step}
+.step{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 20px}
+.step::before{counter-increment:step;content:"0" counter(step);font-family:var(--fm);font-size:12px;color:var(--accent);letter-spacing:.08em}
+.step h3{font-size:16px;margin:8px 0 8px}
+.step p{font-size:14px;color:var(--muted)}
+.engine{margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.engine .card ul{display:grid;gap:9px;margin-top:12px}
+.engine .card li{display:flex;gap:10px;font-size:15px}
+.engine .card li svg{flex:none;width:18px;height:18px;margin-top:3px;color:var(--good)}
+
+/* code */
+.code{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);border:1px solid color-mix(in srgb,var(--code-bg) 70%,var(--line));overflow:hidden}
+.code pre{margin:0;padding:18px 20px;font-size:13px;line-height:1.6;overflow:auto;tab-size:2}
+.code .bar{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 8px 16px;border-bottom:1px solid rgba(255,255,255,.08);font-family:var(--fm);font-size:11.5px;color:rgba(255,255,255,.55);letter-spacing:.04em}
+.code .copy{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:5px 10px;font-size:12px;font-family:var(--fb);cursor:pointer}
+.code .copy:hover{background:rgba(255,255,255,.16)}
+.code .c{color:#8FA0B8}.code .k{color:#9FD0FF}.code .s{color:#C9E5A3}.code .n{color:#FFD58A}
+
+/* demos */
+.demo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.demo .media{aspect-ratio:16/10;background:var(--paper)}
+.demo-note{margin-top:14px;font-size:13px;color:var(--muted)}
+
+/* outputs */
+.outs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.out{background:var(--panel);padding:20px}
+.out .ext{display:inline-block;font-family:var(--fm);font-size:12px;font-weight:500;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 8px;margin-bottom:12px}
+.out h3{font-size:15px;margin-bottom:6px}
+.out p{font-size:13.5px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-family:var(--fm);font-size:11px;border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--ink);background:var(--sheet)}
+.revit{margin-top:16px;display:flex;gap:14px;align-items:flex-start;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:var(--r);padding:16px 18px;font-size:15px}
+.revit svg{flex:none;width:22px;height:22px;color:var(--accent);margin-top:2px}
+.revit b{font-weight:600}
+.files{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.file{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-size:14px}
+.file:hover{text-decoration:none;border-color:var(--accent)}
+.file code{font-size:12.5px;color:var(--muted)}
+.file svg{width:16px;height:16px;flex:none;color:var(--muted)}
+
+/* studio */
+.studio{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.studio ul{display:grid;gap:10px;margin:18px 0 24px}
+.studio li{display:flex;gap:10px;font-size:15px}
+.studio li svg{flex:none;width:18px;height:18px;margin-top:3px;color:var(--accent)}
+.studio .sheet .media{aspect-ratio:16/10}
+
+/* install */
+.install{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.install .card h3{display:flex;align-items:center;gap:10px}
+.install .card h3 .tag{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+.install .code{margin-top:14px}
+.req{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.req div{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px}
+.req b{display:block;font-weight:600;margin-bottom:4px}
+.req span{color:var(--muted);font-size:13.5px}
+
+/* two-col text */
+.two{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.two .card ul{display:grid;gap:8px;margin-top:10px}
+.two .card li{display:flex;gap:10px;font-size:15px}
+.two .card li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:10px}
+.two .card li.warn::before{background:var(--warn)}
+
+/* footer */
+footer.site{border-top:1px solid var(--line);padding:36px 0 48px;font-size:14px;color:var(--muted)}
+footer.site .wrap{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between}
+footer.site .fl{display:flex;flex-wrap:wrap;gap:4px 18px}
+
+@media (max-width: 920px){
+  .hero .wrap,.brief .card,.engine,.studio,.install,.two,.demo-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .outs{grid-template-columns:repeat(2,1fr)}
+  .files{grid-template-columns:repeat(2,1fr)}
+  .req{grid-template-columns:1fr}
+  .cols-4,.cols-3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 760px){
+  nav.links{display:none}
+  section{padding:56px 0}
+  .hero{padding:48px 0 40px}
+  .steps,.outs,.files,.cols-4,.cols-3,.cols-2{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .brief .card{padding:22px}
+  blockquote{font-size:16.5px}
+  .sheet .title-block{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AR Plan Generator — home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#1F5FBF"/><path d="M7 7h18v18H7z M7 16h10 M17 7v18 M17 20h8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg>
+      AR Plan Generator
+      <span class="v">v0.4.0</span>
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#demo">Live demo</a>
+      <a href="#outputs">Outputs</a>
+      <a href="#studio">Studio</a>
+      <a href="#install">Install</a>
+    </nav>
+    <a class="btn ghost sm" href="https://github.com/ahmed-elbably/ar-plan-generator" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow"><b>Claude Code plugin</b> · Architecture · BIM · MIT</p>
+      <h1>From a written brief to a <em>BIM-ready</em> floor plan.</h1>
+      <p class="lead">AR Plan Generator turns a sentence or a sketch into a 2D architectural plan, lifts it into 3D and hands you layered DXF and IFC4 files you can link straight into Revit, AutoCAD or Navisworks. Every plan is checked for MEP readiness before you see it.</p>
+      <div class="cta">
+        <a class="btn primary" href="#install">Install in Claude Code</a>
+        <a class="btn ghost" href="examples/uae-villa-4br/uae-villa-4br.3d.html" target="_blank" rel="noopener">Open the 3D demo
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3 5 11"/></svg></a>
+      </div>
+      <div class="fine">
+        <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Node 18+, zero dependencies</span>
+        <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>DXF · IFC4 · SVG · 3D · JSON</span>
+        <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Briefs in English or Arabic</span>
+      </div>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="media">
+        <video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="media/uae-villa-4br-plan.png" aria-label="The plan builds in 2D, passes its MEP checks, then lifts into 3D">
+          <source src="media/uae-villa-4br-2d-to-3d.mp4" type="video/mp4">
+        </video>
+      </div>
+      <figcaption class="title-block">
+        <div class="cells">
+          <span>SHEET <b>A-01</b></span>
+          <span>PROJECT <b>UAE villa · 4BR</b></span>
+          <span>LEVEL <b>Ground floor</b></span>
+          <span>GROSS <b>402 m²</b></span>
+          <span>CHECKS <b style="color:var(--good)">9/9</b></span>
+        </div>
+        <a href="examples/uae-villa-4br/" rel="noopener">all files ↗</a>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- BRIEF → RESULT -->
+<section class="brief" aria-labelledby="brief-h">
+  <div class="wrap">
+    <div class="card">
+      <blockquote>
+        <h2 id="brief-h" class="eyebrow" style="margin-bottom:10px">The brief that produced the plan above</h2>
+        “Single-storey villa, about 320 m²: majlis near the entrance with a guest WC, family living and dining, closed kitchen with pantry, maid's room with its own bathroom, laundry, 4 en-suite bedrooms, 2-car garage.”
+        <footer>one message to Claude · no coordinates · no drawing</footer>
+      </blockquote>
+      <div class="stats" role="list" aria-label="Result statistics">
+        <div class="stat" role="listitem"><div class="n">25</div><div class="l">rooms</div></div>
+        <div class="stat" role="listitem"><div class="n">27</div><div class="l">doors</div></div>
+        <div class="stat" role="listitem"><div class="n">17</div><div class="l">windows</div></div>
+        <div class="stat" role="listitem"><div class="n">30</div><div class="l">MEP fixtures</div></div>
+        <div class="stat" role="listitem"><div class="n good">9/9</div><div class="l">readiness checks</div></div>
+        <div class="stat" role="listitem"><div class="n good">0</div><div class="l">clashes</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- WHAT YOU ASK / WHAT YOU GET -->
+<section id="what" aria-labelledby="what-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Three skills, one conversation</p>
+      <h2 id="what-h">Ask in plain language. Get drawings, models and BIM files.</h2>
+      <p>Generate a plan, change it, or check it. Claude decides the layout; a bundled engine does the drafting.</p>
+    </div>
+    <div class="grid cols-4">
+      <div class="card">
+        <div class="ask">Make me a 4-bedroom villa, about 320 m², with a majlis and maid's room</div>
+        <h3>Generate</h3>
+        <p class="get"><b>2D plan, 3D model, build replay</b>, DXF, IFC, plan JSON and a check report — with a first-look image sent as soon as the layout exists.</p>
+      </div>
+      <div class="card">
+        <div class="ask">Turn this sketch into a plan <span class="muted">(with an image)</span></div>
+        <h3>From a sketch</h3>
+        <p class="get">The same set of outputs, <b>following the sketch's layout</b> and any dimensions written on it.</p>
+      </div>
+      <div class="card">
+        <div class="ask">Add a store next to the garage <span class="muted">(with a plan JSON)</span></div>
+        <h3>Change</h3>
+        <p class="get">A new version that <b>changes only what's needed</b>, plus a list of what changed.</p>
+      </div>
+      <div class="card">
+        <div class="ask">Is this plan ready for MEP? · Export it to IFC</div>
+        <h3>Check &amp; export</h3>
+        <p class="get"><b>Areas, room schedule, MEP readiness</b>, door and fixture clashes; drawings and BIM files on request.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" aria-labelledby="how-h" style="background:var(--sheet);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-h">Claude decides the layout. The engine draws it.</h2>
+      <p>Claude only writes a compact JSON spec — rectangular rooms, doors, windows, fixtures. Everything geometric is deterministic code, so plans are clean, consistent and checkable.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Read the brief</h3><p>Building type, target area, room list, region and units. Sketches are read for arrangement, proportions and written dimensions.</p></div>
+      <div class="step"><h3>Write the spec</h3><p>Zones, a circulation spine and a footprint grid come first; then rooms as rectangles on a 0.05 m grid, with doors, windows and fixtures.</p></div>
+      <div class="step"><h3>Build the geometry</h3><p>Walls on every room edge, exterior walls detected and thickened, openings cut, fixtures placed against walls and kept clear of door swings.</p></div>
+      <div class="step"><h3>Check, fix, deliver</h3><p>Nine MEP-readiness checks and a clash pass. Problems go back to the spec, never to the outputs, for at most two fix rounds.</p></div>
+    </div>
+    <div class="engine">
+      <div class="code">
+        <div class="bar"><span>villa.spec.json — what Claude writes</span><button class="copy" data-copy="#spec" type="button">Copy</button></div>
+<pre id="spec">{
+  <span class="k">"project"</span>: <span class="s">"UAE villa 4BR"</span>,
+  <span class="k">"notes"</span>:   <span class="s">"Public wing north, private south."</span>,
+  <span class="k">"rooms"</span>:    [{<span class="k">"name"</span>:<span class="s">"Majlis"</span>, <span class="k">"type"</span>:<span class="s">"living"</span>, <span class="k">"x"</span>:<span class="n">0</span>, <span class="k">"y"</span>:<span class="n">0</span>, <span class="k">"w"</span>:<span class="n">6.5</span>, <span class="k">"d"</span>:<span class="n">5.5</span>}, <span class="c">…</span>],
+  <span class="k">"doors"</span>:    [{<span class="k">"from"</span>:<span class="s">"OUTSIDE"</span>, <span class="k">"to"</span>:<span class="s">"Lobby"</span>, <span class="k">"w"</span>:<span class="n">1.2</span>, <span class="k">"side"</span>:<span class="s">"N"</span>}, <span class="c">…</span>],
+  <span class="k">"windows"</span>:  [{<span class="k">"room"</span>:<span class="s">"Majlis"</span>, <span class="k">"side"</span>:<span class="s">"N"</span>, <span class="k">"w"</span>:<span class="n">1.5</span>, <span class="k">"count"</span>:<span class="n">2</span>}, <span class="c">…</span>],
+  <span class="k">"fixtures"</span>: [{<span class="k">"kind"</span>:<span class="s">"wc"</span>, <span class="k">"room"</span>:<span class="s">"Guest WC"</span>, <span class="k">"side"</span>:<span class="s">"N"</span>}, <span class="c">…</span>]
+}
+
+<span class="c"># then the engine takes over</span>
+node arplan.js build villa.spec.json --out out --name villa</pre>
+      </div>
+      <div class="card">
+        <h3>What the engine guarantees</h3>
+        <p>Metres, x east, y south. Exterior walls 0.25 m, interior 0.12 m. The same drawing engine powers AR Plan Studio, so plans move freely between the two.</p>
+        <ul>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Every room has a type, a door or opening, and bedrooms have an egress window</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Bathrooms carry WC, basin and shower or tub; kitchens a sink</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Water heater, AHU and electrical panel placed — the origins of every MEP run</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Fixtures sit inside their room and clear of doorways and door swings</li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Fixtures carry their services (water, drain, gas, elec, hvac) into DXF, IFC and JSON</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo" aria-labelledby="demo-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Live demo · UAE villa 4BR</p>
+      <h2 id="demo-h">The plan, running in your browser.</h2>
+      <p>Both pages below are real outputs from <code>examples/uae-villa-4br</code>, exactly as the plugin writes them. Orbit the model, cut it at 1.2 m, or watch the build replay with its MEP checks ticking.</p>
+    </div>
+    <div class="demo-grid">
+      <figure class="sheet demo" style="margin:0">
+        <div class="media">
+          <iframe src="examples/uae-villa-4br/uae-villa-4br.3d.html" title="Interactive 3D model of the UAE villa" loading="lazy" allow="fullscreen"></iframe>
+        </div>
+        <figcaption class="title-block">
+          <div class="cells"><span>VIEW <b>3D model</b></span><span>three.js · orbit · plan / 3D · cut at 1.2 m · fixtures</span></div>
+          <a href="examples/uae-villa-4br/uae-villa-4br.3d.html" target="_blank" rel="noopener">full screen ↗</a>
+        </figcaption>
+      </figure>
+      <figure class="sheet demo" style="margin:0">
+        <div class="media">
+          <iframe src="examples/uae-villa-4br/uae-villa-4br.build.html" title="Replay of the villa plan being built, with MEP checks" loading="lazy" allow="fullscreen"></iframe>
+        </div>
+        <figcaption class="title-block">
+          <div class="cells"><span>VIEW <b>Build replay</b></span><span>rooms · walls · openings · fixtures · 9 MEP checks</span></div>
+          <a href="examples/uae-villa-4br/uae-villa-4br.build.html" target="_blank" rel="noopener">full screen ↗</a>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="demo-note">The 3D view loads three.js from cdn.jsdelivr.net and needs WebGL. Prefer a still? Here is the <a href="media/uae-villa-4br-plan.png" target="_blank" rel="noopener">2000 px plan image</a> and the <a href="media/uae-villa-4br-2d-to-3d.mp4" target="_blank" rel="noopener">26-second 2D-to-3D video</a>.</p>
+  </div>
+</section>
+
+<!-- OUTPUTS -->
+<section id="outputs" aria-labelledby="outputs-h" style="background:var(--sheet);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Outputs</p>
+      <h2 id="outputs-h">Eight files per plan. All of them ready for the next tool.</h2>
+      <p>Everything is written in metres with north up, so what you link into Revit lands where you expect it.</p>
+    </div>
+    <div class="outs">
+      <div class="out"><span class="ext">.svg / .png</span><h3>The drawing</h3><p>Room names, areas and exterior dimensions. The first-look image is sent as soon as the layout exists.</p></div>
+      <div class="out"><span class="ext">.dxf</span><h3>AutoCAD R12 DXF</h3><p>1 unit = 1 m, walls cut at openings, on standard layers.</p>
+        <div class="chips"><span class="chip">A-WALL</span><span class="chip">A-DOOR</span><span class="chip">A-GLAZ</span><span class="chip">A-AREA</span><span class="chip">A-AREA-IDEN</span><span class="chip">P-FIXT</span><span class="chip">A-EQPM</span><span class="chip">P-EQPM</span><span class="chip">M-EQPM</span><span class="chip">E-EQPM</span></div></div>
+      <div class="out"><span class="ext">.ifc</span><h3>IFC4 model</h3><p>Walls, doors, windows, a slab and an IfcSpace per room (Name = number, LongName = room name). Typed fixtures with an <code>ARPlan_Fixture</code> property set.</p>
+        <div class="chips"><span class="chip">IfcSanitaryTerminal</span><span class="chip">IfcElectricAppliance</span><span class="chip">IfcUnitaryEquipment</span><span class="chip">IfcElectricDistributionBoard</span><span class="chip">IfcWasteTerminal</span></div></div>
+      <div class="out"><span class="ext">.3d.html</span><h3>Interactive 3D</h3><p>The plan lifts and the walls rise; then orbit, switch Plan / 3D, cut at 1.2 m, toggle fixtures.</p></div>
+      <div class="out"><span class="ext">.build.html / .mp4</span><h3>Build replay</h3><p>Rooms, walls, openings and fixtures appear with an elements-placed counter, then the MEP checks tick to a verdict. 1920×1080 video, about 14 s.</p></div>
+      <div class="out"><span class="ext">.full.mp4</span><h3>2D-to-3D video</h3><p>The whole story in one 1920×1080 clip: 2D build, crossfade, the plan lifting into 3D, a camera orbit, “IFC + DXF exported”.</p></div>
+      <div class="out"><span class="ext">.plan.json</span><h3>Editable plan</h3><p>Opens in AR Plan Studio with Import JSON. Fixtures carry room and services for the MEP step.</p></div>
+      <div class="out"><span class="ext">.report.md</span><h3>Check report</h3><p>Gross and conditioned area, room schedule, the nine MEP-readiness checks and the clash list.</p></div>
+    </div>
+    <div class="revit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h16v16H4z M4 12h8 M12 4v16 M12 15h8"/></svg>
+      <div><b>In Revit:</b> Insert ▸ Link CAD (DXF, import units metres) or Insert ▸ Link IFC. In Navisworks, append the IFC for coordination. Spaces, layers and fixture classes arrive ready for MEP modelling.</div>
+    </div>
+    <div class="files" aria-label="Example files to download">
+      <a class="file" href="examples/uae-villa-4br/uae-villa-4br.dxf" download><span>DXF drawing <code>68 KB</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M3 13h10"/></svg></a>
+      <a class="file" href="examples/uae-villa-4br/uae-villa-4br.ifc" download><span>IFC4 model <code>133 KB</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M3 13h10"/></svg></a>
+      <a class="file" href="examples/uae-villa-4br/uae-villa-4br.plan.json" download><span>Plan JSON <code>29 KB</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M3 13h10"/></svg></a>
+      <a class="file" href="examples/uae-villa-4br/uae-villa-4br.spec.json" download><span>Spec JSON (Claude's input) <code>spec</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M3 13h10"/></svg></a>
+      <a class="file" href="examples/uae-villa-4br/uae-villa-4br.svg" target="_blank" rel="noopener"><span>SVG drawing <code>37 KB</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3 5 11"/></svg></a>
+      <a class="file" href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/examples/uae-villa-4br/uae-villa-4br.report.md" target="_blank" rel="noopener"><span>Check report <code>report.md</code></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3 5 11"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO -->
+<section id="studio" aria-labelledby="studio-h">
+  <div class="wrap studio">
+    <div>
+      <p class="eyebrow">AR Plan Studio</p>
+      <h2 id="studio-h" style="font-size:clamp(26px,3.2vw,34px);margin-top:10px">The interactive editor that ships with the plugin.</h2>
+      <p class="muted" style="margin-top:14px;font-size:17px">A single HTML file. Open it in any browser to draw and edit by hand, or let Claude open it as an artifact page and generate plans from a description in its AI panel.</p>
+      <ul>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Draw and edit walls, rooms, doors, windows and fixtures on a drafting sheet</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Live MEP-readiness dashboard while you work</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Open the plan in 3D with one key</li>
+        <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>Import and export the same plan JSON the plugin writes</li>
+      </ul>
+      <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn primary" href="studio/ar-plan-studio.html" target="_blank" rel="noopener">Open AR Plan Studio
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h7v7M13 3 5 11"/></svg></a>
+        <a class="btn ghost" href="examples/uae-villa-4br/uae-villa-4br.plan.json" download>Get the villa JSON to import</a>
+      </div>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="media">
+        <iframe src="studio/ar-plan-studio.html" title="AR Plan Studio, the interactive floor-plan editor" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+      <figcaption class="title-block">
+        <div class="cells"><span>APP <b>AR Plan Studio</b></span><span>tool rail · drafting sheet · MEP dashboard</span></div>
+        <a href="studio/ar-plan-studio.html" target="_blank" rel="noopener">full screen ↗</a>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" aria-labelledby="install-h" style="background:var(--sheet);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Install</p>
+      <h2 id="install-h">Two commands in Claude Code. One file in the Claude app.</h2>
+      <p>Then ask for a plan in your own words — “make me a 2BR apartment layout”, “draw a clinic ground floor”, or «ارسم مخطط فيلا».</p>
+    </div>
+    <div class="install">
+      <div class="card">
+        <h3>Claude Code <span class="tag">plugin marketplace</span></h3>
+        <p>Adds the marketplace from this repository and installs the plugin with its three skills and the engine.</p>
+        <div class="code">
+          <div class="bar"><span>terminal</span><button class="copy" data-copy="#cc" type="button">Copy</button></div>
+<pre id="cc">/plugin marketplace add ahmed-elbably/ar-plan-generator
+/plugin install ar-plan-generator@ar-plan-generator</pre>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Claude app <span class="tag">plugin file</span></h3>
+        <p>Download the packaged plugin and add it to Claude as a plugin file. Same skills, same engine, same outputs.</p>
+        <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn primary" href="dist/ar-plan-generator.plugin" download>Download ar-plan-generator.plugin
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v8m0 0 3-3M8 10 5 7M3 13h10"/></svg></a>
+          <a class="btn ghost" href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/CHANGELOG.md" rel="noopener">Changelog · 0.4.0</a>
+        </div>
+      </div>
+    </div>
+    <div class="req">
+      <div><b>Required</b><span>Node.js 18 or later. The engine has no dependencies.</span></div>
+      <div><b>Optional · 2D build video</b><span><code>rsvg-convert</code> and <code>ffmpeg</code>.</span></div>
+      <div><b>Optional · 2D-to-3D video</b><span>Python Playwright with Chromium, plus ffmpeg.</span></div>
+    </div>
+
+    <div class="code" style="margin-top:28px">
+      <div class="bar"><span>run the engine directly — plugins/ar-plan-generator/scripts</span><button class="copy" data-copy="#cli" type="button">Copy</button></div>
+<pre id="cli">node arplan.js build   ../skills/generate-floor-plan/examples/uae-villa-4br.spec.json --out out --name villa
+node arplan.js check   out/villa.plan.json
+node arplan.js 3d      out/villa.plan.json --out out
+node arplan.js ifc     out/villa.plan.json --out out
+node arplan.js animate out/villa.plan.json --out out --name villa
+bash render-video.sh out/villa-frames out/villa.build.mp4
+python3 record-3d.py out/villa.3d.html out/villa.3d.mp4 --join out/villa.build.mp4 --joined out/villa.full.mp4</pre>
+    </div>
+    <p class="demo-note">The spec format Claude writes is documented in <a href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/plugins/ar-plan-generator/skills/generate-floor-plan/references/spec-format.md" rel="noopener">spec-format.md</a>; regional programmes and typical room sizes in <a href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/plugins/ar-plan-generator/skills/generate-floor-plan/references/conventions.md" rel="noopener">conventions.md</a>.</p>
+  </div>
+</section>
+
+<!-- CONVENTIONS & LIMITS -->
+<section id="notes" aria-labelledby="notes-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Conventions &amp; limits</p>
+      <h2 id="notes-h">Built for GCC practice. Honest about scope.</h2>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>Regional conventions</h3>
+        <p>UAE / GCC is the default programme. Ask for another in the brief.</p>
+        <ul>
+          <li>Majlis near the entrance with a guest WC, family living and dining, closed kitchen with pantry</li>
+          <li>Maid's room with its own bathroom, laundry, en-suite bedrooms with dressing rooms</li>
+          <li>Outdoor AC units, AHU, water heater and electrical panel placed as MEP origins</li>
+          <li>Egypt, US (IRC) and international conventions on request; metres or feet</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Know the limits</h3>
+        <p>Plans are concept-stage layouts for early coordination, not construction documents.</p>
+        <ul>
+          <li class="warn">One level per plan; multi-storey briefs build one spec per level on the same grid</li>
+          <li class="warn">Rooms are rectangles — combine two with an opening for an L-shape</li>
+          <li class="warn">Check structure, code compliance and dimensions before issuing drawings</li>
+          <li class="warn">The 3D page needs WebGL and an internet connection for three.js</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>AR Plan Generator · <a href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/LICENSE" rel="noopener">MIT License</a> · © 2026 <a href="https://github.com/ahmed-elbably" rel="noopener">Ahmed Elbably</a></div>
+    <div class="fl">
+      <a href="https://github.com/ahmed-elbably/ar-plan-generator" rel="noopener">Source</a>
+      <a href="https://github.com/ahmed-elbably/ar-plan-generator/blob/main/CHANGELOG.md" rel="noopener">Changelog</a>
+      <a href="https://github.com/ahmed-elbably/ar-plan-generator/issues" rel="noopener">Issues</a>
+      <a href="examples/uae-villa-4br/uae-villa-4br.3d.html" rel="noopener">3D demo</a>
+      <a href="studio/ar-plan-studio.html" rel="noopener">Studio</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Copy buttons for the code blocks.
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', async function(){
+      var el = document.querySelector(btn.getAttribute('data-copy'));
+      if(!el) return;
+      try{
+        await navigator.clipboard.writeText(el.innerText.trim());
+        btn.textContent = 'Copied';
+      }catch(e){
+        btn.textContent = 'Select & copy';
+      }
+      setTimeout(function(){ btn.textContent = 'Copy'; }, 1600);
+    });
+  });
+  // Respect reduced-motion: show the poster instead of a looping video.
+  var v = document.getElementById('heroVideo');
+  if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    v.removeAttribute('autoplay'); v.pause(); v.setAttribute('controls','');
+  }
+})();
+</script>
+</body>
+</html>

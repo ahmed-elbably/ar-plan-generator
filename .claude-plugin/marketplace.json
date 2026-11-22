@@ -1,0 +1,36 @@
+{
+  "name": "ar-plan-generator",
+  "owner": {
+    "name": "Ahmed Elbably",
+    "url": "https://github.com/ahmed-elbably"
+  },
+  "metadata": {
+    "description": "AI floor-plan tools for Claude: brief \u2192 2D plan \u2192 3D model, DXF and IFC.",
+    "version": "0.4.0"
+  },
+  "plugins": [
+    {
+      "name": "ar-plan-generator",
+      "source": "./plugins/ar-plan-generator",
+      "description": "Generates 2D architectural floor plans from a written brief or sketch, changes existing plans, and checks them for MEP readiness. Outputs SVG, layered DXF, IFC4 for Revit/Navisworks, a 3D model page, a build replay page, a 2D-to-3D build video, AR Plan Studio JSON and a check report.",
+      "version": "0.4.0",
+      "author": {
+        "name": "Ahmed Elbably"
+      },
+      "homepage": "https://github.com/ahmed-elbably/ar-plan-generator",
+      "license": "MIT",
+      "keywords": [
+        "architecture",
+        "floor plan",
+        "BIM",
+        "MEP",
+        "DXF",
+        "IFC",
+        "3D",
+        "Revit",
+        "layout"
+      ],
+      "category": "design"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# build outputs and scratch
+*-frames/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+Thumbs.db
+out/
+
+# assembled GitHub Pages site (built by the workflow)
+_site/
