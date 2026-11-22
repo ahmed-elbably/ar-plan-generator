@@ -41,7 +41,7 @@ UAE / GCC conventions are the default (majlis, guest WC, maid's room, en-suites,
 
 ### Claude app
 
-Download [`dist/ar-plan-generator.plugin`](dist/ar-plan-generator.plugin) and add it to Claude as a plugin file.
+Download [ar-plan-generator.plugin](https://github.com/ahmed-elbably/ar-plan-generator/releases/latest/download/ar-plan-generator.plugin) from the latest release and add it to Claude as a plugin file.
 
 ### Requirements
 
@@ -92,7 +92,9 @@ examples/uae-villa-4br/           every output for the villa above
 studio/ar-plan-studio.html        the interactive editor
 media/                            demo GIF, video and plan image
 site/index.html                   project site, deployed to GitHub Pages
+site/stats.html                   download counter (unlisted page)
 .github/workflows/pages.yml       builds and deploys the site on every push to main
+.github/workflows/release.yml     publishes the .plugin as a GitHub release on every version tag
 ```
 
 ## Limits

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AR Plan Generator downloads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: one narrow column; the big download counter first, then per-release rows, then repo signals. */
+  --paper:#E9ECE6;--panel:#FCFCFA;--ink:#1B1D1A;--muted:#676B64;--line:#D6D9D1;
+  --accent:#1F5FBF;--good:#2F8A55;--good-soft:#E3F2E8;--warn:#B9770E;
+  --fb:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fm:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#15171A;--panel:#22262B;--ink:#ECEDE8;--muted:#9BA09A;--line:#30353B;--accent:#7FAEF5;--good:#6CCB92;--good-soft:#17311F;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#15171A;--panel:#22262B;--ink:#ECEDE8;--muted:#9BA09A;--line:#30353B;--accent:#7FAEF5;--good:#6CCB92;--good-soft:#17311F;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fb);line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:40px 20px 64px;display:grid;gap:18px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:22px;font-weight:600;text-wrap:balance}
+.eyebrow{font-family:var(--fm);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+.hero{display:grid;gap:6px}
+.big{font-size:clamp(56px,12vw,96px);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.delta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--good);background:var(--good-soft);border-radius:999px;padding:2px 10px;width:max-content}
+.delta.zero{color:var(--muted);background:transparent;border:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-family:var(--fm);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;min-width:80px}
+.bar span{display:block;height:100%;background:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile .v{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.tile .l{font-size:12px;color:var(--muted)}
+@media (max-width:560px){.tiles{grid-template-columns:repeat(2,1fr)}}
+h2{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.note{font-size:13.5px;color:var(--muted)}
+.note a,a{color:var(--accent)}
+button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 12px;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.err{color:var(--warn);font-size:14px}
+.empty{color:var(--muted);font-size:14px;padding:6px 0}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">ahmed-elbably / ar-plan-generator</div><h1>Plugin downloads</h1></div>
+    <button id="refresh" type="button">Refresh</button>
+  </header>
+
+  <section class="card hero" aria-live="polite">
+    <div class="eyebrow">Total .plugin downloads</div>
+    <div class="big" id="total">…</div>
+    <div class="delta zero" id="delta">Loading</div>
+    <div class="sub" id="updated">Counted by GitHub from release downloads.</div>
+  </section>
+
+  <section class="card">
+    <h2>By release</h2>
+    <div id="releases"><div class="empty">Loading…</div></div>
+  </section>
+
+  <section class="card">
+    <h2>Repository</h2>
+    <div class="tiles">
+      <div class="tile"><div class="v" id="stars">–</div><div class="l">Stars</div></div>
+      <div class="tile"><div class="v" id="forks">–</div><div class="l">Forks</div></div>
+      <div class="tile"><div class="v" id="watchers">–</div><div class="l">Watching</div></div>
+      <div class="tile"><div class="v" id="issues">–</div><div class="l">Open issues</div></div>
+    </div>
+  </section>
+
+  <section class="card note">
+    <h2>What this counts</h2>
+    <p style="margin:0 0 8px">Every download of the <code>.plugin</code> file from a GitHub release: the site's download button and the README link both point there. GitHub keeps the count; this page reads it.</p>
+    <p style="margin:0">Claude Code installs (<code>/plugin marketplace add</code>) are git clones, which GitHub shows only to you: open <a href="https://github.com/ahmed-elbably/ar-plan-generator/graphs/traffic">Insights › Traffic</a> while signed in (clones and visitors for the last 14 days).</p>
+  </section>
+</main>
+<script>
+"use strict";
+const REPO="ahmed-elbably/ar-plan-generator";
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString("en-US");
+const KEY="arpg.lastTotal";
+function readLast(){try{return JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){return null;}}
+function writeLast(v){try{localStorage.setItem(KEY,JSON.stringify(v));}catch(e){}}
+async function getJson(url){const r=await fetch(url,{headers:{Accept:"application/vnd.github+json"}});if(!r.ok){const e=new Error(r.status===403?"GitHub's hourly limit for this browser is reached. Try again in a while.":`GitHub answered ${r.status}.`);throw e;}return r.json();}
+async function load(){
+  $("refresh").disabled=true;
+  try{
+    const [repo,rels]=await Promise.all([getJson(`https://api.github.com/repos/${REPO}`),getJson(`https://api.github.com/repos/${REPO}/releases?per_page=100`)]);
+    $("stars").textContent=fmt(repo.stargazers_count);$("forks").textContent=fmt(repo.forks_count);
+    $("watchers").textContent=fmt(repo.subscribers_count??repo.watchers_count);$("issues").textContent=fmt(repo.open_issues_count);
+    const rows=rels.filter(r=>!r.draft).map(r=>{const a=(r.assets||[]).filter(x=>/\.plugin$/i.test(x.name));return {tag:r.tag_name,name:r.name||r.tag_name,date:r.published_at,n:a.reduce((s,x)=>s+x.download_count,0)};});
+    const total=rows.reduce((s,r)=>s+r.n,0);
+    $("total").textContent=fmt(total);
+    const last=readLast();
+    if(last&&typeof last.total==="number"){const d=total-last.total;const when=new Date(last.at).toLocaleString();$("delta").textContent=d>0?`+${fmt(d)} since your last visit (${when})`:`No new downloads since ${when}`;$("delta").className="delta"+(d>0?"":" zero");}
+    else{$("delta").textContent="First visit on this browser: changes show from next time";$("delta").className="delta zero";}
+    writeLast({total,at:Date.now()});
+    $("updated").textContent=`Updated ${new Date().toLocaleString()} · counted by GitHub from release downloads.`;
+    if(!rows.length){$("releases").innerHTML='<div class="empty">No release yet. Push a version tag (for example <code>v0.4.0</code>) and the release workflow publishes the plugin.</div>';return;}
+    const max=Math.max(1,...rows.map(r=>r.n));
+    $("releases").innerHTML='<table><thead><tr><th>Release</th><th>Published</th><th></th><th class="n">Downloads</th></tr></thead><tbody>'+
+      rows.map(r=>`<tr><td><a href="https://github.com/${REPO}/releases/tag/${encodeURIComponent(r.tag)}">${r.tag}</a></td><td>${r.date?new Date(r.date).toLocaleDateString():"–"}</td><td><div class="bar"><span style="width:${(r.n/max*100).toFixed(1)}%"></span></div></td><td class="n">${fmt(r.n)}</td></tr>`).join("")+'</tbody></table>';
+  }catch(e){
+    $("total").textContent="–";$("delta").textContent="Couldn't load";$("delta").className="delta zero";
+    $("releases").innerHTML=`<div class="err">${e.message||"Couldn't reach GitHub."}</div>`;
+  }finally{$("refresh").disabled=false;}
+}
+$("refresh").addEventListener("click",load);
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+# Publishes the plugin as a GitHub release so every download is counted.
+#
+# Run it by pushing a version tag:   git tag v0.4.1 && git push origin v0.4.1
+# or from Actions > Release plugin > Run workflow (enter the tag).
+# The release carries ar-plan-generator.plugin, built from plugins/ar-plan-generator.
+# Download counts appear on site/stats.html and through the GitHub API.
+name: Release plugin
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, e.g. v0.4.0"
+        required: true
+        default: "v0.4.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Package the plugin
+        run: |
+          cd plugins/ar-plan-generator
+          zip -qr ../../ar-plan-generator.plugin . -x "*.DS_Store" -x "scripts/__pycache__/*"
+          cd ../..
+          ls -la ar-plan-generator.plugin
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          VER=$(python3 -c "import json;print(json.load(open('plugins/ar-plan-generator/.claude-plugin/plugin.json'))['version'])")
+          awk '/^## /{n++} n==1' CHANGELOG.md > notes.md
+          printf '\n**Claude app:** download `ar-plan-generator.plugin` below and add it to Claude as a plugin file.\n**Claude Code:** `/plugin marketplace add ahmed-elbably/ar-plan-generator` then `/plugin install ar-plan-generator@ar-plan-generator`\n' >> notes.md
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" ar-plan-generator.plugin --clobber
+          else
+            gh release create "$TAG" ar-plan-generator.plugin --title "AR Plan Generator $VER" --notes-file notes.md --target "$GITHUB_SHA"
+          fi
