@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "AI floor-plan tools for Claude: brief \u2192 2D plan \u2192 3D model, DXF and IFC.",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "plugins": [
     {
       "name": "ar-plan-generator",
       "source": "./plugins/ar-plan-generator",
-      "description": "Generates 2D architectural floor plans from a written brief or sketch, changes existing plans, and checks them for MEP readiness. Outputs SVG, layered DXF, IFC4 for Revit/Navisworks, a 3D model page, a build replay page, a 2D-to-3D build video, AR Plan Studio JSON and a check report.",
-      "version": "0.4.0",
+      "description": "Generates 2D architectural floor plans from a written brief or sketch, changes existing plans, and checks them for MEP readiness and, for Dubai, against 64 rules of the Dubai Building Code 2021, UAE FLSC 2018, DEWA 2017 and ASHRAE 62.2. Outputs SVG, layered DXF, IFC4 for Revit/Navisworks, a 3D model page, a build replay page, a 2D-to-3D build video, AR Plan Studio JSON and a check report.",
+      "version": "0.5.0",
       "author": {
         "name": "Ahmed Elbably"
       },

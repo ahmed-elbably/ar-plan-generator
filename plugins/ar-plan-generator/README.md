@@ -8,7 +8,10 @@ Generate 2D architectural floor plans from a written brief or a sketch, change t
 |---|---|---|
 | generate-floor-plan | "Make me a 4-bedroom villa, about 320 m², with a majlis and maid's room" | Drawing, 3D model, build replay, DXF, IFC, plan JSON, check report |
 | change-floor-plan | "Add a store next to the garage" (with a plan JSON) | New versions of all four files, plus what changed |
-| check-floor-plan | "Is this plan ready for MEP?" / "Export my plan to DXF" | Report: areas, room schedule, MEP readiness, clashes; SVG and DXF on request |
+| check-floor-plan | "Is this plan ready for MEP?" / "Export my plan to DXF" / "Check it against the Dubai code" | Report: areas, room schedule, MEP readiness, clashes; Dubai code check; SVG and DXF on request |
+| review-floor-plan | "Review it like the municipality would" | Plans-examiner corrections citing element ids, validated against the plan and the rule pack |
+
+For Dubai projects, build with `--pack dubai`: the engine keeps the DBC 2021 Part K clearances, generates the fire-detection, ventilation and electrical layers with a circuit schedule, and checks 64 rules from the Dubai Building Code 2021, UAE FLSC 2018, DEWA 2017 and ASHRAE 62.2-2019 (`rules/`).
 
 Default design conventions are UAE / GCC (majlis, guest WC, maid's room, en-suites, outdoor AC units). Ask for Egypt, US or international conventions in the brief.
 
@@ -25,7 +28,11 @@ Default design conventions are UAE / GCC (majlis, guest WC, maid's room, en-suit
   | A-AREA / A-AREA-IDEN | Room boundaries / room names and areas |
   | P-FIXT | WC, basin, sink, shower, tub, floor drain |
   | A-EQPM | Washer, dryer, dishwasher, range, fridge |
-  | P-EQPM / M-EQPM / E-EQPM | Water heater / AHU and AC units / electrical panel |
+  | P-EQPM / M-EQPM / E-EQPM | Water heater, tank, pump / AHU, AC units, fresh-air unit / electrical panel |
+  | F-FIRE | Detectors, fire alarm panel, outdoor alarm, extinguisher |
+  | M-EXHT | Exhaust fans, range hood |
+  | E-POWR | Sockets, shaver outlets, DP switches, cooker control units |
+  | P-GAS / A-CASE | LPG cylinders / kitchen counters |
 
   In Revit: Insert > Link CAD, import units metres.
 - **`.ifc`**: IFC4 in metres for Revit (Insert > Link IFC) or Navisworks: walls cut at openings, doors, windows, a floor slab and a space per room (Name = number, LongName = room name), fixtures as IfcSanitaryTerminal / IfcElectricAppliance / IfcUnitaryEquipment / IfcElectricDistributionBoard / IfcWasteTerminal inside their rooms, with an `ARPlan_Fixture` property set (services, room).

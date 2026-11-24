@@ -21,9 +21,10 @@ The engine is `scripts/arplan.js` in the plugin root, two folders above this ski
 4. **Edit the spec minimally.** Change only what the request needs. Keep names, coordinates and `at` values of everything else. When a room grows, shift or shrink only its direct neighbours and keep the footprint tidy. Update doors, windows and fixtures that belong to moved rooms. Run the self-check in spec-format.md.
 5. **Build** under a new name so the previous version stays available:
    ```bash
-   node "<plugin root>/scripts/arplan.js" build <slug>.spec.json --out <output dir> --name <slug>-v2
+   node "<plugin root>/scripts/arplan.js" build <slug>.spec.json --out <output dir> --name <slug>-v2 [--pack dubai]
    ```
-   Fix and rebuild (at most two rounds) if the summary shows overlaps, doors not placed, missing fixtures or clashes caused by the change.
+   Use `--pack dubai` when the plan is a Dubai project (it has a `.codecheck.json`, or its spec has a `plot` / `hassantuk`). Generated items (`auto` in the plan: floor drains, detectors, fans, sockets, circuits) are not in the spec that `to-spec` returns; the build regenerates them for the new layout.
+   Fix and rebuild (at most two rounds) if the summary shows overlaps, doors not placed, missing fixtures, clashes or new code-check fails caused by the change. In the reply, compare the code-check summary before and after.
 6. **Look once** at a PNG render of the SVG, as in generate-floor-plan.
 7. **Replay the build** when the user wants to see it, or the change is large: run `arplan.js animate` on the new plan JSON and `render-video.sh` on its frames, exactly as in step 9 of generate-floor-plan, and `record-3d.py` for the 2D-to-3D video as in step 11.
 8. **Deliver** the new 3D page (`.3d.html`, as an artifact page when possible), PNG or SVG, DXF, IFC, plan JSON and report (plus the replay page and MP4 if made). In the reply list exactly what changed (rooms added, resized or moved, with before and after sizes), the new gross and conditioned areas compared with before, and any new warnings.

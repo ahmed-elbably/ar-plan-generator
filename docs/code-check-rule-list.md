@@ -71,7 +71,7 @@ Engine status: **Now** = checkable with today's spec · **Spec+** = needs the sp
 | F-11 | FLSC Table 3.27 item 2 iii (p.323) | Any floor > 400 m²: **two remote primary exits** | ✅ | Now |
 | F-12 | FLSC Table 3.27 item 3 (p.323) | Bathroom doors openable from outside when locked; closet latches openable from inside | ✅ | Agent (schedule note) |
 | F-13 | FLSC Table 3.27 item 4 (p.323) | Hallway ≥ 915 mm, headroom ≥ 2,030 mm (DBC K-13's 1.0 m is stricter and governs) | ✅ | Now |
-| F-14 | FLSC Ch.4 Table 4.3 (p.377) | Home kitchen: one multipurpose dry-powder extinguisher, 2.5 kg, inside the kitchen next to the exit door | 🟡 (table layout; re-read) | Now (v0.5 design data) |
+| F-14 | FLSC Ch.4 Table 4.3 row 6 (p.377) | Home kitchen: one multipurpose dry-powder extinguisher (3A 20-B C, 2.5 kg) inside the kitchen next to the exit door | ✅ | Now (v0.5 design data) |
 | F-15 | DBC K.9.4 (p.803) | LPG cylinders not indoors (unless DCD agrees; then FLSC Ch.11 Table 11.2) | ✅ | Now (v0.5 design data) |
 
 ### E — Electrical (DBC K.9.1, matching DEWA 2017 §4.6–4.7)
