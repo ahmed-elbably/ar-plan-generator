@@ -9,3 +9,7 @@ out/
 
 # assembled GitHub Pages site (built by the workflow)
 _site/
+
+# code sources (official / copyrighted PDFs) stay local
+docs/sources/*
+!docs/sources/README.md
