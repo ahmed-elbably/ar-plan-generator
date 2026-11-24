@@ -538,7 +538,7 @@ const MEASURES = {
     if (!fa.length) return verdict([item(false, [], "Fresh air", "no fresh-air unit", `${Math.round(q)} L/s mechanical outdoor air`)]);
     if (fa.some(f => f.f.lps === undefined)) return {status: "NOT CHECKABLE", items: [], needs: ["fresh-air unit airflow (lps)"]};
     const sum = fa.reduce((s, f) => s + f.f.lps, 0);
-    return verdict([item(sum >= q - 0.5, fa.map(f => f.id), "Fresh-air unit(s)", `${sum} L/s`, `≥ ${Math.round(q)} L/s = ${p.a} × ${m2(M.cond)} + ${p.b} × (${nbr} + 1)`)]);
+    return verdict([item(sum >= q - EPS, fa.map(f => f.id), "Fresh-air unit(s)", `${sum} L/s`, `≥ ${Math.round(q * 10) / 10} L/s = ${p.a} × ${m2(M.cond)} + ${p.b} × (${nbr} + 1)`)]);
   },
 
   mech_ventilation_present(M) {
@@ -561,13 +561,13 @@ const MEASURES = {
     const missing = units.filter(f => f.f.lps === undefined || !f.f.mode).map(f => `${f.label} in ${f.room.name}`);
     const mine = units.filter(f => f.f.mode === p.mode && f.f.lps !== undefined);
     const out = mine.map(f => {
-      const r = f.room, vol = r.area * (r.r.ceil || 2.7), ach = l => Math.round(l * vol * 1000 / 3600);
+      const r = f.room, vol = r.area * (r.r.ceil || 2.7), ach = l => Math.ceil(l * vol * 1000 / 3600);   // round up: never below the code value
       let lim, txt;
       if (r.type === "bathroom") { lim = p.bathroom; txt = `${lim} L/s (bathroom)`; }
       else if (p.mode === "continuous") { lim = ach(p.kitchen_ach); txt = `${p.kitchen_ach} ach = ${lim} L/s (enclosed kitchen)`; }
       else if (f.kind === "hood") { lim = p.kitchen_hood; txt = `${lim} L/s (vented range hood)`; }
       else { lim = Math.min(p.kitchen_fan, ach(p.kitchen_ach)); txt = `${p.kitchen_fan} L/s or ${p.kitchen_ach} ach = ${lim} L/s (kitchen fan)`; }
-      return item(f.f.lps >= lim - 0.5, [f.id], `${f.label} in ${r.name}`, `${f.f.lps} L/s ${p.mode}`, `≥ ${txt}`);
+      return item(f.f.lps >= lim - EPS, [f.id], `${f.label} in ${r.name}`, `${f.f.lps} L/s ${p.mode}`, `≥ ${txt}`);
     });
     if (!out.length && !missing.length) return {status: "N/A", items: [], note: `No ${p.mode} exhaust units.`};
     return withMissing(verdict(out), missing, "exhaust airflow (lps) and mode (demand / continuous)");
