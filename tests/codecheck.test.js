@@ -42,14 +42,14 @@ test("example UAE villa (v0.5 spec, built with --pack dubai): no fails, known ga
   const fails = Object.values(R).filter(r => r.status === "FAIL" || r.status === "ADVISE").map(r => r.id);
   assert.deepEqual(fails, []);
   assert.equal(R["K-06"].items.length, 26);                          // every leaf door checked
-  assert.equal(R["P-01"].items.length, 8);                           // 8 wet rooms, each with a floor drain
+  assert.equal(R["P-01"].items.length, 9);                           // 8 wet rooms + Mech (water heater, AHU), each with a floor drain
   assert.equal(R["K-23"].items.length, 13);                          // 6 WCs + 7 basins
   // the spec gives design data; the engine generated detectors, panel, AV, extinguisher, hood, fans, fresh air and the electrical layer
-  for (const id of ["K-01", "K-02", "K-03", "K-04", "K-05", "K-06", "K-07", "K-08", "K-09", "K-12", "K-13", "K-14", "K-15", "K-20", "K-21", "K-22", "K-23", "P-01",
+  for (const id of ["K-01", "K-02", "K-03", "K-04", "K-05", "K-06", "K-07", "K-08", "K-09", "K-12", "K-13", "K-14", "K-15", "K-20", "K-21", "K-22", "K-23", "P-01", "P-03",
                     "F-01", "F-02", "F-03", "F-05", "F-06", "F-07", "F-08", "F-09", "F-09b", "F-10", "F-13", "F-14", "E-01",
                     "E-03", "E-04", "E-05", "E-06", "E-07", "E-08", "E-09", "E-10", "V-01", "V-02", "V-03", "V-05"]) assert.equal(R[id].status, "PASS", id);
   const nc = Object.values(R).filter(r => r.status === "NOT CHECKABLE").map(r => r.id).sort();
-  assert.deepEqual(nc, ["E-02", "F-12", "K-16", "K-17", "K-24", "P-02", "P-03", "V-06", "V-07"]);   // DB height and tank are design choices; the rest reviewer / multi-building
+  assert.deepEqual(nc, ["E-02", "F-12", "K-16", "K-17", "K-24", "P-02", "V-06", "V-07"]);   // DB height not given; the rest reviewer / multi-building
   assert.equal(R["F-15"].status, "N/A");
 });
 
@@ -217,4 +217,56 @@ test("planted electrical violations are caught, one rule each", () => {
     const others = Object.values(R).filter(r => r.status === "FAIL" && r.id !== id).map(r => r.id);
     assert.deepEqual(others, [], `${id} also tripped ${others}`);
   }
+});
+
+/* ---------- phase 5: reviewer bundle and corrections validator ---------- */
+const EX_PLAN = path.join(ROOT, "examples", "uae-villa-4br", "uae-villa-4br.plan.json");
+const reviewCheck = (corr, plan) => {
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "arplan-rv-")), "c.json"); fs.writeFileSync(f, JSON.stringify(corr));
+  try { return {code: 0, out: JSON.parse(execFileSync(process.execPath, [ENGINE, "review-check", f, "--plan", plan, "--pack", "dubai"], {encoding: "utf8"}))}; }
+  catch (e) { return {code: e.status, out: JSON.parse(e.stdout)}; }
+};
+
+test("review bundle: plan facts, reviewer rules, checklist and output format", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-rb-"));
+  execFileSync(process.execPath, [ENGINE, "review", EX_PLAN, "--pack", "dubai", "--out", dir, "--name", "b"]);
+  const b = JSON.parse(fs.readFileSync(path.join(dir, "b.review.json"), "utf8"));
+  const plan = JSON.parse(fs.readFileSync(EX_PLAN, "utf8"));
+  assert.deepEqual(b.reviewer_rules.map(r => r.id), ["K-24", "P-02", "F-12", "V-06", "V-07"]);
+  assert.equal(b.rooms.length, plan.rooms.length);
+  assert.equal(b.fixtures.length, plan.fixtures.length);
+  assert.ok(b.checklist.length >= 6 && b.foreign_values.length >= 8);
+  assert.equal(b.output_format.max_corrections, 12);
+});
+
+test("review-check accepts valid corrections and rejects invented ids, rules, verdicts and long lists", () => {
+  const plan = JSON.parse(fs.readFileSync(EX_PLAN, "utf8"));
+  const mech = plan.rooms.find(r => r.name === "Mech").id, wh = plan.fixtures.find(f => f.kind === "wh").id;
+  const corr = {reviewer: "test", packs_loaded: ["Dubai Building Code 2021, Part K Villas (2021)"], verdict: "corrections",
+    corrections: [{issue: "x", element_ids: [mech, wh], rule: "P-01", fix: "add a drain", severity: "must"},
+                  {issue: "y", element_ids: [wh], rule: null, reason: "coordination", fix: "z", severity: "should"}],
+    rules_judged: ["K-24", "P-02", "F-12", "V-06", "V-07"].map(rule => ({rule, result: "not_checked", why: "test"}))};
+  const good = reviewCheck(corr, EX_PLAN);
+  assert.equal(good.code, 0, JSON.stringify(good.out.errors)); assert.equal(good.out.must, 1); assert.deepEqual(good.out.warnings, []);
+  const bad = JSON.parse(JSON.stringify(corr));
+  bad.corrections[0].element_ids.push("f-invented"); bad.corrections[0].rule = "K-99"; bad.verdict = "approve"; bad.corrections[1].reason = "";
+  for (let i = 0; i < 11; i++) bad.corrections.push({issue: "x", element_ids: [wh], rule: "P-04", fix: "y", severity: "should"});
+  const r = reviewCheck(bad, EX_PLAN);
+  assert.equal(r.code, 2);
+  const e = r.out.errors.join("\n");
+  for (const s of ["f-invented", "K-99", "approve", "at most 12", "give a rule id or a reason"]) assert.ok(e.includes(s), s);
+});
+
+test("the shipped round-1 review is well formed (2 must, every reviewer rule judged)", () => {
+  const c = JSON.parse(fs.readFileSync(path.join(ROOT, "examples", "uae-villa-4br", "uae-villa-4br.corrections-round1.json"), "utf8"));
+  assert.equal(c.verdict, "corrections");
+  assert.equal(c.corrections.filter(x => x.severity === "must").length, 2);
+  assert.deepEqual(c.rules_judged.map(j => j.rule).sort(), ["F-12", "K-24", "P-02", "V-06", "V-07"]);
+  assert.ok(c.corrections.length <= 12 && c.corrections.every(x => x.element_ids.length && x.fix && (x.rule || x.reason)));
+});
+
+test("P-01 counts rooms with a water heater or AHU as wet (found by the round-1 review)", () => {
+  const s = fullSpec(); s.fixtures = s.fixtures.filter(f => f.kind !== "fd");
+  const R = byId(buildAndCheck(s, false));
+  assert.ok(R["P-01"].items.some(i => i.label === "Mech" && !i.ok));
 });

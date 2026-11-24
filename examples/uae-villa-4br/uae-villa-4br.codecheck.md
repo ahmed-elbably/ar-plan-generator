@@ -4,7 +4,7 @@ UAE villa 4BR · Level 1 · GA 370.5 m²
 
 | FAIL | ADVISE | NOT CHECKABLE | PASS | N/A | OUT OF SCOPE |
 |---|---|---|---|---|---|
-| 0 | 0 | 9 | 46 | 6 | 3 |
+| 0 | 0 | 8 | 47 | 6 | 3 |
 
 **Rule packs:** Dubai Building Code 2021, Part K Villas (2021) · UAE Fire & Life Safety Code of Practice (CDGH-OP-25) (September 2018) · DEWA Regulations for Electrical Installations (2017) · ASHRAE 62.2 Ventilation and IAQ in Residential Buildings (2019)
 
@@ -18,7 +18,6 @@ UAE villa 4BR · Level 1 · GA 370.5 m²
 
 - **K-16 Distance between buildings on a plot** (K.5.2.4, p.698): needs plot with all buildings.
 - **K-17 Annexes** (K.5.2.3, p.698): needs plot with annex buildings.
-- **P-03 Cold water storage tank** (K.10.2.5, p.825): needs water services layer (tank, pump).
 - **E-02 DB mounting height and access** (DBC K.9.1.17.2, Figure K.79, p.795): needs DB mounting height to the top (top_h).
 
 ## Left to the reviewer
@@ -50,7 +49,8 @@ UAE villa 4BR · Level 1 · GA 370.5 m²
 - **K-21 Sanitary facilities** (K.5.7.1, p.721): 1 checked
 - **K-22 WC and basin side clearances** (K.5.7.2 a), Figure K.40, p.722): 13 checked
 - **K-23 WC and basin front clearance** (K.5.7.2 b), Figure K.40, p.722): 13 checked
-- **P-01 Floor drains in wet areas** (K.10.3.2.3, p.830): 8 checked
+- **P-01 Floor drains in wet areas** (K.10.3.2.3, p.830): 9 checked
+- **P-03 Cold water storage tank** (K.10.2.5, p.825): 1 checked; note: Tank in Pantry capacity must cover 24 h demand (DEWA); check the sizing
 - **P-04 Hot water supply** (K.10.2.9, p.826): 1 checked — Checks that a water heater exists; temperatures and return loop are design notes for the reviewer.
 - **F-01 Smoke detection and alarm system** (DBC K.10.5.2; FLSC Ch.8 Table 8.13 item 26, p.841): 1 checked
 - **F-02 Detectors in bedrooms, living rooms and corridors** (FLSC Ch.8 Table 8.14 items 26, 27, 30, p.511): 9 checked

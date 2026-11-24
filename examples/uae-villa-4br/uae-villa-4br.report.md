@@ -4,7 +4,7 @@ UAE villa 4BR · 4 BR + 1 staff · 4 BA + 1 WC · 346.7 m² conditioned · garag
 
 | Gross area | Conditioned | Rooms | Doors | Windows | Fixtures |
 |---|---|---|---|---|---|
-| 404.8 m² | 346.7 m² | 25 | 27 | 17 | 110 |
+| 404.8 m² | 346.7 m² | 25 | 27 | 17 | 112 |
 
 ## Room schedule
 
@@ -57,6 +57,7 @@ UAE villa 4BR · 4 BR + 1 staff · 4 BA + 1 WC · 346.7 m² conditioned · garag
 - Floor drain added in Guest WC (P-01 K.10.3.2.3)
 - Floor drain added in Kitchen (P-01 K.10.3.2.3)
 - Floor drain added in Maid bath (P-01 K.10.3.2.3)
+- Floor drain added in Mech (P-01 K.10.3.2.3)
 - Floor drain added in Laundry (P-01 K.10.3.2.3)
 - Floor drain added in Bath 4 (P-01 K.10.3.2.3)
 - Floor drain added in Bath 3 (P-01 K.10.3.2.3)

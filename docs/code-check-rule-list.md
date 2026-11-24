@@ -92,7 +92,7 @@ Engine status: **Now** = checkable with today's spec · **Spec+** = needs the sp
 ### P — Water & drainage (DBC K.10.2 / K.10.3)
 | ID | Clause (page) | Requirement | Value | Engine |
 |---|---|---|---|---|
-| P-01 | K.10.3.2.3 (p.830) | Floor drain in **every** area with wet fittings or appliances (kitchens, toilets, showers, ablution) | ✅ | Now |
+| P-01 | K.10.3.2.3 (p.830) | Floor drain in **every** area with wet fittings or appliances (kitchens, toilets, showers, ablution); the engine also counts rooms with a water heater or AHU (condensate), added after the round-1 review | ✅ | Now |
 | P-02 | K.10.3.2.3 (p.830) | Every floor drain fed by a fitting or AC condensate (or trap primer); ≥ 75 mm seal; bidet to stack, not FD | ✅ | Agent |
 | P-03 | K.10.2.5 (p.825–826) | Cold water tank sized for ≥ 24 h demand (villa typically **250–350 l/day**); GRP, in a **conditioned space**, not exposed outdoors | ✅ | Now (v0.5 design data) |
 | P-04 | K.10.2.9 (p.826–827) | Hot water to basins, sinks, showers, baths; storage ≥ 60 °C; 50 °C at outlet within 1 min; pumped return | ✅ | Now (supply) / Agent |

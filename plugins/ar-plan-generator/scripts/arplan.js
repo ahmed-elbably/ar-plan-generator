@@ -13,8 +13,12 @@
  *   node arplan.js animate <plan.json> [--out DIR] [--name NAME] [--fps 24] [--frames none]
  *        (build replay page NAME.build.html + 1920x1080 frame SVGs for scripts/render-video.sh)
  *   node arplan.js codecheck <plan.json> [--pack dubai] [--out DIR] [--name NAME]
+  node arplan.js review <plan.json> [--pack dubai] [--out DIR] [--name NAME]
+  node arplan.js review-check <corrections.json> --plan <plan.json> [--pack dubai]
  *        (authority code check: NAME.codecheck.md + NAME.codecheck.json; see codecheck.js and rules/)
  *   build and export also accept --pack dubai to run the code check after building.
+ *   node arplan.js review <plan.json> [--pack dubai] [--out DIR]         (NAME.review.json for the reviewer agent)
+ *   node arplan.js review-check <corrections.json> --plan <plan.json>   (validates the reviewer corrections; exit 2 if invalid)
  */
 "use strict";
 const fs = require("fs"), path = require("path");
@@ -1147,7 +1151,18 @@ function runCodecheck(pack,dir,name){
 function main(){
   const a=args();const cmd=a._[0];
   if(a.pack)codeRegion=String(a.pack);
-  if(cmd==="codecheck"){
+  if(cmd==="review"){
+    // writes NAME.review.json: the bundle a separate reviewer works from
+    doc=normalizeDoc(readJson(a._[1]||fail("review needs a plan file")));const name=a.name||slug(doc.project);const out=a.out||".";
+    let b;try{b=require("./review").bundle(doc,codecheckGeom(),{pack:a.pack||"dubai"});}catch(e){fail(e.message);}
+    fs.mkdirSync(out,{recursive:true});const f=path.join(out,name+".review.json");fs.writeFileSync(f,JSON.stringify(b,null,1));
+    console.log(JSON.stringify({ok:true,review_bundle:f,rooms:b.rooms.length,fixtures:b.fixtures.length,fails:b.code_check.fails.length,reviewer_rules:b.reviewer_rules.map(r=>r.id),judgement_items:b.judgement_items.length},null,1));
+  }else if(cmd==="review-check"){
+    // validates a reviewer corrections file against the plan and the pack; exit 2 when invalid
+    const corr=readJson(a._[1]||fail("review-check needs a corrections file"));doc=normalizeDoc(readJson(a.plan||fail("review-check needs --plan <plan.json>")));
+    let v;try{v=require("./review").validate(corr,doc,{pack:a.pack||"dubai"});}catch(e){fail(e.message);}
+    console.log(JSON.stringify(v,null,1));if(!v.ok)process.exit(2);
+  }else if(cmd==="codecheck"){
     doc=normalizeDoc(readJson(a._[1]||fail("codecheck needs a plan file")));const name=a.name||slug(doc.project);
     const cc=runCodecheck(a.pack||"dubai",a.out||".",name);console.log(cc.md);
   }else if(cmd==="build"){

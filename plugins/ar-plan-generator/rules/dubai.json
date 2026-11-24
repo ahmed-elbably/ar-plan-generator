@@ -56,5 +56,83 @@
    "garage",
    "closet"
   ]
+ },
+ "reviewer": {
+  "_note": "Checklist for the reviewer agent (layer C). Rules with measure \"reviewer\" are added automatically from the rule files.",
+  "max_corrections": 12,
+  "checklist": [
+   {
+    "id": "R-01",
+    "topic": "Trade interfaces",
+    "ask": "Where two systems meet, does each end exist and line up? AC / AHU condensate has a floor drain to discharge to; the water heater is close to the wet rooms it serves; the DB is reachable from the kitchen and laundry circuits; every outdoor AC unit has its isolator; exhaust fans and the hood have an outside wall or shaft to discharge to."
+   },
+   {
+    "id": "R-02",
+    "topic": "Omissions",
+    "ask": "Is anything the code requires missing even though nothing asked for it: detectors in every bedroom, living room and corridor, Hassantuk link, outdoor AV device, water tank in a conditioned space, fresh air, exhaust in every bathroom and kitchen, kitchen extinguisher, floor drains in every wet room?"
+   },
+   {
+    "id": "R-03",
+    "topic": "Foreign defaults",
+    "ask": "Does any value look like another country default rather than a Dubai value (see foreign_values)? Flag it with the Dubai value that applies."
+   },
+   {
+    "id": "R-04",
+    "topic": "Table values",
+    "ask": "Every number you cite must come from the bundle (rules or plan data), never from memory. If a value you need is not in the bundle, say it is not checked."
+   },
+   {
+    "id": "R-05",
+    "topic": "Judgement items",
+    "ask": "Decide the items the engine could not: remoteness of two exits, panel near the front door, escape only through the garage, screening of outdoor equipment, and the reviewer rules listed in the bundle."
+   },
+   {
+    "id": "R-06",
+    "topic": "Self-review",
+    "ask": "Read the whole plan once more as a single building. Is there a room nobody can reach, a door that opens onto a fixture, a wet room over or next to the majlis, a service run that crosses the whole house?"
+   }
+  ],
+  "foreign_values": [
+   {
+    "value": "0.813 m (32 in) door",
+    "code": "US IRC R311.2",
+    "dubai": "915 mm clear (DBC Table K.4)"
+   },
+   {
+    "value": "0.381 m (15 in) WC side clearance",
+    "code": "US IRC R307 / P2705",
+    "dubai": "400 mm (DBC K.5.7.2)"
+   },
+   {
+    "value": "0.533 m (21 in) clear in front of WC",
+    "code": "US IRC R307",
+    "dubai": "750 mm (DBC K.5.7.2)"
+   },
+   {
+    "value": "6.5 m2 (70 sf) habitable room",
+    "code": "US IRC R304",
+    "dubai": "10.5 m2 and 3.0 m (DBC Table K.2)"
+   },
+   {
+    "value": "2.13 m (7 ft) ceiling",
+    "code": "US IRC R305",
+    "dubai": "2.7 m living / bedroom, 2.3 m other (DBC Table K.3)"
+   },
+   {
+    "value": "0.91 m (3 ft) hallway",
+    "code": "US IRC R311.6",
+    "dubai": "1.0 m (DBC K.5.5.1)"
+   },
+   {
+    "value": "8% glazing",
+    "code": "US IRC R303.1",
+    "dubai": "10% net glazing (DBC K.5.4.2.1)"
+   },
+   {
+    "value": "GFCI / AFCI",
+    "code": "US NEC 210.8 / 210.12",
+    "dubai": "RCD ratings of DBC Table K.46"
+   }
+  ]
  }
 }
