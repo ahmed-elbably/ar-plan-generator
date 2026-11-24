@@ -15,7 +15,7 @@ A Claude plugin that turns a written brief or a sketch into an architectural flo
 
 > "Single-storey villa, about 320 m²: majlis near the entrance with a guest WC, family living and dining, closed kitchen with pantry, maid's room with its own bathroom, laundry, 4 en-suite bedrooms, 2-car garage."
 
-That brief produced the plan above: 25 rooms, 27 doors, 17 windows, 9/9 MEP-readiness checks, no clashes. Built with the Dubai code pack it also carries 61 fixtures and devices (sanitary, MEP, fire detection, ventilation) and 51 electrical accessories on 31 circuits, and it passes the **Dubai code check with 47 rules passed and none failed**. All of its files are in [`examples/uae-villa-4br`](examples/uae-villa-4br). (The animation above still shows the v0.4 plan.)
+That brief produced the plan above: 25 rooms, 27 doors, 17 windows, 9/9 MEP-readiness checks, no clashes. Built with the Dubai code pack it also carries 61 fixtures and devices (sanitary, MEP, fire detection, ventilation) and 51 electrical accessories on 31 circuits, and it passes the **Dubai code check with 47 rules passed and none failed**. All of its files are in [`examples/uae-villa-4br`](examples/uae-villa-4br).
 
 ## What it does
 
@@ -69,7 +69,7 @@ Download [ar-plan-generator.plugin](https://github.com/ahmed-elbably/ar-plan-gen
 ### Requirements
 
 - Node.js 18 or later (the engine has no dependencies).
-- Optional, for videos: `rsvg-convert` and `ffmpeg` (2D build video), plus Python Playwright with Chromium (2D-to-3D video).
+- Optional, for videos: `ffmpeg`, plus `rsvg-convert` or Python Playwright with Chromium for the 2D build video (on Windows, where rsvg-convert is hard to get, `scripts/svg2png.py` renders the frames with Chromium), and Python Playwright with Chromium for the 2D-to-3D video.
 
 ## Outputs
 
