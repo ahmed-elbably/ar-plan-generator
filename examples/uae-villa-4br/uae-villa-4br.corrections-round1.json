@@ -1,0 +1,23 @@
+{
+ "reviewer": "reviewer step (Claude, separate pass working only from villa.review.json)",
+ "packs_loaded": ["Dubai Building Code 2021, Part K Villas (2021)", "UAE Fire & Life Safety Code of Practice (CDGH-OP-25) (September 2018)", "DEWA Regulations for Electrical Installations (2017)", "ASHRAE 62.2 Ventilation and IAQ in Residential Buildings (2019)"],
+ "verdict": "corrections",
+ "corrections": [
+  {"issue": "Mech room holds the water heater and the AHU but has no floor drain: the heater relief discharge and the AHU condensate have nowhere to go.", "element_ids": ["r92490", "f3wy3bs", "f3xs58u"], "rule": "P-01", "reason": "Floor drains are required where wet appliances stand (DBC K.10.3.2.3); the code check only looks for sanitary fixtures, so it passed this room.", "fix": "Add an fd in Mech, fed by the AHU condensate and the heater relief line.", "severity": "must"},
+  {"issue": "No cold water storage tank anywhere in the plan.", "element_ids": ["r92490", "r49l49"], "rule": "P-03", "reason": null, "fix": "Add a water_tank (with litres for 24 h demand) inside a conditioned room, e.g. Pantry against the W wall with its door moved to the north end, or enlarge Mech.", "severity": "must"},
+  {"issue": "The fresh-air unit ended up in the Garage: its outdoor-air intake must not draw from the garage, where vehicle exhaust collects.", "element_ids": ["f57gyv0", "r8o7gk"], "rule": null, "reason": "DBC K.10.1.6.4 / ASHRAE 62.2: outdoor air inlets away from contamination sources; the engine moved the unit here only because Mech was full.", "fix": "Duct the intake from the E outside wall well away from the garage door, or move the unit to a ceiling void or a larger Mech room.", "severity": "should"},
+  {"issue": "Bath 3 and Bath 2 have no outside wall and no window, so their exhaust fans need a duct route or shaft to the outside that the plan does not show.", "element_ids": ["rfw0lh", "ri9wv1", "f54krru", "f55y3hy"], "rule": null, "reason": "Trade interface: exhaust must discharge outdoors without being drawn back in (DBC K.10.1.6.4).", "fix": "Show a ceiling duct from each fan to the S facade (through the bedroom ceiling) or a shared vertical shaft.", "severity": "should"},
+  {"issue": "The dryer stands in a Laundry with no outside wall, so a vented dryer has no short route outdoors.", "element_ids": ["f3s9u1h", "raga88"], "rule": null, "reason": "Trade interface: dryer exhaust needs an outside discharge, otherwise moisture stays in the house.", "fix": "Specify a condenser / heat-pump dryer, or duct the vent through Maid room's N wall.", "severity": "should"},
+  {"issue": "One water heater in Mech serves bathrooms up to about 19 m away (Bath 4): hot water will not reach 50 C within 1 min without a return loop.", "element_ids": ["f3wy3bs", "rczczz", "rfw0lh"], "rule": "P-04", "reason": null, "fix": "Add a pumped hot-water return (with a pump) to the bedroom wing, or local water heaters for Bath 4 and Bath 3.", "severity": "should"},
+  {"issue": "Both outdoor AC condensers sit on the W and E facades with no screen shown.", "element_ids": ["f3zj68v", "f40rycj"], "rule": "K-24", "reason": null, "fix": "Add a screen wall or louvred enclosure around each condenser.", "severity": "should"},
+  {"issue": "The DB mounting height is not stated, so the 2 m limit cannot be confirmed.", "element_ids": ["f3ygwrl"], "rule": "E-02", "reason": null, "fix": "Give the panel top_h (for example 1.9 m) in the spec.", "severity": "should"},
+  {"issue": "Door hardware for bathrooms (openable from outside when locked) and closets (openable from inside) is not specified.", "element_ids": ["r3si9l", "r7o85j", "rczczz", "rfw0lh", "ri9wv1", "rk4dh1", "rd8yru", "reliiw", "rhg48s", "rjxqiv"], "rule": "F-12", "reason": null, "fix": "Add a door-hardware note to the drawings: emergency-release locks on bathroom doors, child-safe latches on closets.", "severity": "should"}
+ ],
+ "rules_judged": [
+  {"rule": "K-24", "result": "fail", "why": "No screening shown around the two condensers (correction 7)."},
+  {"rule": "P-02", "result": "not_checked", "why": "Trap seal depth and primers are not in the bundle; each wet-room drain sits with fixtures that can feed it, Mech needs one (correction 1)."},
+  {"rule": "F-12", "result": "fail", "why": "Hardware not specified (correction 9)."},
+  {"rule": "V-06", "result": "not_checked", "why": "Fan controls are not in the bundle; add the light-switch interlock to the same drawing note as correction 9."},
+  {"rule": "V-07", "result": "pass", "why": "The hood f515vb9 is on the Kitchen N wall, which is an outside wall: a short metal duct with a damper is possible. Duct material is not shown."}
+ ]
+}

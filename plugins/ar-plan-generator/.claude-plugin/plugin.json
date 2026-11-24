@@ -1,7 +1,7 @@
 {
   "name": "ar-plan-generator",
-  "version": "0.4.0",
-  "description": "Generates 2D architectural floor plans from a written brief or sketch, changes existing plans, and checks them for MEP readiness. Outputs SVG, layered DXF, IFC4 for Revit/Navisworks, a 3D model page, a build replay page, a 2D-to-3D build video, AR Plan Studio JSON and a check report.",
+  "version": "0.5.0",
+  "description": "Generates 2D architectural floor plans from a written brief or sketch, changes existing plans, and checks them for MEP readiness and, for Dubai, against 64 rules of the Dubai Building Code 2021, UAE FLSC 2018, DEWA 2017 and ASHRAE 62.2. Outputs SVG, layered DXF, IFC4 for Revit/Navisworks, a 3D model page, a build replay page, a 2D-to-3D build video, AR Plan Studio JSON and a check report.",
   "author": {
     "name": "Ahmed Elbably",
     "url": "https://github.com/ahmed-elbably"
