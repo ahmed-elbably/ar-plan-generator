@@ -65,7 +65,8 @@ Engine status: **Now** = checkable with today's spec · **Spec+** = needs the sp
 | F-06 | DBC K.10.5.2; FLSC Table 8.13 item 26 iv | Outdoor audio-visual notification device, **visible from the approach road** | ✅ | Spec+ |
 | F-07 | DBC K.10.5.4 | Fire alarm connected to DCD through **Hassantuk for Homes** | ✅ | Spec+ (flag) |
 | F-08 | DBC K.10.5.3; FLSC Table 9.23 | Sprinklers in every room + hose reels only when ground-floor GA **> 1,500 m²** (also basements > 1,500 m²) | ✅ | Now (area) |
-| F-09 | FLSC Table 3.27 item 2 (p.323) | Every sleeping room and living area: a primary means of escape + a secondary means (not needed if sprinklered) | ✅ | Now (door) / Agent |
+| F-09 | FLSC Table 3.27 item 2 i (p.323) | Every sleeping room and living area: a primary means of escape (door / stair / ramp route to outside) | ✅ | Now |
+| F-09b | FLSC Table 3.27 item 2 i, iv (p.323) | ... and a secondary means of escape (not needed if sprinklered) | ✅ | Spec+ |
 | F-10 | FLSC Table 3.27 item 2 iv d (p.323) | Escape window as secondary means: ≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m² clear, bottom ≤ 6,100 mm above finished ground | ✅ | Spec+ |
 | F-11 | FLSC Table 3.27 item 2 iii (p.323) | Any floor > 400 m²: **two remote primary exits** | ✅ | Now |
 | F-12 | FLSC Table 3.27 item 3 (p.323) | Bathroom doors openable from outside when locked; closet latches openable from inside | ✅ | Agent (schedule note) |

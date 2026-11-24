@@ -1,0 +1,16 @@
+{
+ "pack": "dubai",
+ "title": "Dubai private villas and townhouses",
+ "authorities": [
+  {"file": "dm-dbc-2021.json", "document": "Dubai Building Code 2021, Part K Villas", "edition": "2021"},
+  {"file": "cd-flsc-2018.json", "document": "UAE Fire & Life Safety Code of Practice (CDGH-OP-25)", "edition": "September 2018"},
+  {"file": "dewa-2017.json", "document": "DEWA Regulations for Electrical Installations", "edition": "2017"},
+  {"file": "ashrae-62.2-2019.json", "document": "ASHRAE 62.2 Ventilation and IAQ in Residential Buildings", "edition": "2019"}
+ ],
+ "assumptions": [
+  "Gas: all-electric unless the plan declares gas (LPG rules then apply).",
+  "Plot: when the plan has no plot or setbacks, DBC Table K.1 defaults apply (villa 3 m road / neighbour / sikka; townhouse 3 / 0 / 3 m).",
+  "Door widths in the plan are clear widths.",
+  "Room sizes are measured clear, inside wall faces."
+ ]
+}

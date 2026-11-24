@@ -12,11 +12,17 @@
  *   node arplan.js ifc     <plan.json> [--out DIR] [--name NAME]   (IFC4 for Revit / Navisworks)
  *   node arplan.js animate <plan.json> [--out DIR] [--name NAME] [--fps 24] [--frames none]
  *        (build replay page NAME.build.html + 1920x1080 frame SVGs for scripts/render-video.sh)
+ *   node arplan.js codecheck <plan.json> [--pack dubai] [--out DIR] [--name NAME]
+ *        (authority code check: NAME.codecheck.md + NAME.codecheck.json; see codecheck.js and rules/)
+ *   build and export also accept --pack dubai to run the code check after building.
  */
 "use strict";
 const fs = require("fs"), path = require("path");
 let doc;
 const opts = {extT:0.25, intT:0.12, wallKind:"int", wallT:0.12, wallH:3.0, step:0.1, snap:true};
+/* code region of the rule pack in use (--pack); only changes how readiness checks cite codes */
+let codeRegion = null;
+const EGRESS_REF = {default:"escape & daylight; IRC R310 in the US", dubai:"UAE FLSC Table 3.27 escape, DBC K.5.4.2 daylight"};
 const SQM_TO_SF = 10.7639;
 const ROOM_TYPES = {
   bedroom:{label:"Bedroom", color:"#8FA7D6"},
@@ -259,7 +265,7 @@ function mepChecks(){
   const noDoor=R.filter(r=>r.type!=="outdoor"&&!openingsOf(r,"door").length);
   add(R.length>0&&!noDoor.length,"Every room has a door or opening","access for runs & circuits",noDoor.length?"No door: "+names(noDoor):"");
   const beds=R.filter(r=>r.type==="bedroom"),bedsNoWin=beds.filter(r=>!openingsOf(r,"window").length);
-  add(!bedsNoWin.length,`Bedrooms have a window${beds.length?` (${beds.length})`:""}`,"IRC R310 egress",bedsNoWin.length?"Missing: "+names(bedsNoWin):"");
+  add(!bedsNoWin.length,`Bedrooms have a window${beds.length?` (${beds.length})`:""}`,EGRESS_REF[codeRegion]||EGRESS_REF.default,bedsNoWin.length?"Missing: "+names(bedsNoWin):"");
   const baths=R.filter(r=>r.type==="bathroom");const badBath=baths.filter(r=>{const k=fixturesIn(r).map(f=>f.kind);const wcOnly=/\b(wc|toilet|powder)\b/i.test(r.name);return !(k.includes("wc")&&k.includes("basin")&&(wcOnly||k.includes("shower")||k.includes("tub")));});
   add(baths.length>0&&!badBath.length,baths.length?`Bathrooms have WC, basin, shower/tub (${baths.length})`:"No bathroom yet","DWV + water fixture units",badBath.length?"Incomplete: "+names(badBath):"");
   const kit=R.filter(r=>r.type==="kitchen"),kitNoSink=kit.filter(r=>!fixturesIn(r).some(f=>f.kind==="sink"));
@@ -945,15 +951,31 @@ function writeAll(dir,name,notes){
   const rep=reportMd(notes,files);fs.writeFileSync(files[5],rep.md);
   return {files,ready:rep.ready,clashes:rep.clashes,failed_checks:rep.checks.filter(c=>!c.ok).map(c=>c.h+(c.detail?` — ${c.detail}`:""))};
 }
+/* geometry helpers handed to codecheck.js (it reads the current global doc through openingGeom) */
+function codecheckGeom(){return {P,add,sub,mul,dot,cross,dist,norm,pointInPoly,boxOf,openingGeom,wallLen,FIX};}
+function runCodecheck(pack,dir,name){
+  const cc=require("./codecheck");let rep;
+  try{rep=cc.run(doc,codecheckGeom(),{pack});}catch(e){fail(e.message);}
+  fs.mkdirSync(dir,{recursive:true});const base=path.join(dir,name);
+  fs.writeFileSync(base+".codecheck.json",JSON.stringify(rep,null,1));fs.writeFileSync(base+".codecheck.md",cc.toMarkdown(rep));
+  return {rep,md:cc.toMarkdown(rep),files:[base+".codecheck.md",base+".codecheck.json"],
+    summary:rep.summary,fails:rep.results.filter(r=>r.status==="FAIL").map(r=>`${r.id} ${r.title}: `+r.items.filter(i=>!i.ok).map(i=>`${i.label} ${i.value}`).join("; "))};
+}
 function main(){
   const a=args();const cmd=a._[0];
-  if(cmd==="build"){
+  if(a.pack)codeRegion=String(a.pack);
+  if(cmd==="codecheck"){
+    doc=normalizeDoc(readJson(a._[1]||fail("codecheck needs a plan file")));const name=a.name||slug(doc.project);
+    const cc=runCodecheck(a.pack||"dubai",a.out||".",name);console.log(cc.md);
+  }else if(cmd==="build"){
     const spec=readJson(a._[1]||fail("build needs a spec file"));
     if(a.units==="ft")doc.units="ft";doc.level=a.level||DEFAULT_LEVEL;
     const built=(()=>{try{return specToDoc(spec);}catch(e){if(e&&e.code==="no_rooms")fail("The spec has no usable rooms (each needs name, type, x, y, w, d).");throw e;}})();
     doc=built.doc;doc.level=a.level||DEFAULT_LEVEL;if(a.units==="ft")doc.units="ft";
     const name=a.name||slug(doc.project);const res=writeAll(a.out||".",name,built.rep);
-    console.log(JSON.stringify({ok:true,stats:built.stats,builder_notes:built.rep,ready_for_mep:res.ready,failed_checks:res.failed_checks,clashes:res.clashes,files:res.files},null,1));
+    const out={ok:true,stats:built.stats,builder_notes:built.rep,ready_for_mep:res.ready,failed_checks:res.failed_checks,clashes:res.clashes,files:res.files};
+    if(a.pack){const cc=runCodecheck(a.pack,a.out||".",name);out.codecheck={pack:a.pack,summary:cc.summary,fails:cc.fails};out.files=out.files.concat(cc.files);}
+    console.log(JSON.stringify(out,null,1));
   }else if(cmd==="animate"){
     doc=normalizeDoc(readJson(a._[1]||fail("animate needs a plan file")));const name=a.name||slug(doc.project);const out=a.out||".";
     fs.mkdirSync(out,{recursive:true});const html=path.join(out,name+".build.html");fs.writeFileSync(html,animHtml());
@@ -973,9 +995,11 @@ function main(){
     console.log(rep.md);
   }else if(cmd==="export"){
     doc=normalizeDoc(readJson(a._[1]||fail("export needs a plan file")));const name=a.name||slug(doc.project);
-    const res=writeAll(a.out||".",name,[]);console.log(JSON.stringify({ok:true,ready_for_mep:res.ready,failed_checks:res.failed_checks,clashes:res.clashes,files:res.files},null,1));
+    const res=writeAll(a.out||".",name,[]);const out={ok:true,ready_for_mep:res.ready,failed_checks:res.failed_checks,clashes:res.clashes,files:res.files};
+    if(a.pack){const cc=runCodecheck(a.pack,a.out||".",name);out.codecheck={pack:a.pack,summary:cc.summary,fails:cc.fails};out.files=out.files.concat(cc.files);}
+    console.log(JSON.stringify(out,null,1));
   }else{
-    console.log("Usage:\n  node arplan.js build <spec.json> [--out DIR] [--name NAME] [--units m|ft] [--level \"Level 1\"]\n  node arplan.js to-spec <plan.json>\n  node arplan.js check <plan.json> [--out DIR]\n  node arplan.js export <plan.json> [--out DIR] [--name NAME]\n  node arplan.js 3d <plan.json> [--out DIR] [--name NAME]\n  node arplan.js ifc <plan.json> [--out DIR] [--name NAME]\n  node arplan.js animate <plan.json> [--out DIR] [--name NAME] [--fps 24] [--frames none]");
+    console.log("Usage:\n  node arplan.js build <spec.json> [--out DIR] [--name NAME] [--units m|ft] [--level \"Level 1\"]\n  node arplan.js to-spec <plan.json>\n  node arplan.js check <plan.json> [--out DIR]\n  node arplan.js export <plan.json> [--out DIR] [--name NAME]\n  node arplan.js 3d <plan.json> [--out DIR] [--name NAME]\n  node arplan.js ifc <plan.json> [--out DIR] [--name NAME]\n  node arplan.js animate <plan.json> [--out DIR] [--name NAME] [--fps 24] [--frames none]\n  node arplan.js codecheck <plan.json> [--pack dubai] [--out DIR] [--name NAME]\n  (build and export also accept --pack dubai)");
     process.exit(cmd?1:0);
   }
 }

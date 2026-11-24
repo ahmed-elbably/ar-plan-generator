@@ -1,6 +1,6 @@
 # Build plan — Dubai code-check layer for AR Plan Generator
 
-Input: [code-check-rule-list.md](code-check-rule-list.md) (63 rules, 62 verified).
+Input: [code-check-rule-list.md](code-check-rule-list.md) (64 rules after F-09 was split into primary / secondary escape; 63 verified).
 Target release: **v0.5.0**.
 
 ## Goal
