@@ -6,7 +6,7 @@
  "units": "m",
  "walls": [
   {
-   "id": "wq5obn",
+   "id": "wq6939",
    "a": {
     "x": 0,
     "y": 0
@@ -21,7 +21,7 @@
    "auto": true
   },
   {
-   "id": "wrjd7y",
+   "id": "wr1ivr",
    "a": {
     "x": 6,
     "y": 0
@@ -36,7 +36,7 @@
    "auto": true
   },
   {
-   "id": "wsvpyk",
+   "id": "wsin8c",
    "a": {
     "x": 6,
     "y": 5.5
@@ -51,7 +51,7 @@
    "auto": true
   },
   {
-   "id": "wtd1nc",
+   "id": "wteroj",
    "a": {
     "x": 0,
     "y": 5.5
@@ -66,7 +66,7 @@
    "auto": true
   },
   {
-   "id": "wutjjy",
+   "id": "wufohj",
    "a": {
     "x": 6,
     "y": 0
@@ -81,7 +81,7 @@
    "auto": true
   },
   {
-   "id": "wvov98",
+   "id": "wv1x3f",
    "a": {
     "x": 9.5,
     "y": 0
@@ -96,7 +96,7 @@
    "auto": true
   },
   {
-   "id": "wwwlv2",
+   "id": "ww0dv6",
    "a": {
     "x": 9.5,
     "y": 5.5
@@ -111,7 +111,7 @@
    "auto": true
   },
   {
-   "id": "wxjdvf",
+   "id": "wxn3ja",
    "a": {
     "x": 9.5,
     "y": 0
@@ -126,7 +126,7 @@
    "auto": true
   },
   {
-   "id": "wysj3l",
+   "id": "wymqda",
    "a": {
     "x": 11.5,
     "y": 0
@@ -141,7 +141,7 @@
    "auto": true
   },
   {
-   "id": "wzstv9",
+   "id": "wzo6pg",
    "a": {
     "x": 11.5,
     "y": 2.5
@@ -156,7 +156,7 @@
    "auto": true
   },
   {
-   "id": "w1014bi",
+   "id": "w10uy30",
    "a": {
     "x": 11.5,
     "y": 2.5
@@ -171,7 +171,7 @@
    "auto": true
   },
   {
-   "id": "w11mmtz",
+   "id": "w11dwzs",
    "a": {
     "x": 11.5,
     "y": 5.5
@@ -186,7 +186,7 @@
    "auto": true
   },
   {
-   "id": "w125siz",
+   "id": "w12k9m3",
    "a": {
     "x": 11.5,
     "y": 0
@@ -201,7 +201,7 @@
    "auto": true
   },
   {
-   "id": "w13shnb",
+   "id": "w13v5xm",
    "a": {
     "x": 16,
     "y": 0
@@ -216,7 +216,7 @@
    "auto": true
   },
   {
-   "id": "w14vft0",
+   "id": "w14yp1i",
    "a": {
     "x": 16,
     "y": 5.5
@@ -231,7 +231,7 @@
    "auto": true
   },
   {
-   "id": "w15m75u",
+   "id": "w156jo5",
    "a": {
     "x": 16,
     "y": 0
@@ -246,7 +246,7 @@
    "auto": true
   },
   {
-   "id": "w162sy4",
+   "id": "w164hp0",
    "a": {
     "x": 19,
     "y": 0
@@ -261,7 +261,7 @@
    "auto": true
   },
   {
-   "id": "w17wz28",
+   "id": "w17zb0u",
    "a": {
     "x": 19,
     "y": 3.2
@@ -276,7 +276,7 @@
    "auto": true
   },
   {
-   "id": "w18lfjm",
+   "id": "w18df50",
    "a": {
     "x": 19,
     "y": 0
@@ -291,7 +291,7 @@
    "auto": true
   },
   {
-   "id": "w19ct6t",
+   "id": "w19bdav",
    "a": {
     "x": 21,
     "y": 0
@@ -306,7 +306,7 @@
    "auto": true
   },
   {
-   "id": "w1axbz6",
+   "id": "w1ayvl3",
    "a": {
     "x": 21,
     "y": 2.5
@@ -321,13 +321,13 @@
    "auto": true
   },
   {
-   "id": "w1bnajw",
+   "id": "w1bb2ra",
    "a": {
     "x": 21,
     "y": 0
    },
    "b": {
-    "x": 27,
+    "x": 27.2,
     "y": 0
    },
    "t": 0.25,
@@ -336,13 +336,13 @@
    "auto": true
   },
   {
-   "id": "w1c6vk6",
+   "id": "w1c1arx",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 0
    },
    "b": {
-    "x": 27,
+    "x": 27.2,
     "y": 5.5
    },
    "t": 0.25,
@@ -351,9 +351,9 @@
    "auto": true
   },
   {
-   "id": "w1dufs1",
+   "id": "w1d21r4",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 5.5
    },
    "b": {
@@ -366,7 +366,7 @@
    "auto": true
   },
   {
-   "id": "w1e5leu",
+   "id": "w1ec5ik",
    "a": {
     "x": 21,
     "y": 5.5
@@ -381,7 +381,7 @@
    "auto": true
   },
   {
-   "id": "w1frhac",
+   "id": "w1flq5m",
    "a": {
     "x": 21,
     "y": 5.5
@@ -396,7 +396,7 @@
    "auto": true
   },
   {
-   "id": "w1gdxz1",
+   "id": "w1g7f16",
    "a": {
     "x": 19,
     "y": 5.5
@@ -411,7 +411,7 @@
    "auto": true
   },
   {
-   "id": "w1hphef",
+   "id": "w1hoyck",
    "a": {
     "x": 19,
     "y": 5.5
@@ -426,13 +426,13 @@
    "auto": true
   },
   {
-   "id": "w1iqa97",
+   "id": "w1i1v4m",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 5.5
    },
    "b": {
-    "x": 27,
+    "x": 27.2,
     "y": 7
    },
    "t": 0.25,
@@ -441,9 +441,9 @@
    "auto": true
   },
   {
-   "id": "w1jvxm3",
+   "id": "w1jqgpn",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 7
    },
    "b": {
@@ -456,7 +456,7 @@
    "auto": true
   },
   {
-   "id": "w1kko3f",
+   "id": "w1k0uh1",
    "a": {
     "x": 0,
     "y": 7
@@ -471,7 +471,7 @@
    "auto": true
   },
   {
-   "id": "w1lkh9h",
+   "id": "w1lkxc8",
    "a": {
     "x": 2.2,
     "y": 7
@@ -486,7 +486,7 @@
    "auto": true
   },
   {
-   "id": "w1m4pfl",
+   "id": "w1mar04",
    "a": {
     "x": 2.2,
     "y": 9.6
@@ -501,7 +501,7 @@
    "auto": true
   },
   {
-   "id": "w1ny0mh",
+   "id": "w1n02qa",
    "a": {
     "x": 0,
     "y": 9.6
@@ -516,7 +516,7 @@
    "auto": true
   },
   {
-   "id": "w1oipvc",
+   "id": "w1oqm94",
    "a": {
     "x": 4.2,
     "y": 7
@@ -531,7 +531,7 @@
    "auto": true
   },
   {
-   "id": "w1ppln3",
+   "id": "w1peots",
    "a": {
     "x": 4.2,
     "y": 9.6
@@ -546,7 +546,7 @@
    "auto": true
   },
   {
-   "id": "w1qdo3c",
+   "id": "w1q5udp",
    "a": {
     "x": 6.2,
     "y": 7
@@ -561,7 +561,7 @@
    "auto": true
   },
   {
-   "id": "w1rffw7",
+   "id": "w1rdb75",
    "a": {
     "x": 6.2,
     "y": 9.6
@@ -576,7 +576,7 @@
    "auto": true
   },
   {
-   "id": "w1s9ckk",
+   "id": "w1snyrk",
    "a": {
     "x": 8.4,
     "y": 7
@@ -591,7 +591,7 @@
    "auto": true
   },
   {
-   "id": "w1tyd3j",
+   "id": "w1tltq9",
    "a": {
     "x": 8.4,
     "y": 9.6
@@ -606,7 +606,7 @@
    "auto": true
   },
   {
-   "id": "w1u7yfq",
+   "id": "w1uulm9",
    "a": {
     "x": 16.4,
     "y": 7
@@ -621,7 +621,7 @@
    "auto": true
   },
   {
-   "id": "w1v7vey",
+   "id": "w1v7l1e",
    "a": {
     "x": 16.4,
     "y": 14
@@ -636,7 +636,7 @@
    "auto": true
   },
   {
-   "id": "w1wkj9i",
+   "id": "w1wzw5n",
    "a": {
     "x": 8.4,
     "y": 14
@@ -651,7 +651,7 @@
    "auto": true
   },
   {
-   "id": "w1x1sl0",
+   "id": "w1xtn73",
    "a": {
     "x": 18.4,
     "y": 7
@@ -666,7 +666,7 @@
    "auto": true
   },
   {
-   "id": "w1y5cz5",
+   "id": "w1y423x",
    "a": {
     "x": 18.4,
     "y": 9.6
@@ -681,7 +681,7 @@
    "auto": true
   },
   {
-   "id": "w1z71hz",
+   "id": "w1zz505",
    "a": {
     "x": 20.6,
     "y": 7
@@ -696,7 +696,7 @@
    "auto": true
   },
   {
-   "id": "w20en3c",
+   "id": "w20dk4p",
    "a": {
     "x": 20.6,
     "y": 9.6
@@ -711,7 +711,7 @@
    "auto": true
   },
   {
-   "id": "w21z2la",
+   "id": "w21w0p9",
    "a": {
     "x": 23.2,
     "y": 7
@@ -726,7 +726,7 @@
    "auto": true
   },
   {
-   "id": "w22aspa",
+   "id": "w22olwd",
    "a": {
     "x": 23.2,
     "y": 9.6
@@ -741,13 +741,13 @@
    "auto": true
   },
   {
-   "id": "w23had4",
+   "id": "w23xnte",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 7
    },
    "b": {
-    "x": 27,
+    "x": 27.2,
     "y": 9.6
    },
    "t": 0.25,
@@ -756,9 +756,9 @@
    "auto": true
   },
   {
-   "id": "w24ebzq",
+   "id": "w2404dn",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 9.6
    },
    "b": {
@@ -771,7 +771,7 @@
    "auto": true
   },
   {
-   "id": "w25oaps",
+   "id": "w256z70",
    "a": {
     "x": 4.2,
     "y": 9.6
@@ -786,7 +786,7 @@
    "auto": true
   },
   {
-   "id": "w26irnr",
+   "id": "w26mnim",
    "a": {
     "x": 4.2,
     "y": 14
@@ -801,7 +801,7 @@
    "auto": true
   },
   {
-   "id": "w27qgam",
+   "id": "w27c76s",
    "a": {
     "x": 0,
     "y": 14
@@ -816,7 +816,7 @@
    "auto": true
   },
   {
-   "id": "w28ttmd",
+   "id": "w28jezq",
    "a": {
     "x": 8.4,
     "y": 14
@@ -831,7 +831,7 @@
    "auto": true
   },
   {
-   "id": "w29z5b6",
+   "id": "w29yppq",
    "a": {
     "x": 20.6,
     "y": 9.6
@@ -846,7 +846,7 @@
    "auto": true
   },
   {
-   "id": "w2a27x8",
+   "id": "w2alnp4",
    "a": {
     "x": 20.6,
     "y": 14
@@ -861,13 +861,13 @@
    "auto": true
   },
   {
-   "id": "w2bp2pk",
+   "id": "w2b8qxl",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 9.6
    },
    "b": {
-    "x": 27,
+    "x": 27.2,
     "y": 14
    },
    "t": 0.25,
@@ -876,9 +876,9 @@
    "auto": true
   },
   {
-   "id": "w2cqz8l",
+   "id": "w2cjbwh",
    "a": {
-    "x": 27,
+    "x": 27.2,
     "y": 14
    },
    "b": {
@@ -893,10 +893,10 @@
  ],
  "openings": [
   {
-   "id": "o2dbr5h",
+   "id": "o2dd54f",
    "type": "door",
    "style": "swing",
-   "wall": "wutjjy",
+   "wall": "wufohj",
    "pos": 1.75,
    "w": 1.4,
    "side": 1,
@@ -905,10 +905,10 @@
    "sill": 0
   },
   {
-   "id": "o2ehuvt",
+   "id": "o2ecxdt",
    "type": "door",
    "style": "swing",
-   "wall": "wrjd7y",
+   "wall": "wr1ivr",
    "pos": 1.925,
    "w": 1,
    "side": 1,
@@ -917,10 +917,10 @@
    "sill": 0
   },
   {
-   "id": "o2f1kcf",
+   "id": "o2f3uxn",
    "type": "door",
    "style": "swing",
-   "wall": "wvov98",
+   "wall": "wv1x3f",
    "pos": 1.25,
    "w": 0.8,
    "side": -1,
@@ -929,10 +929,10 @@
    "sill": 0
   },
   {
-   "id": "o2ghz36",
+   "id": "o2gu5a9",
    "type": "door",
    "style": "opening",
-   "wall": "wwwlv2",
+   "wall": "ww0dv6",
    "pos": 1.75,
    "w": 1.4,
    "side": -1,
@@ -941,107 +941,107 @@
    "sill": 0
   },
   {
-   "id": "o2hhaua",
+   "id": "o2hzkd8",
    "type": "door",
    "style": "swing",
-   "wall": "w14vft0",
+   "wall": "w14yp1i",
    "pos": 3.15,
-   "w": 0.9,
+   "w": 0.95,
    "side": 1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2iiw0s",
+   "id": "o2i5542",
    "type": "door",
    "style": "swing",
-   "wall": "w1014bi",
+   "wall": "w10uy30",
    "pos": 1.5,
-   "w": 0.8,
+   "w": 0.95,
    "side": 1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2j5v66",
+   "id": "o2j4t2z",
    "type": "door",
    "style": "swing",
-   "wall": "w13shnb",
+   "wall": "w13v5xm",
    "pos": 4.35,
-   "w": 0.9,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2k77bq",
+   "id": "o2kin1k",
    "type": "door",
    "style": "swing",
-   "wall": "w17wz28",
+   "wall": "w17zb0u",
    "pos": 1.5,
-   "w": 0.8,
+   "w": 0.95,
    "side": 1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2la6ki",
+   "id": "o2l4gxw",
    "type": "door",
    "style": "swing",
-   "wall": "w162sy4",
-   "pos": 1.25,
-   "w": 0.7,
+   "wall": "w164hp0",
+   "pos": 2,
+   "w": 0.8,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2mpuve",
+   "id": "o2mkg5o",
    "type": "door",
    "style": "swing",
-   "wall": "w1gdxz1",
+   "wall": "w1g7f16",
    "pos": 1.15,
-   "w": 0.8,
+   "w": 0.95,
    "side": 1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2nj5qd",
+   "id": "o2n325y",
    "type": "door",
    "style": "swing",
-   "wall": "w1e5leu",
+   "wall": "w1ec5ik",
    "pos": 1.5,
-   "w": 0.9,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2ojago",
+   "id": "o2o7fk5",
    "type": "door",
    "style": "swing",
-   "wall": "w1dufs1",
-   "pos": 4.8,
-   "w": 0.9,
+   "wall": "w1d21r4",
+   "pos": 4.96,
+   "w": 0.95,
    "side": 1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2pxvcq",
+   "id": "o2p381d",
    "type": "door",
    "style": "garage",
-   "wall": "w1bnajw",
-   "pos": 3,
+   "wall": "w1bb2ra",
+   "pos": 3.1,
    "w": 5,
    "side": 1,
    "hinge": 0,
@@ -1049,34 +1049,34 @@
    "sill": 0
   },
   {
-   "id": "o2qzhiw",
+   "id": "o2qsyod",
    "type": "door",
    "style": "swing",
-   "wall": "w1jvxm3",
-   "pos": 23.8,
-   "w": 0.8,
+   "wall": "w1jqgpn",
+   "pos": 24,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2r33w8",
+   "id": "o2rhoif",
    "type": "door",
    "style": "swing",
-   "wall": "w1ppln3",
+   "wall": "w1peots",
    "pos": 1,
-   "w": 0.8,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2s3daw",
+   "id": "o2s18wv",
    "type": "door",
    "style": "swing",
-   "wall": "w1m4pfl",
+   "wall": "w1mar04",
    "pos": 1.1,
    "w": 0.8,
    "side": 1,
@@ -1085,34 +1085,34 @@
    "sill": 0
   },
   {
-   "id": "o2t6w1x",
+   "id": "o2tijwr",
    "type": "door",
    "style": "swing",
-   "wall": "w1jvxm3",
-   "pos": 21.8,
-   "w": 0.8,
+   "wall": "w1jqgpn",
+   "pos": 22,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2umpv2",
+   "id": "o2uh3gn",
    "type": "door",
    "style": "swing",
-   "wall": "w1rffw7",
+   "wall": "w1rdb75",
    "pos": 1,
-   "w": 0.8,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2v782f",
+   "id": "o2v5iaf",
    "type": "door",
    "style": "swing",
-   "wall": "w1tyd3j",
+   "wall": "w1tltq9",
    "pos": 1.1,
    "w": 0.8,
    "side": 1,
@@ -1121,11 +1121,11 @@
    "sill": 0
   },
   {
-   "id": "o2wmcuu",
+   "id": "o2w7c1z",
    "type": "door",
    "style": "opening",
-   "wall": "w1jvxm3",
-   "pos": 14.6,
+   "wall": "w1jqgpn",
+   "pos": 14.8,
    "w": 2.4,
    "side": -1,
    "hinge": 0,
@@ -1133,34 +1133,34 @@
    "sill": 0
   },
   {
-   "id": "o2x0c85",
+   "id": "o2x4xnr",
    "type": "door",
    "style": "swing",
-   "wall": "w1jvxm3",
-   "pos": 9.6,
-   "w": 0.8,
+   "wall": "w1jqgpn",
+   "pos": 9.8,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2y8bl9",
+   "id": "o2y0elr",
    "type": "door",
    "style": "swing",
-   "wall": "w1y5cz5",
+   "wall": "w1y423x",
    "pos": 1,
-   "w": 0.8,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o2z2mej",
+   "id": "o2z1qa1",
    "type": "door",
    "style": "swing",
-   "wall": "w20en3c",
+   "wall": "w20dk4p",
    "pos": 1.1,
    "w": 0.8,
    "side": 1,
@@ -1169,35 +1169,35 @@
    "sill": 0
   },
   {
-   "id": "o30kipk",
+   "id": "o30xjae",
    "type": "door",
    "style": "swing",
-   "wall": "w1jvxm3",
-   "pos": 5.1,
-   "w": 0.9,
+   "wall": "w1jqgpn",
+   "pos": 5.3,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o31r7lf",
+   "id": "o314bm1",
    "type": "door",
    "style": "swing",
-   "wall": "w22aspa",
+   "wall": "w22olwd",
    "pos": 1.3,
-   "w": 0.9,
+   "w": 0.95,
    "side": -1,
    "hinge": 0,
    "h": 2.1,
    "sill": 0
   },
   {
-   "id": "o32tc72",
+   "id": "o32gz12",
    "type": "door",
    "style": "swing",
-   "wall": "w24ebzq",
-   "pos": 1.9,
+   "wall": "w2404dn",
+   "pos": 2,
    "w": 0.8,
    "side": 1,
    "hinge": 0,
@@ -1205,10 +1205,10 @@
    "sill": 0
   },
   {
-   "id": "o33wfuv",
+   "id": "o33l5so",
    "type": "door",
    "style": "sliding",
-   "wall": "w1v7vey",
+   "wall": "w1v7l1e",
    "pos": 4,
    "w": 3,
    "side": -1,
@@ -1217,10 +1217,10 @@
    "sill": 0
   },
   {
-   "id": "o34r716",
+   "id": "o348mmz",
    "type": "window",
    "style": "fixed",
-   "wall": "wq5obn",
+   "wall": "wq6939",
    "pos": 2,
    "w": 1.8,
    "side": 1,
@@ -1229,10 +1229,10 @@
    "sill": 0.9
   },
   {
-   "id": "o35vxd0",
+   "id": "o3561g5",
    "type": "window",
    "style": "fixed",
-   "wall": "wq5obn",
+   "wall": "wq6939",
    "pos": 4,
    "w": 1.8,
    "side": 1,
@@ -1241,10 +1241,10 @@
    "sill": 0.9
   },
   {
-   "id": "o363oei",
+   "id": "o3693wh",
    "type": "window",
    "style": "fixed",
-   "wall": "wtd1nc",
+   "wall": "wteroj",
    "pos": 2.75,
    "w": 1.5,
    "side": 1,
@@ -1253,10 +1253,10 @@
    "sill": 0.9
   },
   {
-   "id": "o370saa",
+   "id": "o37u39x",
    "type": "window",
    "style": "fixed",
-   "wall": "w125siz",
+   "wall": "w12k9m3",
    "pos": 2.25,
    "w": 1.5,
    "side": 1,
@@ -1265,10 +1265,10 @@
    "sill": 0.9
   },
   {
-   "id": "o381t2x",
+   "id": "o38vljl",
    "type": "window",
    "style": "fixed",
-   "wall": "w15m75u",
+   "wall": "w156jo5",
    "pos": 1.5,
    "w": 0.9,
    "side": 1,
@@ -1277,10 +1277,10 @@
    "sill": 0.9
   },
   {
-   "id": "o39vss2",
+   "id": "o39g7g6",
    "type": "window",
    "style": "fixed",
-   "wall": "wxjdvf",
+   "wall": "wxn3ja",
    "pos": 1,
    "w": 0.6,
    "side": 1,
@@ -1289,10 +1289,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3ay2fl",
+   "id": "o3avx53",
    "type": "window",
    "style": "fixed",
-   "wall": "w18lfjm",
+   "wall": "w18df50",
    "pos": 1,
    "w": 0.6,
    "side": 1,
@@ -1301,10 +1301,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3b0ux2",
+   "id": "o3bv0iy",
    "type": "window",
    "style": "fixed",
-   "wall": "w1kko3f",
+   "wall": "w1k0uh1",
    "pos": 0.75,
    "w": 1,
    "side": 1,
@@ -1313,10 +1313,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3cc4ul",
+   "id": "o3c9ftf",
    "type": "window",
    "style": "fixed",
-   "wall": "w1ny0mh",
+   "wall": "w1n02qa",
    "pos": 1.3,
    "w": 0.6,
    "side": 1,
@@ -1325,10 +1325,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3dfbgg",
+   "id": "o3d79xg",
    "type": "window",
    "style": "fixed",
-   "wall": "w27qgam",
+   "wall": "w27c76s",
    "pos": 2.2,
    "w": 1.5,
    "side": 1,
@@ -1337,10 +1337,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3ex4uf",
+   "id": "o3ejoux",
    "type": "window",
    "style": "fixed",
-   "wall": "w26irnr",
+   "wall": "w26mnim",
    "pos": 2.1,
    "w": 1.5,
    "side": 1,
@@ -1349,10 +1349,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3f28c0",
+   "id": "o3fospg",
    "type": "window",
    "style": "fixed",
-   "wall": "w28ttmd",
+   "wall": "w28jezq",
    "pos": 2.1,
    "w": 1.5,
    "side": 1,
@@ -1361,10 +1361,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3gxxmh",
+   "id": "o3g51yq",
    "type": "window",
    "style": "fixed",
-   "wall": "w1v7vey",
+   "wall": "w1v7l1e",
    "pos": 6.7,
    "w": 2,
    "side": 1,
@@ -1373,10 +1373,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3hff84",
+   "id": "o3hgsgt",
    "type": "window",
    "style": "fixed",
-   "wall": "w2a27x8",
+   "wall": "w2alnp4",
    "pos": 2.1,
    "w": 1.5,
    "side": 1,
@@ -1385,11 +1385,11 @@
    "sill": 0.9
   },
   {
-   "id": "o3igtfb",
+   "id": "o3id3a1",
    "type": "window",
    "style": "fixed",
-   "wall": "w2cqz8l",
-   "pos": 3.2,
+   "wall": "w2cjbwh",
+   "pos": 3.3,
    "w": 2,
    "side": 1,
    "hinge": 0,
@@ -1397,10 +1397,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3jrrgr",
+   "id": "o3j3w0d",
    "type": "window",
    "style": "fixed",
-   "wall": "w2bp2pk",
+   "wall": "w2b8qxl",
    "pos": 2.2,
    "w": 1.5,
    "side": 1,
@@ -1409,10 +1409,10 @@
    "sill": 0.9
   },
   {
-   "id": "o3km7as",
+   "id": "o3kymsa",
    "type": "window",
    "style": "fixed",
-   "wall": "w23had4",
+   "wall": "w23xnte",
    "pos": 1.3,
    "w": 0.6,
    "side": 1,
@@ -1423,7 +1423,7 @@
  ],
  "rooms": [
   {
-   "id": "r1ln0r",
+   "id": "r13f0l",
    "name": "Majlis",
    "type": "living",
    "ceil": 2.7,
@@ -1448,7 +1448,7 @@
    "area_m2": 33
   },
   {
-   "id": "r2c72u",
+   "id": "r21prd",
    "name": "Lobby",
    "type": "hall",
    "ceil": 2.7,
@@ -1473,7 +1473,7 @@
    "area_m2": 19.25
   },
   {
-   "id": "r3vkpe",
+   "id": "r3f2wy",
    "name": "Guest WC",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1498,7 +1498,7 @@
    "area_m2": 5
   },
   {
-   "id": "r4kkdt",
+   "id": "r4veqs",
    "name": "Pantry",
    "type": "closet",
    "ceil": 2.7,
@@ -1523,7 +1523,7 @@
    "area_m2": 6
   },
   {
-   "id": "r5z3e3",
+   "id": "r5l69g",
    "name": "Kitchen",
    "type": "kitchen",
    "ceil": 2.7,
@@ -1548,7 +1548,7 @@
    "area_m2": 24.75
   },
   {
-   "id": "r6gw0y",
+   "id": "r6pana",
    "name": "Maid room",
    "type": "bedroom",
    "ceil": 2.7,
@@ -1573,7 +1573,7 @@
    "area_m2": 9.6
   },
   {
-   "id": "r7lteq",
+   "id": "r7zrrp",
    "name": "Maid bath",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1598,7 +1598,7 @@
    "area_m2": 5
   },
   {
-   "id": "r85jam",
+   "id": "r8qf26",
    "name": "Garage",
    "type": "garage",
    "ceil": 3,
@@ -1608,11 +1608,11 @@
      "y": 0
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 0
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 5.5
     },
     {
@@ -1620,10 +1620,10 @@
      "y": 5.5
     }
    ],
-   "area_m2": 33
+   "area_m2": 34.1
   },
   {
-   "id": "r964jg",
+   "id": "r9fh9a",
    "name": "Mech",
    "type": "mech",
    "ceil": 2.7,
@@ -1648,7 +1648,7 @@
    "area_m2": 6
   },
   {
-   "id": "ra8log",
+   "id": "raj646",
    "name": "Laundry",
    "type": "laundry",
    "ceil": 2.7,
@@ -1673,7 +1673,7 @@
    "area_m2": 6.9
   },
   {
-   "id": "rbf631",
+   "id": "rb8oxy",
    "name": "Family corridor",
    "type": "hall",
    "ceil": 2.7,
@@ -1683,11 +1683,11 @@
      "y": 5.5
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 5.5
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 7
     },
     {
@@ -1695,10 +1695,10 @@
      "y": 7
     }
    ],
-   "area_m2": 40.5
+   "area_m2": 40.8
   },
   {
-   "id": "rcwlp3",
+   "id": "rcvibq",
    "name": "Bath 4",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1723,7 +1723,7 @@
    "area_m2": 5.72
   },
   {
-   "id": "rdxn05",
+   "id": "rdmswa",
    "name": "Dressing 4",
    "type": "closet",
    "ceil": 2.7,
@@ -1748,7 +1748,7 @@
    "area_m2": 5.2
   },
   {
-   "id": "reuidd",
+   "id": "reflap",
    "name": "Dressing 3",
    "type": "closet",
    "ceil": 2.7,
@@ -1773,7 +1773,7 @@
    "area_m2": 5.2
   },
   {
-   "id": "rfl27x",
+   "id": "rfkki6",
    "name": "Bath 3",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1798,7 +1798,7 @@
    "area_m2": 5.72
   },
   {
-   "id": "rg410l",
+   "id": "rg7p2f",
    "name": "Family living & dining",
    "type": "living",
    "ceil": 2.7,
@@ -1823,7 +1823,7 @@
    "area_m2": 56
   },
   {
-   "id": "rh0b7r",
+   "id": "rhducy",
    "name": "Dressing 2",
    "type": "closet",
    "ceil": 2.7,
@@ -1848,7 +1848,7 @@
    "area_m2": 5.2
   },
   {
-   "id": "rik2rr",
+   "id": "rih02j",
    "name": "Bath 2",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1873,7 +1873,7 @@
    "area_m2": 5.72
   },
   {
-   "id": "rjgi55",
+   "id": "rjejst",
    "name": "Master closet",
    "type": "closet",
    "ceil": 2.7,
@@ -1898,7 +1898,7 @@
    "area_m2": 6.76
   },
   {
-   "id": "rkxmba",
+   "id": "rk5jpt",
    "name": "Master bath",
    "type": "bathroom",
    "ceil": 2.7,
@@ -1908,11 +1908,11 @@
      "y": 7
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 7
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 9.6
     },
     {
@@ -1920,10 +1920,10 @@
      "y": 9.6
     }
    ],
-   "area_m2": 9.88
+   "area_m2": 10.4
   },
   {
-   "id": "rl1r00",
+   "id": "rlr6o5",
    "name": "Bedroom 4",
    "type": "bedroom",
    "ceil": 2.7,
@@ -1948,7 +1948,7 @@
    "area_m2": 18.48
   },
   {
-   "id": "rmk8hk",
+   "id": "rmzr40",
    "name": "Bedroom 3",
    "type": "bedroom",
    "ceil": 2.7,
@@ -1973,7 +1973,7 @@
    "area_m2": 18.48
   },
   {
-   "id": "rnafdq",
+   "id": "rnxkqr",
    "name": "Bedroom 2",
    "type": "bedroom",
    "ceil": 2.7,
@@ -1998,7 +1998,7 @@
    "area_m2": 18.48
   },
   {
-   "id": "ro5q8h",
+   "id": "rogrqa",
    "name": "Master bedroom",
    "type": "bedroom",
    "ceil": 2.7,
@@ -2008,11 +2008,11 @@
      "y": 9.6
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 9.6
     },
     {
-     "x": 27,
+     "x": 27.2,
      "y": 14
     },
     {
@@ -2020,10 +2020,10 @@
      "y": 14
     }
    ],
-   "area_m2": 28.16
+   "area_m2": 29.04
   },
   {
-   "id": "rppmxq",
+   "id": "rp3dzi",
    "name": "Terrace",
    "type": "outdoor",
    "ceil": 2.7,
@@ -2050,60 +2050,60 @@
  ],
  "fixtures": [
   {
-   "id": "f3l5d21",
+   "id": "f3l4d8a",
    "kind": "wc",
-   "x": 10.3,
+   "x": 10.6,
    "y": 0.485,
    "rot": 0,
-   "room": "r3vkpe",
+   "room": "r3f2wy",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f3mbe9n",
+   "id": "f3m3h07",
    "kind": "basin",
-   "x": 11,
-   "y": 0.36,
-   "rot": 0,
-   "room": "r3vkpe",
+   "x": 11.205,
+   "y": 1.95,
+   "rot": 90,
+   "room": "r3f2wy",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f3nf7ya",
+   "id": "f3nkudc",
    "kind": "range",
    "x": 12.175,
    "y": 0.46,
    "rot": 0,
-   "room": "r5z3e3",
+   "room": "r5l69g",
    "services": [
     "elec",
     "gas"
    ]
   },
   {
-   "id": "f3oz5qw",
+   "id": "f3om46j",
    "kind": "sink",
    "x": 13.75,
    "y": 0.41,
    "rot": 0,
-   "room": "r5z3e3",
+   "room": "r5l69g",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f3pppzc",
+   "id": "f3pqo7n",
    "kind": "dw",
    "x": 15.1,
    "y": 0.435,
    "rot": 0,
-   "room": "r5z3e3",
+   "room": "r5l69g",
    "services": [
     "water",
     "drain",
@@ -2111,23 +2111,23 @@
    ]
   },
   {
-   "id": "f3q8eve",
+   "id": "f3qrcsj",
    "kind": "fridge",
    "x": 15.555,
-   "y": 1.2,
+   "y": 1.15,
    "rot": 90,
-   "room": "r5z3e3",
+   "room": "r5l69g",
    "services": [
     "elec"
    ]
   },
   {
-   "id": "f3r3qj9",
+   "id": "f3rzvca",
    "kind": "washer",
-   "x": 17.2,
+   "x": 17.3,
    "y": 5.105,
    "rot": 180,
-   "room": "ra8log",
+   "room": "raj646",
    "services": [
     "water",
     "drain",
@@ -2135,60 +2135,60 @@
    ]
   },
   {
-   "id": "f3sk7uz",
+   "id": "f3smftk",
    "kind": "dryer",
-   "x": 18.16,
+   "x": 18.01,
    "y": 5.105,
    "rot": 180,
-   "room": "ra8log",
+   "room": "raj646",
    "services": [
     "elec",
     "vent"
    ]
   },
   {
-   "id": "f3t1qod",
+   "id": "f3tk97e",
    "kind": "wc",
    "x": 19.5,
    "y": 0.485,
    "rot": 0,
-   "room": "r7lteq",
+   "room": "r7zrrp",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f3u697x",
-   "kind": "basin",
-   "x": 20.44,
-   "y": 0.36,
-   "rot": 0,
-   "room": "r7lteq",
-   "services": [
-    "water",
-    "drain"
-   ]
-  },
-  {
-   "id": "f3vyian",
+   "id": "f3u2xhq",
    "kind": "shower",
-   "x": 20.48,
-   "y": 1.5,
-   "rot": 90,
-   "room": "r7lteq",
+   "x": 20.47,
+   "y": 0.585,
+   "rot": 0,
+   "room": "r7zrrp",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f3wmgld",
+   "id": "f3vz0cl",
+   "kind": "basin",
+   "x": 20.5,
+   "y": 2.205,
+   "rot": 180,
+   "room": "r7zrrp",
+   "services": [
+    "water",
+    "drain"
+   ]
+  },
+  {
+   "id": "f3wwuhx",
    "kind": "wh",
    "x": 20,
    "y": 5.13,
    "rot": 180,
-   "room": "r964jg",
+   "room": "r9fh9a",
    "services": [
     "water",
     "gas",
@@ -2196,12 +2196,12 @@
    ]
   },
   {
-   "id": "f3x72z8",
+   "id": "f3xvuod",
    "kind": "ahu",
    "x": 19.47,
    "y": 3.4,
    "rot": 270,
-   "room": "r964jg",
+   "room": "r9fh9a",
    "services": [
     "hvac",
     "gas",
@@ -2209,18 +2209,18 @@
    ]
   },
   {
-   "id": "f3yegdv",
+   "id": "f3ypncb",
    "kind": "panel",
    "x": 20.5,
    "y": 2.645,
    "rot": 0,
-   "room": "r964jg",
+   "room": "r9fh9a",
    "services": [
     "elec"
    ]
   },
   {
-   "id": "f3zcqve",
+   "id": "f3zsyp2",
    "kind": "acu",
    "x": -0.825,
    "y": 4.675,
@@ -2232,9 +2232,9 @@
    ]
   },
   {
-   "id": "f40sidi",
+   "id": "f40ubfq",
    "kind": "acu",
-   "x": 27.825,
+   "x": 28.025,
    "y": 13.12,
    "rot": 270,
    "room": null,
@@ -2244,174 +2244,262 @@
    ]
   },
   {
-   "id": "f4121km",
+   "id": "f41h319",
    "kind": "shower",
    "x": 0.55,
    "y": 7.52,
    "rot": 0,
-   "room": "rcwlp3",
+   "room": "rcvibq",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f42u757",
+   "id": "f42ctk6",
    "kind": "wc",
    "x": 0.485,
-   "y": 8.46,
+   "y": 8.51,
    "rot": 270,
-   "room": "rcwlp3",
+   "room": "rcvibq",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f43u7zg",
+   "id": "f43kkcl",
    "kind": "basin",
    "x": 1.905,
    "y": 8.3,
    "rot": 90,
-   "room": "rcwlp3",
+   "room": "rcvibq",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f44j7rq",
+   "id": "f443s33",
    "kind": "shower",
    "x": 7.85,
    "y": 7.52,
    "rot": 0,
-   "room": "rfl27x",
+   "room": "rfkki6",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f45b0ta",
+   "id": "f456jyf",
    "kind": "wc",
    "x": 7.98,
-   "y": 8.46,
+   "y": 8.51,
    "rot": 90,
-   "room": "rfl27x",
+   "room": "rfkki6",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f468zq3",
+   "id": "f46rgyb",
    "kind": "basin",
    "x": 6.495,
    "y": 8.3,
    "rot": 270,
-   "room": "rfl27x",
+   "room": "rfkki6",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f472lxw",
+   "id": "f47b88e",
    "kind": "shower",
    "x": 20.05,
    "y": 7.52,
    "rot": 0,
-   "room": "rik2rr",
+   "room": "rih02j",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f48xl3k",
+   "id": "f4831kn",
    "kind": "wc",
    "x": 20.18,
-   "y": 8.46,
+   "y": 8.51,
    "rot": 90,
-   "room": "rik2rr",
+   "room": "rih02j",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f49vp8a",
+   "id": "f49xb1n",
    "kind": "basin",
    "x": 18.695,
    "y": 8.3,
    "rot": 270,
-   "room": "rik2rr",
+   "room": "rih02j",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f4ada0l",
+   "id": "f4askz4",
    "kind": "shower",
-   "x": 23.77,
+   "x": 23.8,
    "y": 7.52,
    "rot": 0,
-   "room": "rkxmba",
+   "room": "rk5jpt",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f4bo0o5",
+   "id": "f4bsdgx",
    "kind": "tub",
-   "x": 25.67,
+   "x": 25.8,
    "y": 7.445,
    "rot": 0,
-   "room": "rkxmba",
+   "room": "rk5jpt",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f4cz720",
+   "id": "f4c67bk",
    "kind": "wc",
-   "x": 26.515,
+   "x": 26.715,
    "y": 8.3,
    "rot": 90,
-   "room": "rkxmba",
+   "room": "rk5jpt",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f4d5562",
+   "id": "f4davz7",
    "kind": "basin",
-   "x": 23.96,
+   "x": 24,
    "y": 9.305,
    "rot": 180,
-   "room": "rkxmba",
+   "room": "rk5jpt",
    "services": [
     "water",
     "drain"
    ]
   },
   {
-   "id": "f4ehvfw",
+   "id": "f4e5015",
    "kind": "basin",
-   "x": 26.43,
+   "x": 26.05,
    "y": 9.305,
    "rot": 180,
-   "room": "rkxmba",
+   "room": "rk5jpt",
    "services": [
     "water",
+    "drain"
+   ]
+  },
+  {
+   "id": "f4fkmnr",
+   "kind": "fd",
+   "x": 10.5,
+   "y": 2.33,
+   "rot": 180,
+   "room": "r3f2wy",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4ghbek",
+   "kind": "fd",
+   "x": 13.75,
+   "y": 5.33,
+   "rot": 180,
+   "room": "r5l69g",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4h1tax",
+   "kind": "fd",
+   "x": 20,
+   "y": 2.33,
+   "rot": 180,
+   "room": "r7zrrp",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4iqdwq",
+   "kind": "fd",
+   "x": 16.85,
+   "y": 5.33,
+   "rot": 180,
+   "room": "raj646",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4jqhi0",
+   "kind": "fd",
+   "x": 1.65,
+   "y": 9.43,
+   "rot": 180,
+   "room": "rcvibq",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4k9tsp",
+   "kind": "fd",
+   "x": 7.85,
+   "y": 9.43,
+   "rot": 180,
+   "room": "rfkki6",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4lcx02",
+   "kind": "fd",
+   "x": 20.05,
+   "y": 9.43,
+   "rot": 180,
+   "room": "rih02j",
+   "services": [
+    "drain"
+   ]
+  },
+  {
+   "id": "f4mdilt",
+   "kind": "fd",
+   "x": 24.65,
+   "y": 9.43,
+   "rot": 180,
+   "room": "rk5jpt",
+   "services": [
     "drain"
    ]
   }
  ],
- "exported": "2026-11-22T15:15:33.705Z",
+ "exported": "2026-11-24T15:44:47.438Z",
  "internal_units": "m"
 }

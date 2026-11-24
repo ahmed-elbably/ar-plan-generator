@@ -342,7 +342,8 @@ function normFix(k){const s=String(k||"").trim().toLowerCase();if(FIX[s])return 
 const normSide=s=>{const k=String(s||"").trim().toUpperCase();const m={NORTH:"N",SOUTH:"S",EAST:"E",WEST:"W"};return sideKey(m[k]||k);};
 
 /* spec -> drawing */
-function specToDoc(spec){
+/* place (optional, from a rule pack): {clear:{kinds,to_side,to_adjacent,to_wall,to_fixture,ignore,ref}, drains:{wet_types,wet_kinds,ref}} */
+function specToDoc(spec,place){
   const rep=[];const old=doc;
   const nd=emptyDoc();nd.units=old.units;nd.level=old.level;nd.project=(spec&&spec.project?String(spec.project).slice(0,60):old.project);
   doc=nd;
@@ -368,9 +369,10 @@ function specToDoc(spec){
     let doorsOk=0,winOk=0,fixOk=0;
     for(const dr of (Array.isArray(spec.doors)?spec.doors:[])){
       const st=String(dr.style||"").toLowerCase();const style=["swing","sliding","opening","garage"].includes(st)?st:(/open|arch/.test(st)?"opening":/slid|pocket/.test(st)?"sliding":/garage|overhead|roll/.test(st)?"garage":"swing");
-      let w=+dr.w>0?+dr.w:(style==="garage"?4.8:0.9);w=clamp(w,0.6,6);
       const fromOut=isOut(dr.from),toOut=isOut(dr.to);
       let A=fromOut?null:find(dr.from),B=toOut?null:find(dr.to);
+      // default clear widths: 0.95 m rooms (DBC Table K.4 needs >= 915 mm), 0.8 m bathrooms / WCs (>= 710 mm), 4.8 m garage
+      let w=+dr.w>0?+dr.w:(style==="garage"?4.8:[A,B].some(r=>r&&r.type==="bathroom")?0.8:0.95);w=clamp(w,0.6,6);
       const label=`${dr.from||"?"} → ${dr.to||"?"}`;
       if((!fromOut&&!A)||(!toOut&&!B)){rep.push(`Door ${label}: room not found`);continue;}
       if(A&&B){
@@ -399,10 +401,10 @@ function specToDoc(spec){
       }
     }
     // keep-clear zones: every doorway (both sides) and every swing arc
-    const zones=[];const bb=pts=>({x0:Math.min(...pts.map(p=>p.x)),y0:Math.min(...pts.map(p=>p.y)),x1:Math.max(...pts.map(p=>p.x)),y1:Math.max(...pts.map(p=>p.y))});
+    const zones=[],leafZones=[];const bb=pts=>({x0:Math.min(...pts.map(p=>p.x)),y0:Math.min(...pts.map(p=>p.y)),x1:Math.max(...pts.map(p=>p.x)),y1:Math.max(...pts.map(p=>p.y))});
     for(const o of doc.openings){if(o.type!=="door")continue;const g=openingGeom(o);if(!g)continue;const t=g.w.t,e=mul(g.d,0.05);
       const q0=sub(g.p0,e),q1=add(g.p1,e),m=mul(g.n,t/2+0.6);zones.push(bb([add(q0,m),add(q1,m),sub(q0,m),sub(q1,m)]));
-      if(o.style==="swing"){const sn=mul(g.n,o.side);zones.push(bb([add(g.p0,mul(sn,t/2)),add(g.p1,mul(sn,t/2)),add(g.p0,mul(sn,t/2+o.w)),add(g.p1,mul(sn,t/2+o.w))]));}}
+      if(o.style==="swing"){const sn=mul(g.n,o.side);const lz=bb([add(g.p0,mul(sn,t/2)),add(g.p1,mul(sn,t/2)),add(g.p0,mul(sn,t/2+o.w)),add(g.p1,mul(sn,t/2+o.w))]);zones.push(lz);leafZones.push(lz);}}
     const placed=[];
     const ov=(A,B)=>Math.max(0,Math.min(A.x1,B.x1)-Math.max(A.x0,B.x0))*Math.max(0,Math.min(A.y1,B.y1)-Math.max(A.y0,B.y0));
     const fbox=(def,c,rotDeg)=>{const a=rotDeg*Math.PI/180,cs=Math.abs(Math.cos(a)),sn=Math.abs(Math.sin(a));const hw=(def.w*cs+def.h*sn)/2,hh=(def.w*sn+def.h*cs)/2;return {x0:c.x-hw,y0:c.y-hh,x1:c.x+hw,y1:c.y+hh};};
@@ -410,24 +412,56 @@ function specToDoc(spec){
       if(def.outdoor){c=sub(base,mul(n,wt/2+def.h/2+0.25));rot=Math.atan2(n.x,-n.y);}else{c=add(base,mul(n,wt/2+def.h/2+0.01));rot=Math.atan2(-n.x,n.y);}
       rot=((Math.round(rot*180/Math.PI)%360)+360)%360;return {c,rot};};
     const ORDER={N:["N","E","W","S"],S:["S","W","E","N"],E:["E","S","N","W"],W:["W","N","S","E"]};
-    for(const fx of (Array.isArray(spec.fixtures)?spec.fixtures:[])){
+    // placement rules from the rule pack (build --pack): WC / basin clearances and floor drains
+    const C=place&&place.clear;
+    const isWB=k=>!!C&&C.kinds.includes(k),ignored=k=>!!C&&(C.ignore||[]).includes(k);
+    const sideT=(box,s)=>{const S=SIDES[s];return edgeSegs(S.a(box),S.b(box)).segs.reduce((m,x)=>Math.max(m,x.w.t),0);};
+    const clearBox=box=>({x0:box.x0+sideT(box,"W")/2,x1:box.x1-sideT(box,"E")/2,y0:box.y0+sideT(box,"N")/2,y1:box.y1-sideT(box,"S")/2});
+    // box in a fixture's frame: lateral half-width hw, depth d0..d1 measured from its centre towards its front
+    const frameBox=(c,rot,hw,d0,d1)=>{const a=rot*Math.PI/180,u=P(Math.cos(a),Math.sin(a)),f=P(-Math.sin(a),Math.cos(a));
+      return bb([add(add(c,mul(u,hw)),mul(f,d0)),add(sub(c,mul(u,hw)),mul(f,d0)),add(add(c,mul(u,hw)),mul(f,d1)),add(sub(c,mul(u,hw)),mul(f,d1))]);};
+    const ovs=(A,B)=>Math.min(A.x1,B.x1)-Math.max(A.x0,B.x0)>0.001&&Math.min(A.y1,B.y1)-Math.max(A.y0,B.y0)>0.001; // clearance overlap: > 1 mm both ways
+    const inside=(A,B)=>A.x0>=B.x0-1e-6&&A.x1<=B.x1+1e-6&&A.y0>=B.y0-1e-6&&A.y1<=B.y1+1e-6;
+    const entry=(kind,def,p,roomId)=>{const e={kind,room:roomId,c:p.c,box:fbox(def,p.c,p.rot)};
+      if(isWB(kind)){e.clr=frameBox(p.c,p.rot,C.to_side,-def.h/2,def.h/2);e.f60=frameBox(p.c,p.rot,def.w/2,def.h/2,def.h/2+C.to_fixture);e.f75=frameBox(p.c,p.rot,def.w/2,def.h/2,def.h/2+C.to_wall);}
+      return e;};
+    const legal=(e,def,strict,cb)=>{
+      if(placed.some(Q=>ov(e.box,Q.box)>0.003))return false;
+      if(!def.outdoor&&zones.some(Z=>ov(e.box,Z)>0.003))return false;
+      if(!strict||!C||def.outdoor||ignored(e.kind))return true;
+      for(const Q of placed){if(Q.room!==e.room||ignored(Q.kind))continue;
+        if(e.clr&&Q.clr){if(dist(e.c,Q.c)<C.to_adjacent-1e-6||ovs(e.f60,Q.box)||ovs(Q.f60,e.box))return false;}
+        else if(e.clr){if(ovs(e.clr,Q.box)||ovs(e.f60,Q.box))return false;}
+        else if(Q.clr){if(ovs(e.box,Q.clr)||ovs(e.box,Q.f60))return false;}}
+      if(e.clr){if(!inside(e.clr,cb)||!inside(e.f75,cb))return false;if(leafZones.some(Z=>ovs(e.f75,Z)))return false;}   // K.5.7.2 b): 750 mm to a door leaf
+      return true;};
+    // floor drains: add one to every wet room the spec left without
+    const fixList=(Array.isArray(spec.fixtures)?spec.fixtures:[]).slice();
+    const D=place&&place.drains;
+    if(D){for(const room of doc.rooms){if(room.type==="outdoor")continue;
+      const mine=fixList.filter(fx=>find(fx.room)===room).map(fx=>normFix(fx.kind));
+      if(mine.includes("fd"))continue;
+      if(D.wet_types.includes(room.type)||mine.some(k=>D.wet_kinds.includes(k))){fixList.push({kind:"fd",room:room.name,side:"S",at:0.5,auto:true});rep.push(`Floor drain added in ${room.name} (${D.ref})`);}}}
+    for(const fx of fixList){
       const kind=normFix(fx.kind);const def=kind&&FIX[kind];if(!def){rep.push(`Unknown fixture "${fx.kind}" skipped`);continue;}
       const room=find(fx.room);if(!room){rep.push(`${def.label}: room "${fx.room}" not found`);continue;}
-      const box=boxes.get(room.id);const want=normSide(fx.side)||"N";const f=Number.isFinite(+fx.at)?clamp(+fx.at,0,1):0.5;
-      let best=null;
-      for(const s of (def.outdoor?[want]:ORDER[want])){
-        const S=SIDES[s];const L=dist(S.a(box),S.b(box));if(L<def.w+0.16)continue;
-        const lo=def.w/2+0.08,hi=L-def.w/2-0.08,t0=clamp(L*(s===want?f:0.5),lo,hi);
-        const cands=[t0];for(let k=1;k*0.1<=L;k++)cands.push(t0+k*0.1,t0-k*0.1);
-        for(const t of cands){if(t<lo-1e-9||t>hi+1e-9)continue;const p=poseAt(def,box,s,t);const A=fbox(def,p.c,p.rot);
-          if(placed.some(B=>ov(A,B)>0.003))continue;if(!def.outdoor&&zones.some(Z=>ov(A,Z)>0.003))continue;
-          best={...p,s,moved:Math.abs(t-t0)>0.35};break;}
-        if(best)break;
-      }
-      if(!best){const S=SIDES[want];const L=dist(S.a(box),S.b(box));const p=poseAt(def,box,want,L<def.w+0.16?L/2:clamp(L*f,def.w/2+0.08,L-def.w/2-0.08));best={...p,s:want,clash:true};}
+      const box=boxes.get(room.id),cb=clearBox(box);const want=normSide(fx.side)||"N";const f=Number.isFinite(+fx.at)?clamp(+fx.at,0,1):0.5;
+      const search=strict=>{
+        for(const s of (def.outdoor?[want]:ORDER[want])){
+          const S=SIDES[s];const L=dist(S.a(box),S.b(box));if(L<def.w+0.16)continue;
+          const lo=def.w/2+0.08,hi=L-def.w/2-0.08,t0=clamp(L*(s===want?f:0.5),lo,hi);
+          const st=C?0.05:0.1,cands=[t0];for(let k=1;k*st<=L;k++)cands.push(t0+k*st,t0-k*st);
+          for(const t of cands){if(t<lo-1e-9||t>hi+1e-9)continue;const p=poseAt(def,box,s,t);const e=entry(kind,def,p,room.id);
+            if(!legal(e,def,strict,cb))continue;return {...p,s,e,moved:Math.abs(t-t0)>0.35};}
+        }
+        return null;};
+      let best=search(true),relaxed=false;
+      if(!best&&C&&!def.outdoor&&!ignored(kind)){best=search(false);relaxed=!!best;}
+      if(!best){const S=SIDES[want];const L=dist(S.a(box),S.b(box));const p=poseAt(def,box,want,L<def.w+0.16?L/2:clamp(L*f,def.w/2+0.08,L-def.w/2-0.08));best={...p,s:want,clash:true,e:entry(kind,def,p,room.id)};}
       if(best.clash)rep.push(`${def.label} in ${room.name} could not clear doors or other fixtures`);
-      else if(best.s!==want)rep.push(`${def.label} in ${room.name} moved from ${want} to ${best.s} wall to keep doors clear`);
-      placed.push(fbox(def,best.c,best.rot));
+      else if(relaxed)rep.push(`${def.label} in ${room.name}: no position keeps the ${C.ref} clearances (${Math.round(C.to_side*1000)} mm side, ${Math.round(C.to_adjacent*1000)} mm between WC / basin centres, ${Math.round(C.to_wall*1000)} mm in front); enlarge or rearrange the room`);
+      else if(best.s!==want&&!fx.auto)rep.push(`${def.label} in ${room.name} moved from ${want} to ${best.s} wall to keep ${C&&isWB(kind)?"clearances":"doors clear"}`);
+      placed.push(best.e);
       doc.fixtures.push({id:uid("f"),kind,x:r4(best.c.x),y:r4(best.c.y),rot:best.rot});fixOk++;
     }
     return {doc,rep,stats:{rooms:doc.rooms.length,doors:doorsOk,windows:winOk,fixtures:fixOk}};
@@ -970,7 +1004,8 @@ function main(){
   }else if(cmd==="build"){
     const spec=readJson(a._[1]||fail("build needs a spec file"));
     if(a.units==="ft")doc.units="ft";doc.level=a.level||DEFAULT_LEVEL;
-    const built=(()=>{try{return specToDoc(spec);}catch(e){if(e&&e.code==="no_rooms")fail("The spec has no usable rooms (each needs name, type, x, y, w, d).");throw e;}})();
+    let place=null;if(a.pack){try{place=require("./codecheck").placementRules(a.pack);}catch(e){fail(e.message);}}
+    const built=(()=>{try{return specToDoc(spec,place);}catch(e){if(e&&e.code==="no_rooms")fail("The spec has no usable rooms (each needs name, type, x, y, w, d).");throw e;}})();
     doc=built.doc;doc.level=a.level||DEFAULT_LEVEL;if(a.units==="ft")doc.units="ft";
     const name=a.name||slug(doc.project);const res=writeAll(a.out||".",name,built.rep);
     const out={ok:true,stats:built.stats,builder_notes:built.rep,ready_for_mep:res.ready,failed_checks:res.failed_checks,clashes:res.clashes,files:res.files};

@@ -1,0 +1,1958 @@
+{
+ "pack": "dubai",
+ "title": "Dubai private villas and townhouses",
+ "authorities": [
+  {
+   "file": "dm-dbc-2021.json",
+   "document": "Dubai Building Code 2021, Part K Villas",
+   "edition": "2021"
+  },
+  {
+   "file": "cd-flsc-2018.json",
+   "document": "UAE Fire & Life Safety Code of Practice (CDGH-OP-25)",
+   "edition": "September 2018"
+  },
+  {
+   "file": "dewa-2017.json",
+   "document": "DEWA Regulations for Electrical Installations",
+   "edition": "2017"
+  },
+  {
+   "file": "ashrae-62.2-2019.json",
+   "document": "ASHRAE 62.2 Ventilation and IAQ in Residential Buildings",
+   "edition": "2019"
+  }
+ ],
+ "assumptions": [
+  "Gas: all-electric unless the plan declares gas (LPG rules then apply).",
+  "Plot: when the plan has no plot or setbacks, DBC Table K.1 defaults apply (villa 3 m road / neighbour / sikka; townhouse 3 / 0 / 3 m).",
+  "Door widths in the plan are clear widths.",
+  "Room sizes are measured clear, inside wall faces."
+ ],
+ "project": "UAE villa 4BR",
+ "level": "Level 1",
+ "gross_area_m2": 370.5,
+ "summary": {
+  "FAIL": 0,
+  "ADVISE": 0,
+  "NOT CHECKABLE": 41,
+  "PASS": 18,
+  "N/A": 2,
+  "OUT OF SCOPE": 3
+ },
+ "results": [
+  {
+   "id": "K-01",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.3.1, Table K.2",
+   "page": 706,
+   "title": "Living space minimum size",
+   "requirement": "Living spaces (bedroom, living room, etc.): net area >= 10.5 m2 and clear length and width >= 3.0 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r13f0l"
+     ],
+     "label": "Majlis",
+     "value": "30.9 m², 5.815 × 5.315 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg7p2f"
+     ],
+     "label": "Family living & dining",
+     "value": "53.7 m², 7.88 × 6.815 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rlr6o5"
+     ],
+     "label": "Bedroom 4",
+     "value": "16.9 m², 4.015 × 4.215 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmzr40"
+     ],
+     "label": "Bedroom 3",
+     "value": "17.2 m², 4.08 × 4.215 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rnxkqr"
+     ],
+     "label": "Bedroom 2",
+     "value": "17.2 m², 4.08 × 4.215 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rogrqa"
+     ],
+     "label": "Master bedroom",
+     "value": "27.0 m², 6.415 × 4.215 m clear",
+     "limit": "≥ 10.5 m², ≥ 3 m"
+    }
+   ]
+  },
+  {
+   "id": "K-02",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.3.1, Table K.2",
+   "page": 706,
+   "title": "Housekeeper's / guard room minimum size",
+   "requirement": "Housekeeper's or guard room (single occupancy, without toilet): net area >= 5.5 m2 and clear length and width >= 2.1 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r6pana"
+     ],
+     "label": "Maid room",
+     "value": "8.7 m², 2.88 × 3.015 m clear",
+     "limit": "≥ 5.5 m², ≥ 2.1 m"
+    }
+   ]
+  },
+  {
+   "id": "K-03",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.3.1, Table K.2",
+   "page": 706,
+   "title": "Enclosed kitchen minimum size",
+   "requirement": "Enclosed kitchen: net area >= 5.4 m2 and clear length and width >= 1.8 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r5l69g"
+     ],
+     "label": "Kitchen",
+     "value": "23.3 m², 4.38 × 5.315 m clear",
+     "limit": "≥ 5.4 m², ≥ 1.8 m"
+    }
+   ]
+  },
+  {
+   "id": "K-04",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.3.1, Figure K.18",
+   "page": 706,
+   "title": "Kitchen manoeuvring space",
+   "requirement": "Manoeuvring space between kitchen counters, or in front of a single-sided counter, >= 1.2 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "kitchen counters"
+   ]
+  },
+  {
+   "id": "K-05",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.3.2, Table K.3",
+   "page": 707,
+   "title": "Minimum clear heights",
+   "requirement": "Clear height >= 2.7 m in living and bedroom spaces, >= 2.3 m in any other space and staircases, >= 2.03 m in non-habitable rooms under stairs.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "designed ceiling height per room (ceiling_h)"
+   ]
+  },
+  {
+   "id": "K-06",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.1, Table K.4",
+   "page": 708,
+   "title": "Door clear width",
+   "requirement": "Door clear width >= 915 mm for entry doors in general and >= 710 mm for bathrooms and toilets.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "o2dd54f"
+     ],
+     "label": "Door Outside → Lobby",
+     "value": "1400 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2ecxdt"
+     ],
+     "label": "Door Lobby → Majlis",
+     "value": "1000 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2f3uxn"
+     ],
+     "label": "Door Lobby → Guest WC",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2gu5a9"
+     ],
+     "label": "Door Lobby → Family corridor",
+     "value": "1400 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2hzkd8"
+     ],
+     "label": "Door Family corridor → Kitchen",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2i5542"
+     ],
+     "label": "Door Kitchen → Pantry",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2j4t2z"
+     ],
+     "label": "Door Kitchen → Laundry",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2kin1k"
+     ],
+     "label": "Door Laundry → Maid room",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2l4gxw"
+     ],
+     "label": "Door Maid room → Maid bath",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2mkg5o"
+     ],
+     "label": "Door Laundry → Mech",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2n325y"
+     ],
+     "label": "Door Garage → Mech",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2o7fk5"
+     ],
+     "label": "Door Family corridor → Garage",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2qsyod"
+     ],
+     "label": "Door Family corridor → Dressing 4",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2rhoif"
+     ],
+     "label": "Door Dressing 4 → Bedroom 4",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2s18wv"
+     ],
+     "label": "Door Bedroom 4 → Bath 4",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2tijwr"
+     ],
+     "label": "Door Family corridor → Dressing 3",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2uh3gn"
+     ],
+     "label": "Door Dressing 3 → Bedroom 3",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2v5iaf"
+     ],
+     "label": "Door Bedroom 3 → Bath 3",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2w7c1z"
+     ],
+     "label": "Door Family corridor → Family living & dining",
+     "value": "2400 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2x4xnr"
+     ],
+     "label": "Door Family corridor → Dressing 2",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2y0elr"
+     ],
+     "label": "Door Dressing 2 → Bedroom 2",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o2z1qa1"
+     ],
+     "label": "Door Bedroom 2 → Bath 2",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o30xjae"
+     ],
+     "label": "Door Family corridor → Master closet",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o314bm1"
+     ],
+     "label": "Door Master closet → Master bedroom",
+     "value": "950 mm",
+     "limit": "≥ 915 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o32gz12"
+     ],
+     "label": "Door Master bedroom → Master bath",
+     "value": "800 mm",
+     "limit": "≥ 710 mm (bathroom / toilet)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o33l5so"
+     ],
+     "label": "Door Family living & dining → Terrace",
+     "value": "3000 mm",
+     "limit": "≥ 915 mm"
+    }
+   ]
+  },
+  {
+   "id": "K-07",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.1",
+   "page": 708,
+   "title": "Window glazing area (bedrooms, living rooms, kitchens)",
+   "requirement": "Net glazing area >= 10% of the floor area of bedrooms, living rooms and kitchens (or daylight modelling achieving >= 150 lux).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "designed window height",
+    "net glazing area"
+   ],
+   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 10%): Majlis 20%, Kitchen 8%, Family living & dining 4%, Bedroom 4 21%, Bedroom 3 10%, Bedroom 2 10%, Master bedroom 16%."
+  },
+  {
+   "id": "K-08",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.1 e)",
+   "page": 709,
+   "title": "Housekeeper's room glazing",
+   "requirement": "Housekeeper's rooms: net glazing area >= 8% of the room floor area.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "designed window height",
+    "net glazing area"
+   ],
+   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 8%): Maid room 12%."
+  },
+  {
+   "id": "K-09",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.1 b)",
+   "page": 709,
+   "title": "Window sill height",
+   "requirement": "Window sill >= 900 mm above the interior finished floor level.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "designed window sill height"
+   ]
+  },
+  {
+   "id": "K-10",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.1 a)",
+   "page": 709,
+   "title": "Window operator height",
+   "requirement": "Windows with mechanical opening means: operator between 900 mm and 1,500 mm above FFL.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "window operation type and operator height"
+   ]
+  },
+  {
+   "id": "K-11",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.2, Figure K.22",
+   "page": 709,
+   "title": "Room depth for natural light",
+   "requirement": "Room depth should not exceed 3 x the width of the wall with the window; otherwise add a window on another side.",
+   "level": "should",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r13f0l"
+     ],
+     "label": "Majlis",
+     "value": "windows on N + W",
+     "limit": "≤ 3 × window-wall width"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5l69g"
+     ],
+     "label": "Kitchen",
+     "value": "depth 5.315 m, window wall 4.38 m (N)",
+     "limit": "depth ≤ 3 × 4.38 = 13.14 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6pana"
+     ],
+     "label": "Maid room",
+     "value": "depth 3.015 m, window wall 2.88 m (N)",
+     "limit": "depth ≤ 3 × 2.88 = 8.64 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg7p2f"
+     ],
+     "label": "Family living & dining",
+     "value": "depth 6.815 m, window wall 7.88 m (S)",
+     "limit": "depth ≤ 3 × 7.88 = 23.64 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rlr6o5"
+     ],
+     "label": "Bedroom 4",
+     "value": "windows on W + S",
+     "limit": "≤ 3 × window-wall width"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmzr40"
+     ],
+     "label": "Bedroom 3",
+     "value": "depth 4.215 m, window wall 4.08 m (S)",
+     "limit": "depth ≤ 3 × 4.08 = 12.24 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rnxkqr"
+     ],
+     "label": "Bedroom 2",
+     "value": "depth 4.215 m, window wall 4.08 m (S)",
+     "limit": "depth ≤ 3 × 4.08 = 12.24 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rogrqa"
+     ],
+     "label": "Master bedroom",
+     "value": "windows on S + E",
+     "limit": "≤ 3 × window-wall width"
+    }
+   ]
+  },
+  {
+   "id": "K-12",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.4.2.3",
+   "page": 709,
+   "title": "Access to views",
+   "requirement": "Direct line of sight to the outdoor environment from habitable spaces.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r13f0l"
+     ],
+     "label": "Majlis",
+     "value": "3 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6pana"
+     ],
+     "label": "Maid room",
+     "value": "1 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg7p2f"
+     ],
+     "label": "Family living & dining",
+     "value": "1 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rlr6o5"
+     ],
+     "label": "Bedroom 4",
+     "value": "2 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmzr40"
+     ],
+     "label": "Bedroom 3",
+     "value": "1 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rnxkqr"
+     ],
+     "label": "Bedroom 2",
+     "value": "1 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rogrqa"
+     ],
+     "label": "Master bedroom",
+     "value": "2 window(s)",
+     "limit": "≥ 1 window to outdoors"
+    }
+   ]
+  },
+  {
+   "id": "K-13",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.5.1",
+   "page": 710,
+   "title": "Hallway and corridor width",
+   "requirement": "Hallways and corridors: clear width >= 1.0 m and clear headroom >= 2.3 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r21prd"
+     ],
+     "label": "Lobby",
+     "value": "3.38 m clear",
+     "limit": "≥ 1 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rb8oxy"
+     ],
+     "label": "Family corridor",
+     "value": "1.38 m clear",
+     "limit": "≥ 1 m"
+    }
+   ]
+  },
+  {
+   "id": "K-14",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.2.2",
+   "page": 697,
+   "title": "Maximum building height",
+   "requirement": "Total building height (road edge level at main access to average roof finish) <= 16 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "number of storeys and building height"
+   ]
+  },
+  {
+   "id": "K-15",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.2.4, Table K.1",
+   "page": 698,
+   "title": "Building setbacks",
+   "requirement": "Setbacks per DCR / affection plan; when not defined: villa 3 m from road, neighbour and sikka; townhouse 3 / 0 / 3 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "plot boundary and road / sikka sides"
+   ]
+  },
+  {
+   "id": "K-16",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.2.4",
+   "page": 698,
+   "title": "Distance between buildings on a plot",
+   "requirement": "Standalone villas: >= 1.5 m between multiple buildings on the same plot.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "plot with all buildings"
+   ]
+  },
+  {
+   "id": "K-17",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.2.3",
+   "page": 698,
+   "title": "Annexes",
+   "requirement": "Annex >= 1.5 m from the main villa (may attach in townhouses), area <= 60% of main building GA, height <= 5.5 m.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "plot with annex buildings"
+   ]
+  },
+  {
+   "id": "K-18",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.2.5.2",
+   "page": 701,
+   "title": "Guardrails",
+   "requirement": "Guardrail >= 1,200 mm where a floor is more than 760 mm above FFL; no 100 mm sphere passes.",
+   "level": "shall",
+   "verified": true,
+   "engine": "out",
+   "status": "OUT OF SCOPE",
+   "items": [],
+   "note": "Single-level plans have no raised floors, balconies or roofs."
+  },
+  {
+   "id": "K-19",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.6.4, Table K.6",
+   "page": 720,
+   "title": "Parking",
+   "requirement": "At least 1 parking bay per villa or townhouse within the plot (unless the DCR differs); parking slope <= 4%.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r8qf26"
+     ],
+     "label": "Garage",
+     "value": "1 bay(s) in garage",
+     "limit": "≥ 1 bay"
+    }
+   ]
+  },
+  {
+   "id": "K-20",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.6.4, Table K.7",
+   "page": 721,
+   "title": "Garage minimum dimensions",
+   "requirement": "Garage clear width x length >= 3.0 x 5.5 m (single, open), 3.6 x 6.0 m (single, enclosed), 6.0 x 6.0 m (double, enclosed).",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r8qf26"
+     ],
+     "label": "Garage",
+     "value": "5.315 × 6.015 m clear (single)",
+     "limit": "≥ 3.6 × 6 m single, ≥ 6 × 6 m double"
+    }
+   ]
+  },
+  {
+   "id": "K-21",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.7.1",
+   "page": 721,
+   "title": "Sanitary facilities",
+   "requirement": "Every villa / townhouse includes a water closet, a wash basin and a bathtub or shower.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "Villa",
+     "value": "WC, basin and shower/bath present",
+     "limit": "WC + basin + bath or shower"
+    }
+   ]
+  },
+  {
+   "id": "K-22",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.7.2 a), Figure K.40",
+   "page": 722,
+   "title": "WC and basin side clearances",
+   "requirement": "Centres of water closets and wash basins >= 400 mm from any side wall, partition, vanity or obstruction, and >= 750 mm from the centre of an adjacent fixture.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3l4d8a",
+      "r3f2wy"
+     ],
+     "label": "WC in Guest WC",
+     "value": "840 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3m3h07",
+      "r3f2wy"
+     ],
+     "label": "Basin in Guest WC",
+     "value": "490 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3tk97e",
+      "r7zrrp"
+     ],
+     "label": "WC in Maid bath",
+     "value": "440 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3vz0cl",
+      "r7zrrp"
+     ],
+     "label": "Basin in Maid bath",
+     "value": "440 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f42ctk6",
+      "rcvibq"
+     ],
+     "label": "WC in Bath 4",
+     "value": "540 mm to Shower",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f43kkcl",
+      "rcvibq"
+     ],
+     "label": "Basin in Bath 4",
+     "value": "1240 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f456jyf",
+      "rfkki6"
+     ],
+     "label": "WC in Bath 3",
+     "value": "540 mm to Shower",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f46rgyb",
+      "rfkki6"
+     ],
+     "label": "Basin in Bath 3",
+     "value": "1240 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4831kn",
+      "rih02j"
+     ],
+     "label": "WC in Bath 2",
+     "value": "540 mm to Shower",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f49xb1n",
+      "rih02j"
+     ],
+     "label": "Basin in Bath 2",
+     "value": "1240 mm to wall",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4c67bk",
+      "rk5jpt"
+     ],
+     "label": "WC in Master bath",
+     "value": "480 mm to Bathtub",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4davz7",
+      "rk5jpt"
+     ],
+     "label": "Basin in Master bath",
+     "value": "740 mm to wall; 2050 mm to centre of Basin",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4e5015",
+      "rk5jpt"
+     ],
+     "label": "Basin in Master bath",
+     "value": "1025 mm to wall; 2050 mm to centre of Basin",
+     "limit": "≥ 400 mm side, ≥ 750 mm to adjacent fixture centre"
+    }
+   ]
+  },
+  {
+   "id": "K-23",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.7.2 b), Figure K.40",
+   "page": 722,
+   "title": "WC and basin front clearance",
+   "requirement": "Clearance in front of a water closet or wash basin >= 750 mm to any wall or door leaf, and >= 600 mm to any opposite fixture.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3l4d8a",
+      "r3f2wy"
+     ],
+     "label": "WC in Guest WC",
+     "value": "1605 mm to wall",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3m3h07",
+      "r3f2wy"
+     ],
+     "label": "Basin in Guest WC",
+     "value": "1420 mm to wall",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3tk97e",
+      "r7zrrp"
+     ],
+     "label": "WC in Maid bath",
+     "value": "765 mm to door leaf",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3vz0cl",
+      "r7zrrp"
+     ],
+     "label": "Basin in Maid bath",
+     "value": "1855 mm to wall; 945 mm to Shower",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f42ctk6",
+      "rcvibq"
+     ],
+     "label": "WC in Bath 4",
+     "value": "1305 mm to wall; 845 mm to Basin",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f43kkcl",
+      "rcvibq"
+     ],
+     "label": "Basin in Bath 4",
+     "value": "1555 mm to wall; 845 mm to WC",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f456jyf",
+      "rfkki6"
+     ],
+     "label": "WC in Bath 3",
+     "value": "1370 mm to wall; 910 mm to Basin",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f46rgyb",
+      "rfkki6"
+     ],
+     "label": "Basin in Bath 3",
+     "value": "1620 mm to wall; 910 mm to WC",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4831kn",
+      "rih02j"
+     ],
+     "label": "WC in Bath 2",
+     "value": "1370 mm to wall; 910 mm to Basin",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f49xb1n",
+      "rih02j"
+     ],
+     "label": "Basin in Bath 2",
+     "value": "1620 mm to wall; 910 mm to WC",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4c67bk",
+      "rk5jpt"
+     ],
+     "label": "WC in Master bath",
+     "value": "3105 mm to wall",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4davz7",
+      "rk5jpt"
+     ],
+     "label": "Basin in Master bath",
+     "value": "2020 mm to wall; 1110 mm to Shower",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f4e5015",
+      "rk5jpt"
+     ],
+     "label": "Basin in Master bath",
+     "value": "2020 mm to wall; 1260 mm to Bathtub",
+     "limit": "≥ 750 mm to wall / door leaf, ≥ 600 mm to opposite fixture"
+    }
+   ]
+  },
+  {
+   "id": "K-24",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.13",
+   "page": 726,
+   "title": "Screening of outdoor equipment",
+   "requirement": "Outdoor mechanical equipment should be concealed from public view by walls, screens, fences, parapets or landscape.",
+   "level": "should",
+   "verified": true,
+   "engine": "agent",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "by": "reviewer",
+   "note": "Left to the reviewer agent."
+  },
+  {
+   "id": "K-25",
+   "pack": "dm-dbc-2021",
+   "clause": "K.5.11",
+   "page": 726,
+   "title": "Townhouse party wall",
+   "requirement": "Townhouses: 2 h fire-rated wall to adjacent townhouses from foundation to roof (1 h if sprinkler protected).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "building type villa / townhouse",
+    "party wall rating"
+   ]
+  },
+  {
+   "id": "P-01",
+   "pack": "dm-dbc-2021",
+   "clause": "K.10.3.2.3",
+   "page": 830,
+   "title": "Floor drains in wet areas",
+   "requirement": "Floor drains in all areas containing wet sanitary fittings or appliances (kitchens, toilets, showers, ablution areas).",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r3f2wy"
+     ],
+     "label": "Guest WC",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5l69g"
+     ],
+     "label": "Kitchen",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r7zrrp"
+     ],
+     "label": "Maid bath",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "raj646"
+     ],
+     "label": "Laundry",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rcvibq"
+     ],
+     "label": "Bath 4",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rfkki6"
+     ],
+     "label": "Bath 3",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rih02j"
+     ],
+     "label": "Bath 2",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rk5jpt"
+     ],
+     "label": "Master bath",
+     "value": "1 floor drain(s)",
+     "limit": "≥ 1 floor drain"
+    }
+   ]
+  },
+  {
+   "id": "P-02",
+   "pack": "dm-dbc-2021",
+   "clause": "K.10.3.2.3",
+   "page": 830,
+   "title": "Floor drain trap seal",
+   "requirement": "Each floor drain receives a fitting's waste or AC condensate (or has a trap primer); >= 75 mm water seal; bidets connect to the stack, not a floor drain; floor drains not chained.",
+   "level": "shall",
+   "verified": true,
+   "engine": "agent",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "by": "reviewer",
+   "note": "Left to the reviewer agent."
+  },
+  {
+   "id": "P-03",
+   "pack": "dm-dbc-2021",
+   "clause": "K.10.2.5",
+   "page": 825,
+   "title": "Cold water storage tank",
+   "requirement": "Tank sized for >= 24 h demand (villas typically 250-350 l/day); GRP; installed in a conditioned space, not exposed outdoors.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "water tank location and size"
+   ]
+  },
+  {
+   "id": "P-04",
+   "pack": "dm-dbc-2021",
+   "clause": "K.10.2.9",
+   "page": 826,
+   "title": "Hot water supply",
+   "requirement": "Hot water supplied to basins, sinks, showers and baths; stored >= 60 C; 50 C at outlets within 1 min; pumped return unless trace heating.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "wh",
+     "value": "1 present",
+     "limit": "≥ 1"
+    }
+   ],
+   "note": "Checks that a water heater exists; temperatures and return loop are design notes for the reviewer."
+  },
+  {
+   "id": "P-05",
+   "pack": "dm-dbc-2021",
+   "clause": "K.10.2.9, Table K.59",
+   "page": 827,
+   "title": "Hot water outlet temperatures",
+   "requirement": "Thermostatic mixing valves: shower 41 C, wash basin 38-41 C, bath 44 C maximum.",
+   "level": "shall",
+   "verified": true,
+   "engine": "out",
+   "status": "OUT OF SCOPE",
+   "items": [],
+   "note": "Specification item, not shown on a plan."
+  },
+  {
+   "id": "F-01",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.10.5.2; FLSC Ch.8 Table 8.13 item 26",
+   "page": 841,
+   "title": "Smoke detection and alarm system",
+   "requirement": "Every villa / townhouse has a smoke detection and alarm system (wired per Ch.8 Section 4.3, or wireless per Section 4.11).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire detectors"
+   ]
+  },
+  {
+   "id": "F-02",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.8 Table 8.14 items 26, 27, 30",
+   "page": 511,
+   "title": "Detectors in bedrooms, living rooms and corridors",
+   "requirement": "Bedroom: sounder-based smoke detector; living room: smoke detector; corridor: smoke detector.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire detectors"
+   ]
+  },
+  {
+   "id": "F-03",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.8 Table 8.14 item 29",
+   "page": 511,
+   "title": "Closed kitchen detector",
+   "requirement": "Closed kitchen: detector listed for kitchens, or a heat detector.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire detectors"
+   ]
+  },
+  {
+   "id": "F-04",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.8 Table 8.14 item 28",
+   "page": 511,
+   "title": "Open kitchen detector",
+   "requirement": "Open kitchen: listed kitchen detector, or heat detector plus a smoke detector 3 m from the counter in the living room, or a listed kitchen multisensor.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire detectors"
+   ]
+  },
+  {
+   "id": "F-05",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.10.5.2",
+   "page": 841,
+   "title": "Fire alarm panel location",
+   "requirement": "The fire alarm control panel or monitoring panel is located near the front door.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire alarm panel"
+   ]
+  },
+  {
+   "id": "F-06",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.10.5.2; FLSC Table 8.13 item 26 iv",
+   "page": 841,
+   "title": "Outdoor audio-visual notification",
+   "requirement": "Audio-visual notification devices outside the villa, visible from the common approach road.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "outdoor AV device",
+    "road side of the plot"
+   ]
+  },
+  {
+   "id": "F-07",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.10.5.4",
+   "page": 841,
+   "title": "Hassantuk connection",
+   "requirement": "The villa fire alarm system is connected to DCD control centres through Hassantuk for Homes.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fire alarm system with Hassantuk flag"
+   ]
+  },
+  {
+   "id": "F-08",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.10.5.3; FLSC Ch.9 Table 9.23",
+   "page": 841,
+   "title": "Sprinklers and hose reels threshold",
+   "requirement": "Sprinklers in every room and hose reels are required when the ground floor GA > 1,500 m2 (or a basement GA > 1,500 m2).",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "Ground floor",
+     "value": "GA 370.5 m²",
+     "limit": "sprinklers only above 1500 m²"
+    }
+   ],
+   "note": "Sprinklers and hose reels not required."
+  },
+  {
+   "id": "F-09",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 2 i",
+   "page": 323,
+   "title": "Primary means of escape",
+   "requirement": "Every sleeping room and every living area has a primary means of escape: a door, stair or ramp giving unobstructed travel to the outside.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r13f0l"
+     ],
+     "label": "Majlis",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6pana"
+     ],
+     "label": "Maid room",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg7p2f"
+     ],
+     "label": "Family living & dining",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rlr6o5"
+     ],
+     "label": "Bedroom 4",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmzr40"
+     ],
+     "label": "Bedroom 3",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rnxkqr"
+     ],
+     "label": "Bedroom 2",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rogrqa"
+     ],
+     "label": "Master bedroom",
+     "value": "door route to outside",
+     "limit": "primary means of escape to outside"
+    }
+   ]
+  },
+  {
+   "id": "F-09b",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 2 i, iv",
+   "page": 323,
+   "title": "Secondary means of escape",
+   "requirement": "Every sleeping room and living area also has a secondary means of escape (not required if the villa is sprinklered): a remote door / stair / ramp, a passage through an adjacent non-lockable space, a roof route, or an operable escape window.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "operable windows (escape window size)",
+    "sprinkler protection flag"
+   ]
+  },
+  {
+   "id": "F-10",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 2 iv d",
+   "page": 323,
+   "title": "Escape window size",
+   "requirement": "Escape window on an exterior wall: >= 510 mm wide, >= 610 mm high, clear opening >= 0.53 m2, bottom <= 6,100 mm above finished ground.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "operable windows (escape window size)"
+   ]
+  },
+  {
+   "id": "F-11",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 2 iii",
+   "page": 323,
+   "title": "Two exits for large floors",
+   "requirement": "Where any floor of the villa exceeds 400 m2, two primary means of escape remote from each other are provided.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "N/A",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "Floor",
+     "value": "GA 370.5 m²",
+     "limit": "rule applies above 400 m²"
+    }
+   ],
+   "note": "Floor area is not above 400 m²."
+  },
+  {
+   "id": "F-12",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 3",
+   "page": 323,
+   "title": "Door hardware",
+   "requirement": "Bathroom doors openable from outside in an emergency when locked; closet latches openable from inside; no locking that impedes egress while occupied.",
+   "level": "shall",
+   "verified": true,
+   "engine": "agent",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "by": "reviewer",
+   "note": "Left to the reviewer agent."
+  },
+  {
+   "id": "F-13",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.3 Table 3.27 item 4",
+   "page": 323,
+   "title": "Hallway width (FLSC)",
+   "requirement": "Hallway >= 915 mm wide with clear headroom >= 2,030 mm (DBC K-13 at 1.0 m is stricter and governs).",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r21prd"
+     ],
+     "label": "Lobby",
+     "value": "3.38 m clear",
+     "limit": "≥ 0.915 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rb8oxy"
+     ],
+     "label": "Family corridor",
+     "value": "1.38 m clear",
+     "limit": "≥ 0.915 m"
+    }
+   ]
+  },
+  {
+   "id": "F-14",
+   "pack": "cd-flsc-2018",
+   "clause": "FLSC Ch.4 Table 4.3",
+   "page": 377,
+   "title": "Kitchen fire extinguisher",
+   "requirement": "Home kitchen: one multipurpose dry-powder extinguisher (2.5 kg) inside the kitchen next to the exit door.",
+   "level": "shall",
+   "verified": false,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "extinguisher"
+   ]
+  },
+  {
+   "id": "F-15",
+   "pack": "cd-flsc-2018",
+   "clause": "DBC K.9.4",
+   "page": 803,
+   "title": "LPG cylinders",
+   "requirement": "LPG cylinders are not permitted indoors (unless DCD agrees; then FLSC Ch.11 Table 11.2).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "N/A",
+   "items": [],
+   "note": "Assumed all-electric (pack default): no LPG on site."
+  },
+  {
+   "id": "E-01",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.17.2",
+   "page": 795,
+   "title": "Distribution board location",
+   "requirement": "DBs not installed in bathrooms or toilets, damp or wet locations, bedrooms, kitchens, above sinks, store rooms, hot or hazardous rooms, or below a staircase.",
+   "level": "shall",
+   "verified": true,
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3ypncb",
+      "r9fh9a"
+     ],
+     "label": "DB in Mech",
+     "value": "Mech (mech)",
+     "limit": "not in bath, wet area, bedroom, kitchen, store, above sink"
+    }
+   ]
+  },
+  {
+   "id": "E-02",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.17.2, Figure K.79",
+   "page": 795,
+   "title": "DB mounting height and access",
+   "requirement": "DB top <= 2 m above FFL; access available at all times.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "DB mounting height"
+   ]
+  },
+  {
+   "id": "E-03",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.13.2",
+   "page": 779,
+   "title": "Socket outlets",
+   "requirement": "13 A BS 1363 shuttered, switched socket outlets; 15 A to BS 546; IP55 outdoors; shaver outlets to BS EN 61558 in bathrooms.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "socket outlets (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-04",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.17.4, Figure K.80",
+   "page": 796,
+   "title": "Accessory mounting heights",
+   "requirement": "Switches, AC / water heater DP switches and shaver outlets 1.25 m above FFL; general 13 A sockets 450 mm; kitchen sockets 150 mm above the worktop.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "socket outlets (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-05",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.13.5, Figure K.72",
+   "page": 781,
+   "title": "Kitchen socket positions",
+   "requirement": "No socket within 300 mm of the sink edge; no sockets or accessories above gas or electric hobs.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "socket outlets (engine-generated in Phase 4)",
+    "kitchen counters"
+   ]
+  },
+  {
+   "id": "E-06",
+   "pack": "dewa-2017",
+   "clause": "DEWA 2017 4.7.1",
+   "page": 46,
+   "title": "Sockets per circuit",
+   "requirement": "Radial final circuit: at most five 13 A sockets on a 20 A breaker; ring circuit: at most ten sockets on a 30 A breaker (rooms other than kitchen).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "circuit schedule (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-07",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.13.4, Figure K.71",
+   "page": 780,
+   "title": "Cooker control unit",
+   "requirement": "Cooker control switch (BS 4177) separate from the appliance and within 2 m of it, on its own final circuit through a 100 mA ELCB.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "switches (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-08",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.13.6",
+   "page": 782,
+   "title": "Water heater and washing machine control",
+   "requirement": "Own final circuit, DP switch with neon and flex outlet; a water heater in a bathroom or WC has its switch immediately outside the room; heater circuits on 30 mA RCCB/ELCB.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "switches (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-09",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.13.7",
+   "page": 782,
+   "title": "Air-conditioning unit circuits",
+   "requirement": "Each room AC unit on its own final circuit with an adjacent DP switch and flex outlet; minimum 20 A breaker and 4 mm2 wiring.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "circuit schedule (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-10",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.18.4, Table K.46",
+   "page": 800,
+   "title": "Earth leakage ratings",
+   "requirement": "RCD/ELCB: 13 A sockets, water heaters, dishwashers, fridges, washers, domestic pumps 30 mA; window/split AC, FCU/AHU and cookers 100 mA; general lighting 30/100 mA.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "circuit schedule (engine-generated in Phase 4)"
+   ]
+  },
+  {
+   "id": "E-11",
+   "pack": "dewa-2017",
+   "clause": "DBC K.9.1.15.1",
+   "page": 783,
+   "title": "Lighting circuit loading",
+   "requirement": "Lighting and fan circuits <= 2,000 W, 2.5 mm2 LSF copper, <= 16 A breaker; 100 W per point if fittings are not selected.",
+   "level": "shall",
+   "verified": true,
+   "engine": "out",
+   "status": "OUT OF SCOPE",
+   "items": [],
+   "note": "Load calculations are planned for a later version."
+  },
+  {
+   "id": "V-01",
+   "pack": "ashrae-62.2-2019",
+   "clause": "ASHRAE 62.2-2019 4.1.1, Eq. 4-1b",
+   "page": null,
+   "title": "Whole-dwelling ventilation rate",
+   "requirement": "Mechanical outdoor air Qtot = 0.15 x floor area (m2) + 3.5 x (bedrooms + 1) L/s.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fresh-air system and its airflow"
+   ],
+   "estimate": "Required Qtot ≈ 0.15 × 337.9 m² + 3.5 × (5 + 1) = 72 L/s (conditioned area, 5 bedrooms incl. staff)."
+  },
+  {
+   "id": "V-02",
+   "pack": "ashrae-62.2-2019",
+   "clause": "ASHRAE 62.2-2019 5.1",
+   "page": null,
+   "title": "Local exhaust in kitchens and bathrooms",
+   "requirement": "A local mechanical exhaust system in each kitchen and bathroom.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "exhaust fans"
+   ]
+  },
+  {
+   "id": "V-03",
+   "pack": "ashrae-62.2-2019",
+   "clause": "ASHRAE 62.2-2019 Table 5-1",
+   "page": null,
+   "title": "Demand-controlled exhaust rates",
+   "requirement": "Bathroom 25 L/s; kitchen vented range hood 50 L/s (other kitchen exhaust fans 150 L/s or 5 ach for enclosed kitchens).",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "exhaust fans with airflow"
+   ]
+  },
+  {
+   "id": "V-04",
+   "pack": "ashrae-62.2-2019",
+   "clause": "ASHRAE 62.2-2019 Table 5-2",
+   "page": null,
+   "title": "Continuous exhaust rates",
+   "requirement": "Bathroom 10 L/s; enclosed kitchen 5 ach based on kitchen volume.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "exhaust fans with airflow"
+   ]
+  },
+  {
+   "id": "V-05",
+   "pack": "ashrae-62.2-2019",
+   "clause": "DBC K.10.1.7",
+   "page": 819,
+   "title": "Natural ventilation not relied upon",
+   "requirement": "Natural ventilation through windows and doors is permitted but shall not be relied upon for ventilation and thermal comfort.",
+   "level": "shall",
+   "verified": true,
+   "engine": "spec",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "needs": [
+    "fresh-air system and its airflow"
+   ]
+  },
+  {
+   "id": "V-06",
+   "pack": "ashrae-62.2-2019",
+   "clause": "DBC K.10.1.10.2",
+   "page": 823,
+   "title": "Bathroom fan interlock",
+   "requirement": "Bathroom / toilet extract fans controlled through the light switch, timers or sensors.",
+   "level": "shall",
+   "verified": true,
+   "engine": "agent",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "by": "reviewer",
+   "note": "Left to the reviewer agent."
+  },
+  {
+   "id": "V-07",
+   "pack": "ashrae-62.2-2019",
+   "clause": "DBC K.10.1.8.4",
+   "page": 820,
+   "title": "Kitchen range hood ducting",
+   "requirement": "Range hoods discharge outdoors through smooth, airtight metal ducts with a backdraft damper, unless ductless with other mechanical ventilation provided.",
+   "level": "shall",
+   "verified": true,
+   "engine": "agent",
+   "status": "NOT CHECKABLE",
+   "items": [],
+   "by": "reviewer",
+   "note": "Left to the reviewer agent."
+  }
+ ]
+}

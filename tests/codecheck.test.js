@@ -13,11 +13,15 @@ function codecheck(planFile) {
   execFileSync(process.execPath, [ENGINE, "codecheck", planFile, "--pack", "dubai", "--out", out, "--name", "t"]);
   return JSON.parse(fs.readFileSync(path.join(out, "t.codecheck.json"), "utf8"));
 }
-function buildAndCheck(spec) {
+// build a spec, then check it. packOnBuild=false keeps the plan as written (planted violations survive);
+// packOnBuild=true lets the engine apply the pack's placement rules (clearances, floor drains) while building.
+function buildAndCheck(spec, packOnBuild) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-b-")), f = path.join(dir, "s.spec.json");
   fs.writeFileSync(f, JSON.stringify(spec));
-  execFileSync(process.execPath, [ENGINE, "build", f, "--out", dir, "--name", "t", "--pack", "dubai"]);
-  return JSON.parse(fs.readFileSync(path.join(dir, "t.codecheck.json"), "utf8"));
+  const args = [ENGINE, "build", f, "--out", dir, "--name", "t"].concat(packOnBuild ? ["--pack", "dubai"] : []);
+  const summary = JSON.parse(execFileSync(process.execPath, args, {encoding: "utf8"}));
+  const rep = packOnBuild ? JSON.parse(fs.readFileSync(path.join(dir, "t.codecheck.json"), "utf8")) : codecheck(path.join(dir, "t.plan.json"));
+  return Object.assign(rep, {summary});
 }
 const byId = rep => Object.fromEntries(rep.results.map(r => [r.id, r]));
 
@@ -33,15 +37,25 @@ test("rule pack loads: unique ids, known measures, every id in the rule list", (
   assert.equal(rules.length, 64);
 });
 
-test("example UAE villa: known fails, passes and gaps", () => {
+test("example UAE villa (v0.5 spec, built with --pack dubai): no fails, known gaps", () => {
   const R = byId(codecheck(path.join(ROOT, "examples", "uae-villa-4br", "uae-villa-4br.plan.json")));
-  const fails = Object.values(R).filter(r => r.status === "FAIL").map(r => r.id).sort();
-  assert.deepEqual(fails, ["K-06", "K-20", "K-22", "K-23", "P-01"]);
-  assert.equal(R["K-06"].items.filter(i => !i.ok).length, 16);     // 0.8 / 0.9 m doors, 0.7 m maid bath door
-  assert.equal(R["P-01"].items.filter(i => !i.ok).length, 8);      // no floor drains anywhere
-  for (const id of ["K-01", "K-02", "K-03", "K-12", "K-13", "K-21", "F-08", "F-09", "F-13", "E-01"]) assert.equal(R[id].status, "PASS", id);
+  const fails = Object.values(R).filter(r => r.status === "FAIL" || r.status === "ADVISE").map(r => r.id);
+  assert.deepEqual(fails, []);
+  assert.equal(R["K-06"].items.length, 26);                          // every leaf door checked
+  assert.equal(R["P-01"].items.length, 8);                           // 8 wet rooms, each with a floor drain
+  assert.equal(R["K-23"].items.length, 13);                          // 6 WCs + 7 basins
+  for (const id of ["K-01", "K-02", "K-03", "K-06", "K-12", "K-13", "K-20", "K-21", "K-22", "K-23", "P-01", "F-08", "F-09", "F-13", "E-01"]) assert.equal(R[id].status, "PASS", id);
   for (const id of ["K-05", "K-07", "F-01", "E-03", "V-01"]) assert.equal(R[id].status, "NOT CHECKABLE", id);
   assert.equal(R["F-15"].status, "N/A");
+});
+
+test("example spec built without a pack: v0.4 behaviour (no drains added, no code check)", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-np-"));
+  const out = JSON.parse(execFileSync(process.execPath, [ENGINE, "build", path.join(ROOT, "examples", "uae-villa-4br", "uae-villa-4br.spec.json"), "--out", dir, "--name", "t"], {encoding: "utf8"}));
+  assert.equal(out.codecheck, undefined);
+  assert.ok(!out.builder_notes.some(n => /Floor drain added/.test(n)));
+  const plan = JSON.parse(fs.readFileSync(path.join(dir, "t.plan.json"), "utf8"));
+  assert.equal(plan.fixtures.filter(f => f.kind === "fd").length, 0);
 });
 
 /* traps: values exactly at a limit must pass (clear sizes measured inside wall faces) */
@@ -64,8 +78,7 @@ test("traps at the limit pass; just below fails", () => {
 });
 
 /* planted violations in a small built villa */
-test("planted violations are caught", () => {
-  const spec = {
+const PLANTED = {
     project: "Planted", rooms: [
       {name: "Hall", type: "hall", x: 0, y: 0, w: 0.95, d: 8},
       {name: "Bedroom", type: "bedroom", x: 0.95, y: 0, w: 3.0, d: 3.4},
@@ -77,8 +90,10 @@ test("planted violations are caught", () => {
     windows: [{room: "Bedroom", side: "N", w: 1.2}, {room: "Maid room", side: "S", w: 0.8}, {room: "Kitchen", side: "S", w: 1}],
     fixtures: [{kind: "wc", room: "Bath", side: "N"}, {kind: "basin", room: "Bath", side: "E"}, {kind: "shower", room: "Bath", side: "S"},
                {kind: "sink", room: "Kitchen", side: "N"}, {kind: "panel", room: "Kitchen", side: "E"}, {kind: "wh", room: "Kitchen", side: "W"}]
-  };
-  const R = byId(buildAndCheck(spec));
+};
+
+test("planted violations are caught", () => {
+  const R = byId(buildAndCheck(PLANTED, false));
   const failed = id => R[id].items.filter(i => !i.ok).map(i => i.label);
   assert.equal(R["K-13"].status, "FAIL");                                         // 0.95 m hall (minus walls)
   assert.ok(failed("K-01").includes("Bedroom"));                                  // clear area below 10.5 m2
@@ -87,4 +102,18 @@ test("planted violations are caught", () => {
   assert.ok(failed("K-06").some(l => /Bath$/.test(l)));                           // 0.70 m bathroom door
   assert.ok(failed("E-01").some(l => /Kitchen/.test(l)));                         // DB in the kitchen
   assert.deepEqual(failed("P-01").sort(), ["Bath", "Kitchen"]);                   // no floor drains
+});
+
+test("build --pack dubai repairs placement but never overrides the spec", () => {
+  const rep = buildAndCheck(PLANTED, true), R = byId(rep), notes = rep.summary.builder_notes;
+  assert.equal(R["P-01"].status, "PASS");                                         // drains added by the engine...
+  assert.ok(notes.includes("Floor drain added in Bath (P-01 K.10.3.2.3)"));       // ...and reported
+  assert.equal(R["K-06"].status, "FAIL");                                         // explicit door widths are kept
+  assert.equal(R["E-01"].status, "FAIL");                                         // DB room is the spec's choice
+  // WC / basin clearances: either met, or the engine reports that the room cannot meet them
+  // (the note may name the blocking fixture, e.g. a shower that had no legal spot, rather than the WC / basin)
+  for (const id of ["K-22", "K-23"]) for (const i of R[id].items.filter(x => !x.ok)) {
+    const room = i.label.split(" in ")[1];
+    assert.ok(notes.some(n => n.includes(` in ${room}: no position keeps`) || n.includes(` in ${room} could not clear`)), `${id} ${i.label} failed silently`);
+  }
 });

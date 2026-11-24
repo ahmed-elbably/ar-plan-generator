@@ -19,8 +19,14 @@ The engine is `scripts/arplan.js` in the plugin root, two folders above this ski
    This prints the Markdown report and saves it as `<name>.report.md`. It covers:
    - gross and conditioned area (conditioned excludes garage and outdoor rooms), counts of rooms, doors, windows, fixtures
    - room schedule with areas
-   - MEP readiness: rooms typed, every room has a door, bedrooms have windows (IRC R310 egress), bathrooms and WCs complete, kitchen sink, water heater, AHU, electrical panel, fixtures inside rooms
+   - MEP readiness: rooms typed, every room has a door, bedrooms have windows (escape and daylight), bathrooms and WCs complete, kitchen sink, water heater, AHU, electrical panel, fixtures inside rooms
    - clashes: fixtures overlapping each other, standing in a doorway, or in a door's swing
+
+   For a Dubai project (or when the user asks for a code check), also run the authority code check:
+   ```bash
+   node "<plugin root>/scripts/arplan.js" codecheck <plan>.plan.json --pack dubai --out <output dir>
+   ```
+   It writes `<name>.codecheck.md` / `.codecheck.json`: every rule of DBC 2021 Part K, UAE FLSC 2018, DEWA 2017 and ASHRAE 62.2-2019 as PASS, FAIL, ADVISE, NOT CHECKABLE (data the plan does not hold yet), N/A or OUT OF SCOPE, each with its clause, page, measured value and limit.
 3. **Export** when the user asks for drawings:
    ```bash
    node "<plugin root>/scripts/arplan.js" export <plan>.plan.json --out <output dir> [--name NAME]

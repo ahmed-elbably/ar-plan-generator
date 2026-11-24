@@ -18,11 +18,12 @@ The engine is `scripts/arplan.js` in the plugin root, two folders above this ski
 4. **Write the spec** to `<slug>.spec.json` in the working directory. Run the self-check list in `references/spec-format.md` and fix problems before building.
 5. **Build:**
    ```bash
-   node "<plugin root>/scripts/arplan.js" build <slug>.spec.json --out <output dir> --name <slug> [--units ft] [--level "Ground floor"]
+   node "<plugin root>/scripts/arplan.js" build <slug>.spec.json --out <output dir> --name <slug> [--units ft] [--level "Ground floor"] [--pack dubai]
    ```
-   The command prints a JSON summary: `stats`, `builder_notes`, `ready_for_mep`, `failed_checks`, `clashes`, `files`. It writes `<slug>.plan.json`, `.svg`, `.dxf`, `.ifc`, `.3d.html` and `.report.md`.
+   Add `--pack dubai` for projects in Dubai, and for UAE briefs that name no other emirate (state that Dubai rules were applied). The pack makes the engine keep the DBC WC / basin clearances, add missing floor drains, and run the code check.
+   The command prints a JSON summary: `stats`, `builder_notes`, `ready_for_mep`, `failed_checks`, `clashes`, `files`, and with a pack `codecheck` (`summary` counts and `fails`). It writes `<slug>.plan.json`, `.svg`, `.dxf`, `.ifc`, `.3d.html` and `.report.md`, and with a pack `<slug>.codecheck.md` and `.codecheck.json`.
 6. **Show the first look right away.** As soon as the first build succeeds, render the SVG to PNG and send it to the user with a one-line caption ("First pass: zoning and rooms; checking doors and fixtures next"), before any fix-and-rebuild round. The user should never wait for the final answer to see the layout.
-7. **Fix and rebuild** (at most two rounds) when the summary shows any of these: overlapping rooms, a door that could not be placed, a bedroom or living room without an outside wall, missing bathroom fixtures, fixture clashes, or a missing water heater, AHU or electrical panel. Edit the spec, not the outputs. Notes such as "window moved from N to E" or a fixture moved to clear a door are fine to keep.
+7. **Fix and rebuild** (at most two rounds) when the summary shows any of these: overlapping rooms, a door that could not be placed, a bedroom or living room without an outside wall, missing bathroom fixtures, fixture clashes, a missing water heater, AHU or electrical panel, any code-check `fails`, or a builder note that a room is too small for its WC / basin clearances. Edit the spec, not the outputs. "NOT CHECKABLE" code-check rules are not failures; list the main ones in the reply as open items. Notes such as "window moved from N to E" or a fixture moved to clear a door are fine to keep.
 8. **Look at it once.** Convert the SVG to PNG with whatever is available (`rsvg-convert -w 2000`, `python3 -c "import cairosvg; ..."`, or a headless Chrome screenshot) and view it to confirm the layout reads well. If nothing can render SVG, skip this step.
 9. **Make the build replay** from the final plan:
    ```bash

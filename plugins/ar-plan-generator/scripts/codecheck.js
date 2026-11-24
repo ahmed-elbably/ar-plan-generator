@@ -201,9 +201,9 @@ const MEASURES = {
       let plus = rayToBox(fx.c, fx.u, b), minus = rayToBox(fx.c, neg(fx.u), b), what = {plus: "wall", minus: "wall"};
       let adj = Infinity, adjName = "";
       for (const o of M.fixtures) {
-        if (o === fx || o.room !== fx.room) continue;
+        if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind)) continue;   // floor drains are not obstructions
         const pts = o.corners.map(q => local(fx, q, G)), [l0, l1] = range(pts.map(q => q.l)), [d0, d1] = range(pts.map(q => q.d));
-        if (Math.min(d1, fx.hd) - Math.max(d0, -fx.hd) <= 0.01) continue;     // not beside this fixture
+        if (Math.min(d1, fx.hd) - Math.max(d0, -fx.hd) <= 0.001) continue;     // not beside this fixture
         if (p.kinds.includes(o.kind)) {                                       // adjacent WC / basin: centre to centre
           const cc = Math.abs(local(fx, o.c, G).l); if (cc < adj) { adj = cc; adjName = o.label; }
         } else if (l0 >= 0 && l0 < plus) { plus = l0; what.plus = o.label; }
@@ -225,10 +225,10 @@ const MEASURES = {
       let wall = rayToBox(fx.c, fx.fr, fx.room.clear) - fx.hd, fix = Infinity, fixName = "", door = Infinity;
       const inFront = pts => {
         const q = pts.map(x => local(fx, x, G)), [l0, l1] = range(q.map(x => x.l)), [d0, d1] = range(q.map(x => x.d));
-        if (Math.min(l1, fx.hw) - Math.max(l0, -fx.hw) <= 0.01 || d1 <= fx.hd + 0.001) return Infinity;
+        if (Math.min(l1, fx.hw) - Math.max(l0, -fx.hw) <= 0.001 || d1 <= fx.hd + 0.001) return Infinity;
         return Math.max(0, d0 - fx.hd);
       };
-      for (const o of M.fixtures) { if (o === fx || o.room !== fx.room) continue; const g = inFront(o.corners); if (g < fix) { fix = g; fixName = o.label; } }
+      for (const o of M.fixtures) { if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind)) continue; const g = inFront(o.corners); if (g < fix) { fix = g; fixName = o.label; } }
       for (const lf of M.leaves) { if (lf.room !== fx.room) continue; door = Math.min(door, inFront(lf.pts)); }
       const wallOrDoor = Math.min(wall, door), wd = door < wall ? "door leaf" : "wall";
       const ok = wallOrDoor >= p.to_wall - EPS && fix >= p.to_fixture - EPS;
@@ -255,7 +255,8 @@ const MEASURES = {
       if (!r) bad.push("not inside a room");
       else if (p.forbidden_types.includes(r.type)) bad.push(`${r.type === "laundry" ? "laundry (wet location)" : r.type === "closet" ? "store room / closet" : r.type} not allowed`);
       if (r && r.staff) bad.push("bedroom (staff) not allowed");
-      for (const o of M.fixtures) if (p.near_kinds.includes(o.kind) && M.G.dist(o.c, fx.c) < p.near_dist) bad.push(`next to ${o.label}`);
+      // "above sinks": a sink or basin in the same room within near_dist (a basin behind the wall does not count)
+      for (const o of M.fixtures) if (p.near_kinds.includes(o.kind) && o.room === fx.room && M.G.dist(o.c, fx.c) < p.near_dist) bad.push(`above / next to ${o.label}`);
       return item(!bad.length, [fx.id].concat(r ? [r.id] : []), `DB${r ? " in " + r.name : ""}`, bad.length ? bad.join("; ") : `${r.name} (${r.type})`, "not in bath, wet area, bedroom, kitchen, store, above sink");
     }));
   },
@@ -380,4 +381,17 @@ function toMarkdown(rep) {
   return L.join("\n");
 }
 
-module.exports = {run, toMarkdown, loadPack, MEASURES, STATUS_ORDER};
+/* values the engine uses while placing fixtures, taken from the same rules the checker applies */
+function placementRules(pack, rulesDir) {
+  rulesDir = rulesDir || path.join(__dirname, "..", "rules");
+  const {rules} = loadPack(pack, rulesDir);
+  const one = m => rules.find(r => r.measure === m);
+  const side = one("fixture_side_clearance"), front = one("fixture_front_clearance"), fd = one("floor_drain_wet_rooms");
+  const out = {};
+  if (side && front) out.clear = {kinds: side.params.kinds, to_side: side.params.to_side, to_adjacent: side.params.to_adjacent,
+    to_wall: front.params.to_wall, to_fixture: front.params.to_fixture, ignore: side.params.ignore || [], ref: `${side.id}/${front.id} ${side.clause.split(" ")[0]}`};
+  if (fd) out.drains = {wet_types: fd.params.wet_types, wet_kinds: fd.params.wet_kinds, ref: `${fd.id} ${fd.clause}`};
+  return out;
+}
+
+module.exports = {run, toMarkdown, loadPack, placementRules, MEASURES, STATUS_ORDER};
