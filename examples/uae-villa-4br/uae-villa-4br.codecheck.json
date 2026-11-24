@@ -35,9 +35,9 @@
  "summary": {
   "FAIL": 0,
   "ADVISE": 0,
-  "NOT CHECKABLE": 41,
-  "PASS": 18,
-  "N/A": 2,
+  "NOT CHECKABLE": 29,
+  "PASS": 28,
+  "N/A": 4,
   "OUT OF SCOPE": 3
  },
  "results": [
@@ -56,7 +56,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r13f0l"
+      "r1n7s2"
      ],
      "label": "Majlis",
      "value": "30.9 m², 5.815 × 5.315 m clear",
@@ -65,7 +65,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg7p2f"
+      "rg8h9c"
      ],
      "label": "Family living & dining",
      "value": "53.7 m², 7.88 × 6.815 m clear",
@@ -74,7 +74,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rlr6o5"
+      "rl0i3v"
      ],
      "label": "Bedroom 4",
      "value": "16.9 m², 4.015 × 4.215 m clear",
@@ -83,7 +83,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmzr40"
+      "rmcjp9"
      ],
      "label": "Bedroom 3",
      "value": "17.2 m², 4.08 × 4.215 m clear",
@@ -92,7 +92,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rnxkqr"
+      "rntjke"
      ],
      "label": "Bedroom 2",
      "value": "17.2 m², 4.08 × 4.215 m clear",
@@ -101,7 +101,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rogrqa"
+      "ro1x6h"
      ],
      "label": "Master bedroom",
      "value": "27.0 m², 6.415 × 4.215 m clear",
@@ -124,7 +124,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6pana"
+      "r6xgtx"
      ],
      "label": "Maid room",
      "value": "8.7 m², 2.88 × 3.015 m clear",
@@ -147,7 +147,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5l69g"
+      "r5ddjx"
      ],
      "label": "Kitchen",
      "value": "23.3 m², 4.38 × 5.315 m clear",
@@ -164,11 +164,27 @@
    "requirement": "Manoeuvring space between kitchen counters, or in front of a single-sided counter, >= 1.2 m.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "kitchen counters"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ddjx"
+     ],
+     "label": "Kitchen N counter",
+     "value": "4.715 m to wall",
+     "limit": "≥ 1.2 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ddjx"
+     ],
+     "label": "Kitchen E counter",
+     "value": "3.78 m to wall",
+     "limit": "≥ 1.2 m"
+    }
    ]
   },
   {
@@ -180,11 +196,225 @@
    "requirement": "Clear height >= 2.7 m in living and bedroom spaces, >= 2.3 m in any other space and staircases, >= 2.03 m in non-habitable rooms under stairs.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "designed ceiling height per room (ceiling_h)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r1n7s2"
+     ],
+     "label": "Majlis",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r2lpoe"
+     ],
+     "label": "Lobby",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r38y2f"
+     ],
+     "label": "Guest WC",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r47q3w"
+     ],
+     "label": "Pantry",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ddjx"
+     ],
+     "label": "Kitchen",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6xgtx"
+     ],
+     "label": "Maid room",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r79118"
+     ],
+     "label": "Maid bath",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r8wd3l"
+     ],
+     "label": "Garage",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r9gwpx"
+     ],
+     "label": "Mech",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "raiq0y"
+     ],
+     "label": "Laundry",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rbw88s"
+     ],
+     "label": "Family corridor",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rcf1aq"
+     ],
+     "label": "Bath 4",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rd6hbd"
+     ],
+     "label": "Dressing 4",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rej2rf"
+     ],
+     "label": "Dressing 3",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rf6a5e"
+     ],
+     "label": "Bath 3",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg8h9c"
+     ],
+     "label": "Family living & dining",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rhjt81"
+     ],
+     "label": "Dressing 2",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ri4jmm"
+     ],
+     "label": "Bath 2",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rjtv83"
+     ],
+     "label": "Master closet",
+     "value": "3 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rkxqyj"
+     ],
+     "label": "Master bath",
+     "value": "2.6 m",
+     "limit": "≥ 2.3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rl0i3v"
+     ],
+     "label": "Bedroom 4",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmcjp9"
+     ],
+     "label": "Bedroom 3",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rntjke"
+     ],
+     "label": "Bedroom 2",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ro1x6h"
+     ],
+     "label": "Master bedroom",
+     "value": "3 m",
+     "limit": "≥ 2.7 m (living / bedroom)"
+    }
    ]
   },
   {
@@ -202,7 +432,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2dd54f"
+      "o2dz0uy"
      ],
      "label": "Door Outside → Lobby",
      "value": "1400 mm",
@@ -211,7 +441,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2ecxdt"
+      "o2eqe0g"
      ],
      "label": "Door Lobby → Majlis",
      "value": "1000 mm",
@@ -220,7 +450,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2f3uxn"
+      "o2fph64"
      ],
      "label": "Door Lobby → Guest WC",
      "value": "800 mm",
@@ -229,7 +459,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2gu5a9"
+      "o2g1glu"
      ],
      "label": "Door Lobby → Family corridor",
      "value": "1400 mm",
@@ -238,7 +468,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2hzkd8"
+      "o2h2bq1"
      ],
      "label": "Door Family corridor → Kitchen",
      "value": "950 mm",
@@ -247,7 +477,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2i5542"
+      "o2i9o5q"
      ],
      "label": "Door Kitchen → Pantry",
      "value": "950 mm",
@@ -256,7 +486,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2j4t2z"
+      "o2jnq89"
      ],
      "label": "Door Kitchen → Laundry",
      "value": "950 mm",
@@ -265,7 +495,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2kin1k"
+      "o2k9w5m"
      ],
      "label": "Door Laundry → Maid room",
      "value": "950 mm",
@@ -274,7 +504,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2l4gxw"
+      "o2li0nu"
      ],
      "label": "Door Maid room → Maid bath",
      "value": "800 mm",
@@ -283,7 +513,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2mkg5o"
+      "o2me16l"
      ],
      "label": "Door Laundry → Mech",
      "value": "950 mm",
@@ -292,7 +522,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2n325y"
+      "o2nhz78"
      ],
      "label": "Door Garage → Mech",
      "value": "950 mm",
@@ -301,7 +531,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2o7fk5"
+      "o2obtpb"
      ],
      "label": "Door Family corridor → Garage",
      "value": "950 mm",
@@ -310,7 +540,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2qsyod"
+      "o2q8gpc"
      ],
      "label": "Door Family corridor → Dressing 4",
      "value": "950 mm",
@@ -319,7 +549,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2rhoif"
+      "o2rc6lw"
      ],
      "label": "Door Dressing 4 → Bedroom 4",
      "value": "950 mm",
@@ -328,7 +558,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2s18wv"
+      "o2ss3jy"
      ],
      "label": "Door Bedroom 4 → Bath 4",
      "value": "800 mm",
@@ -337,7 +567,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2tijwr"
+      "o2t4e45"
      ],
      "label": "Door Family corridor → Dressing 3",
      "value": "950 mm",
@@ -346,7 +576,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2uh3gn"
+      "o2upnf6"
      ],
      "label": "Door Dressing 3 → Bedroom 3",
      "value": "950 mm",
@@ -355,7 +585,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2v5iaf"
+      "o2v85y5"
      ],
      "label": "Door Bedroom 3 → Bath 3",
      "value": "800 mm",
@@ -364,7 +594,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2w7c1z"
+      "o2wwzlv"
      ],
      "label": "Door Family corridor → Family living & dining",
      "value": "2400 mm",
@@ -373,7 +603,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2x4xnr"
+      "o2xyevf"
      ],
      "label": "Door Family corridor → Dressing 2",
      "value": "950 mm",
@@ -382,7 +612,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2y0elr"
+      "o2ysvy5"
      ],
      "label": "Door Dressing 2 → Bedroom 2",
      "value": "950 mm",
@@ -391,7 +621,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2z1qa1"
+      "o2zcaoz"
      ],
      "label": "Door Bedroom 2 → Bath 2",
      "value": "800 mm",
@@ -400,7 +630,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o30xjae"
+      "o30g5zv"
      ],
      "label": "Door Family corridor → Master closet",
      "value": "950 mm",
@@ -409,7 +639,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o314bm1"
+      "o31mbi9"
      ],
      "label": "Door Master closet → Master bedroom",
      "value": "950 mm",
@@ -418,7 +648,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o32gz12"
+      "o32lr2u"
      ],
      "label": "Door Master bedroom → Master bath",
      "value": "800 mm",
@@ -427,7 +657,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o33l5so"
+      "o33ybih"
      ],
      "label": "Door Family living & dining → Terrace",
      "value": "3000 mm",
@@ -444,14 +674,74 @@
    "requirement": "Net glazing area >= 10% of the floor area of bedrooms, living rooms and kitchens (or daylight modelling achieving >= 150 lux).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "designed window height",
-    "net glazing area"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r1n7s2"
+     ],
+     "label": "Majlis",
+     "value": "18.6% (5.738 m² net glazing / 30.9 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ddjx"
+     ],
+     "label": "Kitchen",
+     "value": "11.6% (2.7 m² net glazing / 23.3 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg8h9c"
+     ],
+     "label": "Family living & dining",
+     "value": "14.2% (7.65 m² net glazing / 53.7 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rl0i3v"
+     ],
+     "label": "Bedroom 4",
+     "value": "19.9% (3.375 m² net glazing / 16.9 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmcjp9"
+     ],
+     "label": "Bedroom 3",
+     "value": "11.8% (2.025 m² net glazing / 17.2 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rntjke"
+     ],
+     "label": "Bedroom 2",
+     "value": "11.8% (2.025 m² net glazing / 17.2 m²)",
+     "limit": "≥ 10%"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ro1x6h"
+     ],
+     "label": "Master bedroom",
+     "value": "14.6% (3.938 m² net glazing / 27.0 m²)",
+     "limit": "≥ 10%"
+    }
    ],
-   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 10%): Majlis 20%, Kitchen 8%, Family living & dining 4%, Bedroom 4 21%, Bedroom 3 10%, Bedroom 2 10%, Master bedroom 16%."
+   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 10%): Majlis 25%, Kitchen 15%, Family living & dining 6%, Bedroom 4 27%, Bedroom 3 16%, Bedroom 2 16%, Master bedroom 19%."
   },
   {
    "id": "K-08",
@@ -462,14 +752,20 @@
    "requirement": "Housekeeper's rooms: net glazing area >= 8% of the room floor area.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "designed window height",
-    "net glazing area"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r6xgtx"
+     ],
+     "label": "Maid room",
+     "value": "11.7% (1.013 m² net glazing / 8.7 m²)",
+     "limit": "≥ 8%"
+    }
    ],
-   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 8%): Maid room 12%."
+   "estimate": "Estimate with the engine's default window height (1.2 m, gross opening, not net glazing; target 8%): Maid room 16%."
   },
   {
    "id": "K-09",
@@ -480,11 +776,162 @@
    "requirement": "Window sill >= 900 mm above the interior finished floor level.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "designed window sill height"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "o3469e1"
+     ],
+     "label": "Window in Majlis",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o358h84"
+     ],
+     "label": "Window in Majlis",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o36yrre"
+     ],
+     "label": "Window in Majlis",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o379owt"
+     ],
+     "label": "Window in Kitchen",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3809cb"
+     ],
+     "label": "Window in Maid room",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o39mh77"
+     ],
+     "label": "Window in Guest WC",
+     "value": "1600 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3a28fv"
+     ],
+     "label": "Window in Maid bath",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3bd70j"
+     ],
+     "label": "Window in Family corridor",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3ck0rb"
+     ],
+     "label": "Window in Bath 4",
+     "value": "1600 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3d1rnq"
+     ],
+     "label": "Window in Bedroom 4",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3esgz1"
+     ],
+     "label": "Window in Bedroom 4",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3fuytb"
+     ],
+     "label": "Window in Bedroom 3",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3g2n25"
+     ],
+     "label": "Window in Family living & dining",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3hade1"
+     ],
+     "label": "Window in Bedroom 2",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3istm9"
+     ],
+     "label": "Window in Master bedroom",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3jmnmb"
+     ],
+     "label": "Window in Master bedroom",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "o3k2xuz"
+     ],
+     "label": "Window in Master bath",
+     "value": "900 mm",
+     "limit": "≥ 900 mm"
+    }
    ]
   },
   {
@@ -496,12 +943,10 @@
    "requirement": "Windows with mechanical opening means: operator between 900 mm and 1,500 mm above FFL.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
+   "engine": "now",
+   "status": "N/A",
    "items": [],
-   "needs": [
-    "window operation type and operator height"
-   ]
+   "note": "No windows with mechanical opening means declared (give operator_h for those that have them)."
   },
   {
    "id": "K-11",
@@ -518,7 +963,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r13f0l"
+      "r1n7s2"
      ],
      "label": "Majlis",
      "value": "windows on N + W",
@@ -527,7 +972,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5l69g"
+      "r5ddjx"
      ],
      "label": "Kitchen",
      "value": "depth 5.315 m, window wall 4.38 m (N)",
@@ -536,7 +981,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6pana"
+      "r6xgtx"
      ],
      "label": "Maid room",
      "value": "depth 3.015 m, window wall 2.88 m (N)",
@@ -545,7 +990,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg7p2f"
+      "rg8h9c"
      ],
      "label": "Family living & dining",
      "value": "depth 6.815 m, window wall 7.88 m (S)",
@@ -554,7 +999,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rlr6o5"
+      "rl0i3v"
      ],
      "label": "Bedroom 4",
      "value": "windows on W + S",
@@ -563,7 +1008,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmzr40"
+      "rmcjp9"
      ],
      "label": "Bedroom 3",
      "value": "depth 4.215 m, window wall 4.08 m (S)",
@@ -572,7 +1017,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rnxkqr"
+      "rntjke"
      ],
      "label": "Bedroom 2",
      "value": "depth 4.215 m, window wall 4.08 m (S)",
@@ -581,7 +1026,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rogrqa"
+      "ro1x6h"
      ],
      "label": "Master bedroom",
      "value": "windows on S + E",
@@ -604,7 +1049,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r13f0l"
+      "r1n7s2"
      ],
      "label": "Majlis",
      "value": "3 window(s)",
@@ -613,7 +1058,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6pana"
+      "r6xgtx"
      ],
      "label": "Maid room",
      "value": "1 window(s)",
@@ -622,7 +1067,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg7p2f"
+      "rg8h9c"
      ],
      "label": "Family living & dining",
      "value": "1 window(s)",
@@ -631,7 +1076,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rlr6o5"
+      "rl0i3v"
      ],
      "label": "Bedroom 4",
      "value": "2 window(s)",
@@ -640,7 +1085,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmzr40"
+      "rmcjp9"
      ],
      "label": "Bedroom 3",
      "value": "1 window(s)",
@@ -649,7 +1094,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rnxkqr"
+      "rntjke"
      ],
      "label": "Bedroom 2",
      "value": "1 window(s)",
@@ -658,7 +1103,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rogrqa"
+      "ro1x6h"
      ],
      "label": "Master bedroom",
      "value": "2 window(s)",
@@ -681,7 +1126,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r21prd"
+      "r2lpoe"
      ],
      "label": "Lobby",
      "value": "3.38 m clear",
@@ -690,7 +1135,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rb8oxy"
+      "rbw88s"
      ],
      "label": "Family corridor",
      "value": "1.38 m clear",
@@ -707,11 +1152,16 @@
    "requirement": "Total building height (road edge level at main access to average roof finish) <= 16 m.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "number of storeys and building height"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "Building",
+     "value": "4.5 m",
+     "limit": "≤ 16 m"
+    }
    ]
   },
   {
@@ -723,12 +1173,39 @@
    "requirement": "Setbacks per DCR / affection plan; when not defined: villa 3 m from road, neighbour and sikka; townhouse 3 / 0 / 3 m.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "plot boundary and road / sikka sides"
-   ]
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "N side (road)",
+     "value": "3.875 m from the outer wall face",
+     "limit": "≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "E side (neighbour)",
+     "value": "3.675 m from the outer wall face",
+     "limit": "≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "S side (neighbour)",
+     "value": "5.875 m from the outer wall face",
+     "limit": "≥ 3 m"
+    },
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "W side (neighbour)",
+     "value": "3.375 m from the outer wall face",
+     "limit": "≥ 3 m"
+    }
+   ],
+   "note": "Setbacks for road, neighbour taken from DBC Table K.1 (villa) because the plot gives none (pack assumption)."
   },
   {
    "id": "K-16",
@@ -791,7 +1268,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r8qf26"
+      "r8wd3l"
      ],
      "label": "Garage",
      "value": "1 bay(s) in garage",
@@ -814,7 +1291,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r8qf26"
+      "r8wd3l"
      ],
      "label": "Garage",
      "value": "5.315 × 6.015 m clear (single)",
@@ -858,8 +1335,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3l4d8a",
-      "r3f2wy"
+      "f3ls7ar",
+      "r38y2f"
      ],
      "label": "WC in Guest WC",
      "value": "840 mm to wall",
@@ -868,8 +1345,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3m3h07",
-      "r3f2wy"
+      "f3m4hw8",
+      "r38y2f"
      ],
      "label": "Basin in Guest WC",
      "value": "490 mm to wall",
@@ -878,8 +1355,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3tk97e",
-      "r7zrrp"
+      "f3t9ibd",
+      "r79118"
      ],
      "label": "WC in Maid bath",
      "value": "440 mm to wall",
@@ -888,8 +1365,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3vz0cl",
-      "r7zrrp"
+      "f3vg6xz",
+      "r79118"
      ],
      "label": "Basin in Maid bath",
      "value": "440 mm to wall",
@@ -898,8 +1375,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f42ctk6",
-      "rcvibq"
+      "f42b8ar",
+      "rcf1aq"
      ],
      "label": "WC in Bath 4",
      "value": "540 mm to Shower",
@@ -908,8 +1385,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f43kkcl",
-      "rcvibq"
+      "f43kql9",
+      "rcf1aq"
      ],
      "label": "Basin in Bath 4",
      "value": "1240 mm to wall",
@@ -918,8 +1395,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f456jyf",
-      "rfkki6"
+      "f458611",
+      "rf6a5e"
      ],
      "label": "WC in Bath 3",
      "value": "540 mm to Shower",
@@ -928,8 +1405,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f46rgyb",
-      "rfkki6"
+      "f46f88h",
+      "rf6a5e"
      ],
      "label": "Basin in Bath 3",
      "value": "1240 mm to wall",
@@ -938,8 +1415,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4831kn",
-      "rih02j"
+      "f48farg",
+      "ri4jmm"
      ],
      "label": "WC in Bath 2",
      "value": "540 mm to Shower",
@@ -948,8 +1425,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f49xb1n",
-      "rih02j"
+      "f497c42",
+      "ri4jmm"
      ],
      "label": "Basin in Bath 2",
      "value": "1240 mm to wall",
@@ -958,8 +1435,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4c67bk",
-      "rk5jpt"
+      "f4cdnt1",
+      "rkxqyj"
      ],
      "label": "WC in Master bath",
      "value": "480 mm to Bathtub",
@@ -968,8 +1445,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4davz7",
-      "rk5jpt"
+      "f4davcc",
+      "rkxqyj"
      ],
      "label": "Basin in Master bath",
      "value": "740 mm to wall; 2050 mm to centre of Basin",
@@ -978,8 +1455,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4e5015",
-      "rk5jpt"
+      "f4exbhd",
+      "rkxqyj"
      ],
      "label": "Basin in Master bath",
      "value": "1025 mm to wall; 2050 mm to centre of Basin",
@@ -1002,8 +1479,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3l4d8a",
-      "r3f2wy"
+      "f3ls7ar",
+      "r38y2f"
      ],
      "label": "WC in Guest WC",
      "value": "1605 mm to wall",
@@ -1012,8 +1489,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3m3h07",
-      "r3f2wy"
+      "f3m4hw8",
+      "r38y2f"
      ],
      "label": "Basin in Guest WC",
      "value": "1420 mm to wall",
@@ -1022,8 +1499,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3tk97e",
-      "r7zrrp"
+      "f3t9ibd",
+      "r79118"
      ],
      "label": "WC in Maid bath",
      "value": "765 mm to door leaf",
@@ -1032,8 +1509,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3vz0cl",
-      "r7zrrp"
+      "f3vg6xz",
+      "r79118"
      ],
      "label": "Basin in Maid bath",
      "value": "1855 mm to wall; 945 mm to Shower",
@@ -1042,8 +1519,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f42ctk6",
-      "rcvibq"
+      "f42b8ar",
+      "rcf1aq"
      ],
      "label": "WC in Bath 4",
      "value": "1305 mm to wall; 845 mm to Basin",
@@ -1052,8 +1529,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f43kkcl",
-      "rcvibq"
+      "f43kql9",
+      "rcf1aq"
      ],
      "label": "Basin in Bath 4",
      "value": "1555 mm to wall; 845 mm to WC",
@@ -1062,8 +1539,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f456jyf",
-      "rfkki6"
+      "f458611",
+      "rf6a5e"
      ],
      "label": "WC in Bath 3",
      "value": "1370 mm to wall; 910 mm to Basin",
@@ -1072,8 +1549,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f46rgyb",
-      "rfkki6"
+      "f46f88h",
+      "rf6a5e"
      ],
      "label": "Basin in Bath 3",
      "value": "1620 mm to wall; 910 mm to WC",
@@ -1082,8 +1559,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4831kn",
-      "rih02j"
+      "f48farg",
+      "ri4jmm"
      ],
      "label": "WC in Bath 2",
      "value": "1370 mm to wall; 910 mm to Basin",
@@ -1092,8 +1569,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f49xb1n",
-      "rih02j"
+      "f497c42",
+      "ri4jmm"
      ],
      "label": "Basin in Bath 2",
      "value": "1620 mm to wall; 910 mm to WC",
@@ -1102,8 +1579,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4c67bk",
-      "rk5jpt"
+      "f4cdnt1",
+      "rkxqyj"
      ],
      "label": "WC in Master bath",
      "value": "3105 mm to wall",
@@ -1112,8 +1589,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4davz7",
-      "rk5jpt"
+      "f4davcc",
+      "rkxqyj"
      ],
      "label": "Basin in Master bath",
      "value": "2020 mm to wall; 1110 mm to Shower",
@@ -1122,8 +1599,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4e5015",
-      "rk5jpt"
+      "f4exbhd",
+      "rkxqyj"
      ],
      "label": "Basin in Master bath",
      "value": "2020 mm to wall; 1260 mm to Bathtub",
@@ -1155,13 +1632,10 @@
    "requirement": "Townhouses: 2 h fire-rated wall to adjacent townhouses from foundation to roof (1 h if sprinkler protected).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
+   "engine": "now",
+   "status": "N/A",
    "items": [],
-   "needs": [
-    "building type villa / townhouse",
-    "party wall rating"
-   ]
+   "note": "Detached villa: no party wall."
   },
   {
    "id": "P-01",
@@ -1178,7 +1652,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r3f2wy"
+      "r38y2f"
      ],
      "label": "Guest WC",
      "value": "1 floor drain(s)",
@@ -1187,7 +1661,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5l69g"
+      "r5ddjx"
      ],
      "label": "Kitchen",
      "value": "1 floor drain(s)",
@@ -1196,7 +1670,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r7zrrp"
+      "r79118"
      ],
      "label": "Maid bath",
      "value": "1 floor drain(s)",
@@ -1205,7 +1679,7 @@
     {
      "ok": true,
      "element_ids": [
-      "raj646"
+      "raiq0y"
      ],
      "label": "Laundry",
      "value": "1 floor drain(s)",
@@ -1214,7 +1688,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rcvibq"
+      "rcf1aq"
      ],
      "label": "Bath 4",
      "value": "1 floor drain(s)",
@@ -1223,7 +1697,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rfkki6"
+      "rf6a5e"
      ],
      "label": "Bath 3",
      "value": "1 floor drain(s)",
@@ -1232,7 +1706,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rih02j"
+      "ri4jmm"
      ],
      "label": "Bath 2",
      "value": "1 floor drain(s)",
@@ -1241,7 +1715,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rk5jpt"
+      "rkxqyj"
      ],
      "label": "Master bath",
      "value": "1 floor drain(s)",
@@ -1273,11 +1747,11 @@
    "requirement": "Tank sized for >= 24 h demand (villas typically 250-350 l/day); GRP; installed in a conditioned space, not exposed outdoors.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "water tank location and size"
+    "water services layer (tank, pump)"
    ]
   },
   {
@@ -1325,11 +1799,11 @@
    "requirement": "Every villa / townhouse has a smoke detection and alarm system (wired per Ch.8 Section 4.3, or wireless per Section 4.11).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fire detectors"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1341,11 +1815,11 @@
    "requirement": "Bedroom: sounder-based smoke detector; living room: smoke detector; corridor: smoke detector.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fire detectors"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1357,11 +1831,11 @@
    "requirement": "Closed kitchen: detector listed for kitchens, or a heat detector.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fire detectors"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1373,11 +1847,11 @@
    "requirement": "Open kitchen: listed kitchen detector, or heat detector plus a smoke detector 3 m from the counter in the living room, or a listed kitchen multisensor.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fire detectors"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1389,11 +1863,11 @@
    "requirement": "The fire alarm control panel or monitoring panel is located near the front door.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fire alarm panel"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1405,12 +1879,11 @@
    "requirement": "Audio-visual notification devices outside the villa, visible from the common approach road.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "outdoor AV device",
-    "road side of the plot"
+    "fire detection layer (detectors and panel)"
    ]
   },
   {
@@ -1422,11 +1895,16 @@
    "requirement": "The villa fire alarm system is connected to DCD control centres through Hassantuk for Homes.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire alarm system with Hassantuk flag"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "Hassantuk connection",
+     "value": "yes",
+     "limit": "yes"
+    }
    ]
   },
   {
@@ -1466,7 +1944,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r13f0l"
+      "r1n7s2"
      ],
      "label": "Majlis",
      "value": "door route to outside",
@@ -1475,7 +1953,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6pana"
+      "r6xgtx"
      ],
      "label": "Maid room",
      "value": "door route to outside",
@@ -1484,7 +1962,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg7p2f"
+      "rg8h9c"
      ],
      "label": "Family living & dining",
      "value": "door route to outside",
@@ -1493,7 +1971,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rlr6o5"
+      "rl0i3v"
      ],
      "label": "Bedroom 4",
      "value": "door route to outside",
@@ -1502,7 +1980,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmzr40"
+      "rmcjp9"
      ],
      "label": "Bedroom 3",
      "value": "door route to outside",
@@ -1511,7 +1989,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rnxkqr"
+      "rntjke"
      ],
      "label": "Bedroom 2",
      "value": "door route to outside",
@@ -1520,7 +1998,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rogrqa"
+      "ro1x6h"
      ],
      "label": "Master bedroom",
      "value": "door route to outside",
@@ -1537,12 +2015,78 @@
    "requirement": "Every sleeping room and living area also has a secondary means of escape (not required if the villa is sprinklered): a remote door / stair / ramp, a passage through an adjacent non-lockable space, a roof route, or an operable escape window.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "operable windows (escape window size)",
-    "sprinkler protection flag"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r1n7s2"
+     ],
+     "label": "Majlis",
+     "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6xgtx"
+     ],
+     "label": "Maid room",
+     "value": "escape window 900 mm × 1500 mm = 1.35 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg8h9c"
+     ],
+     "label": "Family living & dining",
+     "value": "door directly to the outside",
+     "limit": "secondary means of escape"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rl0i3v"
+     ],
+     "label": "Bedroom 4",
+     "value": "escape window 1500 mm × 1500 mm = 2.25 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmcjp9"
+     ],
+     "label": "Bedroom 3",
+     "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rntjke"
+     ],
+     "label": "Bedroom 2",
+     "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ro1x6h"
+     ],
+     "label": "Master bedroom",
+     "value": "escape window 2000 mm × 1500 mm = 3 m² (casement)",
+     "limit": "door to outside or an escape window (F-10)",
+     "note": "window opening size; frame not deducted"
+    }
    ]
   },
   {
@@ -1554,11 +2098,79 @@
    "requirement": "Escape window on an exterior wall: >= 510 mm wide, >= 610 mm high, clear opening >= 0.53 m2, bottom <= 6,100 mm above finished ground.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "operable windows (escape window size)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r1n7s2"
+     ],
+     "label": "Majlis",
+     "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r6xgtx"
+     ],
+     "label": "Maid room",
+     "value": "900 mm × 1500 mm = 1.35 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rg8h9c"
+     ],
+     "label": "Family living & dining",
+     "value": "2000 mm × 1500 mm = 3 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rl0i3v"
+     ],
+     "label": "Bedroom 4",
+     "value": "1500 mm × 1500 mm = 2.25 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmcjp9"
+     ],
+     "label": "Bedroom 3",
+     "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rntjke"
+     ],
+     "label": "Bedroom 2",
+     "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ro1x6h"
+     ],
+     "label": "Master bedroom",
+     "value": "2000 mm × 1500 mm = 3 m² (casement)",
+     "limit": "≥ 510 mm wide, ≥ 610 mm high, ≥ 0.53 m², bottom ≤ 6.1 m",
+     "note": "window opening size; frame not deducted"
+    }
    ]
   },
   {
@@ -1613,7 +2225,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r21prd"
+      "r2lpoe"
      ],
      "label": "Lobby",
      "value": "3.38 m clear",
@@ -1622,7 +2234,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rb8oxy"
+      "rbw88s"
      ],
      "label": "Family corridor",
      "value": "1.38 m clear",
@@ -1639,11 +2251,11 @@
    "requirement": "Home kitchen: one multipurpose dry-powder extinguisher (2.5 kg) inside the kitchen next to the exit door.",
    "level": "shall",
    "verified": false,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "extinguisher"
+    "fire safety layer (extinguisher)"
    ]
   },
   {
@@ -1655,10 +2267,10 @@
    "requirement": "LPG cylinders are not permitted indoors (unless DCD agrees; then FLSC Ch.11 Table 11.2).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "N/A",
    "items": [],
-   "note": "Assumed all-electric (pack default): no LPG on site."
+   "note": "Gas: electric."
   },
   {
    "id": "E-01",
@@ -1675,8 +2287,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3ypncb",
-      "r9fh9a"
+      "f3ykmbz",
+      "r9gwpx"
      ],
      "label": "DB in Mech",
      "value": "Mech (mech)",
@@ -1693,11 +2305,11 @@
    "requirement": "DB top <= 2 m above FFL; access available at all times.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "DB mounting height"
+    "DB mounting height to the top (top_h)"
    ]
   },
   {
@@ -1852,13 +2464,12 @@
    "requirement": "Mechanical outdoor air Qtot = 0.15 x floor area (m2) + 3.5 x (bedrooms + 1) L/s.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fresh-air system and its airflow"
-   ],
-   "estimate": "Required Qtot ≈ 0.15 × 337.9 m² + 3.5 × (5 + 1) = 72 L/s (conditioned area, 5 bedrooms incl. staff)."
+    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
+   ]
   },
   {
    "id": "V-02",
@@ -1869,11 +2480,11 @@
    "requirement": "A local mechanical exhaust system in each kitchen and bathroom.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "exhaust fans"
+    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
    ]
   },
   {
@@ -1885,11 +2496,11 @@
    "requirement": "Bathroom 25 L/s; kitchen vented range hood 50 L/s (other kitchen exhaust fans 150 L/s or 5 ach for enclosed kitchens).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "exhaust fans with airflow"
+    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
    ]
   },
   {
@@ -1901,11 +2512,11 @@
    "requirement": "Bathroom 10 L/s; enclosed kitchen 5 ach based on kitchen volume.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "exhaust fans with airflow"
+    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
    ]
   },
   {
@@ -1917,11 +2528,11 @@
    "requirement": "Natural ventilation through windows and doors is permitted but shall not be relied upon for ventilation and thermal comfort.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
+   "engine": "now",
    "status": "NOT CHECKABLE",
    "items": [],
    "needs": [
-    "fresh-air system and its airflow"
+    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
    ]
   },
   {

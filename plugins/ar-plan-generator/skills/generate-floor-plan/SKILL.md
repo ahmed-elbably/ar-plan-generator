@@ -16,6 +16,7 @@ The engine is `scripts/arplan.js` in the plugin root, two folders above this ski
 2. **Load the rules.** Read `references/spec-format.md` (required: coordinates, JSON shape, layout rules, self-check) and `references/conventions.md` (regional programme and typical sizes). `examples/uae-villa-4br.spec.json` is a complete worked spec (4-bed GCC villa, 25 rooms, builds with no warnings): follow its zoning, corridor spine and en-suite pattern.
 3. **Lay out before writing coordinates.** Decide zones (public / private / service), the circulation spine and the footprint grid. Sum the room areas and compare with the target area (±10%).
 4. **Write the spec** to `<slug>.spec.json` in the working directory. Run the self-check list in `references/spec-format.md` and fix problems before building.
+   - For Dubai projects also write the design data the code check needs (see "Design data for the code check" in `references/spec-format.md`): `plot` with its road side, `building_type`, `building_h`, `ceiling_h`, `glass`, `window_defaults`, `hassantuk`, kitchen `counters`, and `glazed` terrace doors. Use values from the brief or affection plan; where you assume one, say so in the reply.
 5. **Build:**
    ```bash
    node "<plugin root>/scripts/arplan.js" build <slug>.spec.json --out <output dir> --name <slug> [--units ft] [--level "Ground floor"] [--pack dubai]

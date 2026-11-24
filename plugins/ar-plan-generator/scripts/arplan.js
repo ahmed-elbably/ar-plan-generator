@@ -54,10 +54,27 @@ const FIX = {
   ahu:{label:"Furnace / AHU", w:0.80, h:0.80, svc:["hvac","gas","elec"]},
   acu:{label:"AC condenser", w:0.90, h:0.90, outdoor:true, svc:["hvac","elec"]},
   panel:{label:"Elec. panel", w:0.40, h:0.15, svc:["elec"]},
-  fd:{label:"Floor drain", w:0.20, h:0.20, round:true, svc:["drain"]}
+  fd:{label:"Floor drain", w:0.20, h:0.20, round:true, svc:["drain"]},
+  /* life safety, ventilation and services (v0.5). mount: ceiling = on the ceiling, placed in the room (pos);
+     wall = wall-mounted above floor fixtures; neither collides with floor fixtures or doorways. */
+  smoke:{label:"Smoke detector", w:0.15, h:0.15, round:true, mount:"ceiling", svc:["fire"]},
+  smoke_sounder:{label:"Smoke detector + sounder", w:0.15, h:0.15, round:true, mount:"ceiling", svc:["fire"]},
+  heat:{label:"Heat detector", w:0.15, h:0.15, round:true, mount:"ceiling", svc:["fire"]},
+  exhaust:{label:"Exhaust fan", w:0.30, h:0.30, mount:"ceiling", svc:["vent","elec"]},
+  facp:{label:"Fire alarm panel", w:0.40, h:0.12, mount:"wall", svc:["fire","elec"]},
+  extinguisher:{label:"Fire extinguisher", w:0.20, h:0.20, round:true, mount:"wall", svc:["fire"]},
+  hood:{label:"Range hood", w:0.75, h:0.50, mount:"wall", svc:["vent","elec"]},
+  av_outdoor:{label:"Outdoor alarm (AV)", w:0.30, h:0.15, outdoor:true, svc:["fire"]},
+  lpg:{label:"LPG cylinders", w:0.80, h:0.50, outdoor:true, svc:["gas"]},
+  fresh_air:{label:"Fresh-air unit", w:0.90, h:0.60, svc:["vent","elec"]},
+  water_tank:{label:"Water tank", w:1.20, h:1.20, svc:["water"]},
+  pump:{label:"Water pump", w:0.50, h:0.40, svc:["water","elec"]}
 };
+/* fixture properties a spec may carry through to the plan (airflow L/s, ventilation mode, tank litres, DB top height m) */
+const FIX_PROPS=["lps","mode","litres","top_h"];
+const overFloor=k=>!!(FIX[k]&&FIX[k].mount);   // ceiling- or wall-mounted: no floor clash
 
-function emptyDoc(){ return {format:"ar-plan", version:1, project:"Untitled house", level:"Level 1", units:"m", walls:[], openings:[], rooms:[], fixtures:[]}; }
+function emptyDoc(){ return {format:"ar-plan", version:2, project:"Untitled house", level:"Level 1", units:"m", walls:[], openings:[], rooms:[], fixtures:[]}; }
 let idc = 0;
 const uid = p => p + (++idc).toString(36) + Math.random().toString(36).slice(2,6);
 
@@ -139,11 +156,12 @@ const STEPS={m:[[0.01,"1 cm"],[0.05,"5 cm"],[0.1,"10 cm"],[0.25,"25 cm"],[0.5,"5
 function fillSteps(){const el=$("#optStep");el.innerHTML=STEPS[doc.units].map(([v,l])=>`<option value="${v}">${l}</option>`).join("");if(!STEPS[doc.units].some(s=>Math.abs(s[0]-opts.step)<1e-6))opts.step=doc.units==="m"?0.1:0.1524;el.value=String(STEPS[doc.units].find(s=>Math.abs(s[0]-opts.step)<1e-6)[0]);}
 
 
-function normalizeDoc(d){const o=emptyDoc();Object.assign(o,{project:d.project||o.project,level:d.level||o.level,units:d.units==="ft"?"ft":"m"});
+function normalizeDoc(d){const o=emptyDoc();Object.assign(o,{project:d.project||o.project,level:d.level||o.level,units:d.units==="ft"?"ft":"m"},projectFields(d));
   o.walls=(d.walls||[]).filter(w=>w&&w.a&&w.b).map(w=>({id:w.id||uid("w"),a:P(+w.a.x,+w.a.y),b:P(+w.b.x,+w.b.y),t:+w.t||0.15,kind:w.kind==="ext"?"ext":"int",h:+w.h||3,auto:!!w.auto}));
-  o.openings=(d.openings||[]).filter(x=>x&&x.wall).map(x=>({id:x.id||uid("o"),type:x.type==="window"?"window":"door",style:x.style||"swing",wall:x.wall,pos:+x.pos||0,w:+x.w||0.9,side:x.side===-1?-1:1,hinge:x.hinge?1:0,h:+x.h||(x.type==="window"?1.2:2.1),sill:+x.sill||(x.type==="window"?0.9:0)}));
-  o.rooms=(d.rooms||[]).filter(r=>r&&Array.isArray(r.pts)&&r.pts.length>=3).map(r=>({id:r.id||uid("r"),name:r.name||"Room",type:ROOM_TYPES[r.type]?r.type:"other",ceil:+r.ceil||2.7,pts:r.pts.map(p=>P(+p.x,+p.y))}));
-  o.fixtures=(d.fixtures||[]).filter(f=>f&&FIX[f.kind]).map(f=>({id:f.id||uid("f"),kind:f.kind,x:+f.x,y:+f.y,rot:+f.rot||0}));
+  o.openings=(d.openings||[]).filter(x=>x&&x.wall).map(x=>({id:x.id||uid("o"),type:x.type==="window"?"window":"door",style:x.style||"swing",wall:x.wall,pos:+x.pos||0,w:+x.w||0.9,side:x.side===-1?-1:1,hinge:x.hinge?1:0,h:num(x.h)||(x.type==="window"?1.2:2.1),sill:num(x.sill)??(x.type==="window"?0.9:0)}));
+  (d.openings||[]).filter(x=>x&&x.wall).forEach((x,i)=>{const t=o.openings[i];if(!t)return;for(const k of ["op","glass","glazed","operator_h"])if(x[k]!==undefined)t[k]=x[k];if(Array.isArray(x.given))t.given=x.given.slice();});
+  o.rooms=(d.rooms||[]).filter(r=>r&&Array.isArray(r.pts)&&r.pts.length>=3).map(r=>({id:r.id||uid("r"),name:r.name||"Room",type:ROOM_TYPES[r.type]?r.type:"other",ceil:+r.ceil||2.7,pts:r.pts.map(p=>P(+p.x,+p.y)),...(r.ceil_set?{ceil_set:true}:{}),...(counterList(r.counters).length?{counters:counterList(r.counters)}:{})}));
+  o.fixtures=(d.fixtures||[]).filter(f=>f&&FIX[f.kind]).map(f=>{const q={id:f.id||uid("f"),kind:f.kind,x:+f.x,y:+f.y,rot:+f.rot||0};for(const k of FIX_PROPS)if(f[k]!==undefined)q[k]=f[k];if(f.auto)q.auto=true;return q;});
   return o;}
 
 function drawCss(gapFill){return `
@@ -157,6 +175,9 @@ function drawCss(gapFill){return `
 .fx{fill:#fff;stroke:#1B1D1A;stroke-width:1;vector-effect:non-scaling-stroke}
 .fxl{fill:none;stroke:#1B1D1A;stroke-width:.8;vector-effect:non-scaling-stroke}
 .fxd{fill:#1B1D1A}
+.fxf{fill:#fff;stroke:#B3261E;stroke-width:1;vector-effect:non-scaling-stroke}.fxfl{fill:none;stroke:#B3261E;stroke-width:.6;vector-effect:non-scaling-stroke}
+.fxm{fill:#fff;stroke:#1F5FBF;stroke-width:1;vector-effect:non-scaling-stroke}.fxh{fill:none;stroke:#1B1D1A;stroke-width:.8;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.ctr{fill:#F3EFE6;stroke:#8A8577;stroke-width:.7;vector-effect:non-scaling-stroke}
 .fxt{font-family:"IBM Plex Mono",monospace;fill:#1B1D1A;text-anchor:middle;dominant-baseline:central}
 .rn{font-family:"IBM Plex Sans",Arial,sans-serif;font-weight:600;fill:#1B1D1A;text-anchor:middle;letter-spacing:.03em}
 .ra{font-family:"IBM Plex Mono",monospace;fill:#4B4F48;text-anchor:middle}
@@ -191,6 +212,18 @@ function fixSym(k,rot){
     case "acu":return R(x0,y0,w,h,0.03)+C(0,0,0.32,"fxl")+T("AC");
     case "panel":return R(x0,y0,w,h,0,"fxd");
     case "fd":return C(0,0,0.1)+L(-0.07,-0.07,0.07,0.07)+L(-0.07,0.07,0.07,-0.07);
+    case "smoke":return C(0,0,0.075,"fxf")+T("S",0.08);
+    case "smoke_sounder":return C(0,0,0.075,"fxf")+C(0,0,0.11,"fxfl")+T("S",0.08);
+    case "heat":return C(0,0,0.075,"fxf")+T("H",0.08);
+    case "exhaust":return R(x0,y0,w,h,0,"fxm")+L(x0,y0,-x0,-y0)+L(-x0,y0,x0,-y0);
+    case "facp":return R(x0,y0,w,h,0,"fxf")+T("FAP",0.07);
+    case "extinguisher":return C(0,0,w/2,"fxf")+T("FE",0.07);
+    case "hood":return R(x0,y0,w,h,0,"fxh")+T("HOOD",0.09);
+    case "av_outdoor":return R(x0,y0,w,h,0,"fxf")+T("AV",0.08);
+    case "lpg":return R(x0,y0,w,h,0.05)+T("LPG",0.12);
+    case "fresh_air":return R(x0,y0,w,h,0,"fxm")+L(x0,y0,-x0,-y0)+T("FA",0.13);
+    case "water_tank":return R(x0,y0,w,h)+L(x0,y0,-x0,-y0)+L(-x0,y0,x0,-y0)+T("TANK",0.16);
+    case "pump":return C(0,0,0.18)+T("P",0.12);
   }
   return R(x0,y0,w,h);
 }
@@ -245,7 +278,7 @@ let reveal=null; // build animation after AI generation: how many of each elemen
 function drawingParts(){
   const R=reveal?doc.rooms.slice(0,reveal.r):doc.rooms,W=reveal?doc.walls.slice(0,reveal.w):doc.walls;
   const O=reveal?doc.openings.slice(0,reveal.o):doc.openings,F=reveal?doc.fixtures.slice(0,reveal.f):doc.fixtures;
-  const rooms=R.map(roomFill).join("");
+  const rooms=R.map(roomFill).join("")+R.map(r=>counterRects(r).map(c=>`<rect class="ctr" x="${r4(c.x0)}" y="${r4(c.y0)}" width="${r4(c.x1-c.x0)}" height="${r4(c.y1-c.y0)}"/>`).join("")).join("");
   const walls=W.map(w=>`<polygon class="wl ${w.kind==="int"?"int":""}" points="${pts2(wallPoly(w))}"/>`).join("");
   const opens=O.map(openingSvg).join("");
   const fixes=F.map(fixSvg).join("");
@@ -337,15 +370,44 @@ const FIX_SYN={toilet:"wc",lavatory:"basin",washbasin:"basin",vanity:"basin",lav
   water_heater:"wh","water heater":"wh",boiler:"wh",geyser:"wh",heater:"wh",
   furnace:"ahu",fcu:"ahu",air_handler:"ahu",indoor_unit:"ahu",
   condenser:"acu",ac:"acu",outdoor_unit:"acu",split_ac:"acu",
+  smoke_detector:"smoke",smoke_alarm:"smoke",sounder_smoke:"smoke_sounder",smoke_detector_sounder:"smoke_sounder",heat_detector:"heat",
+  extract_fan:"exhaust",exhaust_fan:"exhaust",fan:"exhaust",fire_alarm_panel:"facp",fap:"facp",fire_panel:"facp",monitoring_panel:"facp",
+  fire_extinguisher:"extinguisher",range_hood:"hood",cooker_hood:"hood",kitchen_hood:"hood",av:"av_outdoor",strobe:"av_outdoor",outdoor_alarm:"av_outdoor",
+  lpg_cylinder:"lpg",gas_cylinder:"lpg",fresh_air_unit:"fresh_air",fau:"fresh_air",erv:"fresh_air",tank:"water_tank",booster_pump:"pump",
   db:"panel",distribution_board:"panel",electrical_panel:"panel",breaker:"panel",floor_drain:"fd",drain:"fd"};
 function normFix(k){const s=String(k||"").trim().toLowerCase();if(FIX[s])return s;const u=s.replace(/[\s-]+/g,"_");if(FIX_SYN[s])return FIX_SYN[s];if(FIX_SYN[u])return FIX_SYN[u];return null;}
 const normSide=s=>{const k=String(s||"").trim().toUpperCase();const m={NORTH:"N",SOUTH:"S",EAST:"E",WEST:"W"};return sideKey(m[k]||k);};
 
 /* spec -> drawing */
+/* v0.5 project, room and opening fields: sanitised the same way from a spec or a plan.json */
+const num=v=>{const n=+v;return v!==undefined&&v!==null&&v!==""&&Number.isFinite(n)?n:undefined;};
+const sides=v=>(Array.isArray(v)?v:v?[v]:[]).map(normSide).filter(Boolean);
+function projectFields(s){const o={};if(!s)return o;
+  if(s.plot&&[s.plot.x,s.plot.y,s.plot.w,s.plot.d].every(v=>num(v)!==undefined)){const p=s.plot;
+    o.plot={x:+p.x,y:+p.y,w:+p.w,d:+p.d,road:sides(p.road),sikka:sides(p.sikka)};
+    if(p.setbacks&&typeof p.setbacks==="object"){o.plot.setbacks={};for(const k of ["road","neighbour","sikka"])if(num(p.setbacks[k])!==undefined)o.plot.setbacks[k]=+p.setbacks[k];}}
+  if(/^(villa|townhouse)$/i.test(s.building_type||""))o.building_type=String(s.building_type).toLowerCase();
+  if(/^(electric|lpg|piped)$/i.test(s.gas||""))o.gas=String(s.gas).toLowerCase();
+  for(const k of ["storeys","building_h","party_wall_h"])if(num(s[k])!==undefined)o[k]=+s[k];
+  for(const k of ["sprinklered","hassantuk"])if(typeof s[k]==="boolean")o[k]=s[k];
+  if(num(s.glass)!==undefined)o.glass=clamp(+s.glass,0,1);   // default net glazing ratio of windows and glazed doors
+  return o;}
+const counterList=v=>(Array.isArray(v)?v:[]).map(c=>({side:normSide(c.side),from:clamp(num(c.from)??0,0,1),to:clamp(num(c.to)??1,0,1),depth:num(c.depth)??0.6})).filter(c=>c.side&&c.to>c.from);
+const WIN_OPS=["fixed","sliding","casement","hung","tilt"];
+/* window / door data the spec gave (sill, h, op, glass, glazed); "given" lists what was designed, not defaulted */
+function openingFields(o,src,isWin){const given=[];
+  if(isWin){if(num(src.sill)!==undefined){o.sill=+src.sill;given.push("sill");}if(num(src.h)!==undefined){o.h=+src.h;given.push("h");}
+    if(WIN_OPS.includes(String(src.op||"").toLowerCase())){o.op=String(src.op).toLowerCase();given.push("op");}}
+  else{if(num(src.h)!==undefined){o.h=+src.h;given.push("h");}if(src.glazed===true){o.glazed=true;given.push("glazed");}}
+  if(num(src.glass)!==undefined){o.glass=clamp(+src.glass,0,1);given.push("glass");}
+  if(num(src.operator_h)!==undefined){o.operator_h=+src.operator_h;given.push("operator_h");}
+  if(given.length)o.given=given;return o;}
+
 /* place (optional, from a rule pack): {clear:{kinds,to_side,to_adjacent,to_wall,to_fixture,ignore,ref}, drains:{wet_types,wet_kinds,ref}} */
 function specToDoc(spec,place){
   const rep=[];const old=doc;
   const nd=emptyDoc();nd.units=old.units;nd.level=old.level;nd.project=(spec&&spec.project?String(spec.project).slice(0,60):old.project);
+  Object.assign(nd,projectFields(spec));
   doc=nd;
   try{
     const byName=new Map(),boxes=new Map();
@@ -355,7 +417,10 @@ function specToDoc(spec,place){
       let name=String(r.name||"Room").trim().slice(0,40)||"Room";const base=name;let i=2;while(byName.has(name.toLowerCase()))name=`${base} ${i++}`;
       const type=normType(r.type);
       const b={x0:q05(x),y0:q05(y),x1:q05(x+w),y1:q05(y+d)};
-      const room={id:uid("r"),name,type,ceil:type==="garage"?3:2.7,pts:[P(b.x0,b.y0),P(b.x1,b.y0),P(b.x1,b.y1),P(b.x0,b.y1)]};
+      const ch=num(r.ceiling_h)??num(spec.ceiling_h);
+      const room={id:uid("r"),name,type,ceil:ch??(type==="garage"?3:2.7),pts:[P(b.x0,b.y0),P(b.x1,b.y0),P(b.x1,b.y1),P(b.x0,b.y1)]};
+      if(ch!==undefined)room.ceil_set=true;
+      const ct=counterList(r.counters);if(ct.length)room.counters=ct;
       doc.rooms.push(room);byName.set(name.toLowerCase(),room);boxes.set(room.id,b);
       if(r.name&&String(r.name).trim().toLowerCase()!==name.toLowerCase())byName.set(String(r.name).trim().toLowerCase()+"#dup",room);
     }
@@ -380,13 +445,13 @@ function specToDoc(spec,place){
         if(!e){rep.push(`Door ${label}: rooms don't share a wall`);continue;}
         const L=dist(e.a,e.b);if(L<w+0.15){if(L<0.75){rep.push(`Door ${label}: shared wall too short`);continue;}w=L-0.15;}
         const p=pickOnEdge(e.a,e.b,+dr.at,w);if(!p){rep.push(`Door ${label}: no wall to cut`);continue;}
-        const err=placeOpening("door",style,p,w,boxCenter(boxes.get(B.id)));if(err)rep.push(`Door ${label}: ${err}`);else doorsOk++;
+        const err=placeOpening("door",style,p,w,boxCenter(boxes.get(B.id)));if(err)rep.push(`Door ${label}: ${err}`);else{doorsOk++;openingFields(doc.openings[doc.openings.length-1],dr,false);}
       }else{
         const room=A||B;if(!room){rep.push(`Door ${label}: needs at least one room`);continue;}
         const box=boxes.get(room.id);const pref=normSide(dr.side);const order=[...new Set([...(pref?[pref]:[]),...extSidesByLength(box)])];
         let placed=false;
         for(const s of order){const S=SIDES[s];const p=pickOnEdge(S.a(box),S.b(box),+dr.at,w,x=>x.kind==="ext");if(!p)continue;
-          const into=B?boxCenter(box):sub(p,mul(S.n,1));const err=placeOpening("door",style,p,w,into);if(!err){placed=true;doorsOk++;break;}}
+          const into=B?boxCenter(box):sub(p,mul(S.n,1));const err=placeOpening("door",style,p,w,into);if(!err){placed=true;doorsOk++;openingFields(doc.openings[doc.openings.length-1],dr,false);break;}}
         if(!placed)rep.push(`Door ${label}: ${room.name} has no free outside wall`);
       }
     }
@@ -396,7 +461,7 @@ function specToDoc(spec,place){
       const pref=normSide(wn.side);const ext=extSidesByLength(box);const order=[...new Set([...(pref?[pref]:[]),...ext])];
       for(let k=0;k<n;k++){
         const f=n===1&&Number.isFinite(+wn.at)?+wn.at:(k+1)/(n+1);let placed=false;
-        for(const s of order){const S=SIDES[s];const p=pickOnEdge(S.a(box),S.b(box),f,w,x=>x.kind==="ext");if(!p)continue;if(!placeOpening("window","fixed",p,w,null)){placed=true;winOk++;if(pref&&s!==pref&&k===0)rep.push(`Window in ${room.name} moved from ${pref} to ${s} (${pref} is not an outside wall)`);break;}}
+        for(const s of order){const S=SIDES[s];const p=pickOnEdge(S.a(box),S.b(box),f,w,x=>x.kind==="ext");if(!p)continue;if(!placeOpening("window","fixed",p,w,null)){placed=true;winOk++;openingFields(doc.openings[doc.openings.length-1],Object.assign({},spec.window_defaults||{},wn),true);if(pref&&s!==pref&&k===0)rep.push(`Window in ${room.name} moved from ${pref} to ${s} (${pref} is not an outside wall)`);break;}}
         if(!placed){rep.push(`Window in ${room.name}: no free outside wall`);break;}
       }
     }
@@ -415,21 +480,22 @@ function specToDoc(spec,place){
     // placement rules from the rule pack (build --pack): WC / basin clearances and floor drains
     const C=place&&place.clear;
     const isWB=k=>!!C&&C.kinds.includes(k),ignored=k=>!!C&&(C.ignore||[]).includes(k);
-    const sideT=(box,s)=>{const S=SIDES[s];return edgeSegs(S.a(box),S.b(box)).segs.reduce((m,x)=>Math.max(m,x.w.t),0);};
-    const clearBox=box=>({x0:box.x0+sideT(box,"W")/2,x1:box.x1-sideT(box,"E")/2,y0:box.y0+sideT(box,"N")/2,y1:box.y1-sideT(box,"S")/2});
+    const clearBox=clearBoxOf;
     // box in a fixture's frame: lateral half-width hw, depth d0..d1 measured from its centre towards its front
     const frameBox=(c,rot,hw,d0,d1)=>{const a=rot*Math.PI/180,u=P(Math.cos(a),Math.sin(a)),f=P(-Math.sin(a),Math.cos(a));
       return bb([add(add(c,mul(u,hw)),mul(f,d0)),add(sub(c,mul(u,hw)),mul(f,d0)),add(add(c,mul(u,hw)),mul(f,d1)),add(sub(c,mul(u,hw)),mul(f,d1))]);};
     const ovs=(A,B)=>Math.min(A.x1,B.x1)-Math.max(A.x0,B.x0)>0.001&&Math.min(A.y1,B.y1)-Math.max(A.y0,B.y0)>0.001; // clearance overlap: > 1 mm both ways
     const inside=(A,B)=>A.x0>=B.x0-1e-6&&A.x1<=B.x1+1e-6&&A.y0>=B.y0-1e-6&&A.y1<=B.y1+1e-6;
-    const entry=(kind,def,p,roomId)=>{const e={kind,room:roomId,c:p.c,box:fbox(def,p.c,p.rot)};
+    const entry=(kind,def,p,roomId)=>{const e={kind,room:roomId,c:p.c,box:fbox(def,p.c,p.rot),mount:def.mount};
       if(isWB(kind)){e.clr=frameBox(p.c,p.rot,C.to_side,-def.h/2,def.h/2);e.f60=frameBox(p.c,p.rot,def.w/2,def.h/2,def.h/2+C.to_fixture);e.f75=frameBox(p.c,p.rot,def.w/2,def.h/2,def.h/2+C.to_wall);}
       return e;};
     const legal=(e,def,strict,cb)=>{
-      if(placed.some(Q=>ov(e.box,Q.box)>0.003))return false;
-      if(!def.outdoor&&zones.some(Z=>ov(e.box,Z)>0.003))return false;
+      const mnt=def.mount||"floor";
+      if(placed.some(Q=>(Q.mount||"floor")===mnt&&ov(e.box,Q.box)>0.003))return false;
+      if(!def.outdoor&&!def.mount&&zones.some(Z=>ov(e.box,Z)>0.003))return false;
+      if(def.mount)return true;
       if(!strict||!C||def.outdoor||ignored(e.kind))return true;
-      for(const Q of placed){if(Q.room!==e.room||ignored(Q.kind))continue;
+      for(const Q of placed){if(Q.room!==e.room||ignored(Q.kind)||Q.mount)continue;
         if(e.clr&&Q.clr){if(dist(e.c,Q.c)<C.to_adjacent-1e-6||ovs(e.f60,Q.box)||ovs(Q.f60,e.box))return false;}
         else if(e.clr){if(ovs(e.clr,Q.box)||ovs(e.f60,Q.box))return false;}
         else if(Q.clr){if(ovs(e.box,Q.clr)||ovs(e.box,Q.f60))return false;}}
@@ -446,6 +512,14 @@ function specToDoc(spec,place){
       const kind=normFix(fx.kind);const def=kind&&FIX[kind];if(!def){rep.push(`Unknown fixture "${fx.kind}" skipped`);continue;}
       const room=find(fx.room);if(!room){rep.push(`${def.label}: room "${fx.room}" not found`);continue;}
       const box=boxes.get(room.id),cb=clearBox(box);const want=normSide(fx.side)||"N";const f=Number.isFinite(+fx.at)?clamp(+fx.at,0,1):0.5;
+      if(def.mount==="ceiling"){
+        const pos=Array.isArray(fx.pos)&&fx.pos.length===2?fx.pos.map(v=>clamp(+v||0.5,0,1)):null;
+        const k=placed.filter(Q=>Q.room===room.id&&Q.mount==="ceiling").length;const longX=cb.x1-cb.x0>=cb.y1-cb.y0;
+        let fxp=pos?pos[0]:0.5,fyp=pos?pos[1]:0.3;   // default off-centre so the room label stays clearif(!pos&&k){const off=(Math.ceil(k/2)*(k%2?1:-1))*0.18;if(longX)fxp=clamp(0.5+off,0.1,0.9);else fyp=clamp(0.5+off,0.1,0.9);}
+        const c=P(r4(cb.x0+(cb.x1-cb.x0)*fxp),r4(cb.y0+(cb.y1-cb.y0)*fyp));
+        placed.push({kind,room:room.id,c,box:fbox(def,c,0),mount:"ceiling"});
+        const fo={id:uid("f"),kind,x:c.x,y:c.y,rot:0};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=pk==="mode"?String(fx[pk]):+fx[pk];if(fx.auto)fo.auto=true;
+        doc.fixtures.push(fo);fixOk++;continue;}
       const search=strict=>{
         for(const s of (def.outdoor?[want]:ORDER[want])){
           const S=SIDES[s];const L=dist(S.a(box),S.b(box));if(L<def.w+0.16)continue;
@@ -462,34 +536,47 @@ function specToDoc(spec,place){
       else if(relaxed)rep.push(`${def.label} in ${room.name}: no position keeps the ${C.ref} clearances (${Math.round(C.to_side*1000)} mm side, ${Math.round(C.to_adjacent*1000)} mm between WC / basin centres, ${Math.round(C.to_wall*1000)} mm in front); enlarge or rearrange the room`);
       else if(best.s!==want&&!fx.auto)rep.push(`${def.label} in ${room.name} moved from ${want} to ${best.s} wall to keep ${C&&isWB(kind)?"clearances":"doors clear"}`);
       placed.push(best.e);
-      doc.fixtures.push({id:uid("f"),kind,x:r4(best.c.x),y:r4(best.c.y),rot:best.rot});fixOk++;
+      const fo={id:uid("f"),kind,x:r4(best.c.x),y:r4(best.c.y),rot:best.rot};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=pk==="mode"?String(fx[pk]):+fx[pk];if(fx.auto)fo.auto=true;
+      doc.fixtures.push(fo);fixOk++;
     }
     return {doc,rep,stats:{rooms:doc.rooms.length,doors:doorsOk,windows:winOk,fixtures:fixOk}};
   }finally{doc=old;}
 }
+
+/* kitchen / bath counters as rectangles inside the wall faces: side, from..to (0-1 along the side), depth */
+function counterRects(r){if(!r.counters)return [];const cb=clearBoxOf(boxOf(r.pts)),W=cb.x1-cb.x0,H=cb.y1-cb.y0;
+  return r.counters.map(c=>{const dp=c.depth;if(c.side==="N"||c.side==="S"){const x0=cb.x0+W*c.from,x1=cb.x0+W*c.to;return c.side==="N"?{x0,x1,y0:cb.y0,y1:cb.y0+dp,side:c.side}:{x0,x1,y0:cb.y1-dp,y1:cb.y1,side:c.side};}
+    const y0=cb.y0+H*c.from,y1=cb.y0+H*c.to;return c.side==="W"?{y0,y1,x0:cb.x0,x1:cb.x0+dp,side:c.side}:{y0,y1,x0:cb.x1-dp,x1:cb.x1,side:c.side};});}
+/* room box inside the wall faces */
+function sideThick(box,s){const S=SIDES[s];return edgeSegs(S.a(box),S.b(box)).segs.reduce((m,x)=>Math.max(m,x.w.t),0);}
+function clearBoxOf(box){return {x0:box.x0+sideThick(box,"W")/2,x1:box.x1-sideThick(box,"E")/2,y0:box.y0+sideThick(box,"N")/2,y1:box.y1-sideThick(box,"S")/2};}
 
 /* drawing -> spec (for "Change this plan") */
 function docToSpec(){
   const boxes=new Map(doc.rooms.map(r=>[r.id,boxOf(r.pts)]));
   const roomAt=p=>{for(let i=doc.rooms.length-1;i>=0;i--)if(pointInPoly(p,doc.rooms[i].pts))return doc.rooms[i];return null;};
   const nearestSide=(box,p)=>{let best="N",bd=Infinity,at=0.5;for(const k of Object.keys(SIDES)){const S=SIDES[k];const a=S.a(box),b=S.b(box);const r=segDist(p,a,b);if(r.d<bd){bd=r.d;best=k;at=r.t;}}return {side:best,at:r2(at)};};
-  const spec={project:doc.project,rooms:[],doors:[],windows:[],fixtures:[]};
-  for(const r of doc.rooms){const b=boxes.get(r.id);spec.rooms.push({name:r.name,type:r.type,x:r2(b.x0),y:r2(b.y0),w:r2(b.x1-b.x0),d:r2(b.y1-b.y0)});}
+  const spec=Object.assign({project:doc.project},projectFields(doc),{rooms:[],doors:[],windows:[],fixtures:[]});
+  for(const r of doc.rooms){const b=boxes.get(r.id);const sr={name:r.name,type:r.type,x:r2(b.x0),y:r2(b.y0),w:r2(b.x1-b.x0),d:r2(b.y1-b.y0)};
+    if(r.ceil_set)sr.ceiling_h=r.ceil;if(r.counters)sr.counters=r.counters.map(c=>({...c}));spec.rooms.push(sr);}
+  const opExtra=(o,t)=>{for(const k of (o.given||[]))if(o[k]!==undefined)t[k]=o[k];return t;};
   for(const o of doc.openings){
     const g=openingGeom(o);if(!g)continue;const off=g.w.t/2+0.2;
     const rp_=roomAt(add(g.c,mul(g.n,off))),rm=roomAt(sub(g.c,mul(g.n,off)));
-    if(o.type==="window"){const room=rp_||rm;if(!room)continue;const ns=nearestSide(boxes.get(room.id),g.c);spec.windows.push({room:room.name,side:ns.side,w:r2(o.w),count:1,at:ns.at});continue;}
+    if(o.type==="window"){const room=rp_||rm;if(!room)continue;const ns=nearestSide(boxes.get(room.id),g.c);spec.windows.push(opExtra(o,{room:room.name,side:ns.side,w:r2(o.w),count:1,at:ns.at}));continue;}
     let into=o.side===1?rp_:rm,other=o.side===1?rm:rp_;if(!into){into=other;other=null;}if(!into)continue;
     const d={from:other?other.name:"OUTSIDE",to:into.name,w:r2(o.w),style:o.style};
     if(other){const e=sharedEdge(boxes.get(other.id),boxes.get(into.id));if(e){const r=segDist(g.c,e.a,e.b);d.at=r2(r.t);}}
     else{const ns=nearestSide(boxes.get(into.id),g.c);d.side=ns.side;d.at=ns.at;}
-    spec.doors.push(d);
+    spec.doors.push(opExtra(o,d));
   }
   for(const f of doc.fixtures){
     let room=roomAt(P(f.x,f.y));
     if(!room){let bd=Infinity;for(const r of doc.rooms){const dd=polyEdgeDist(P(f.x,f.y),r.pts);if(dd<bd){bd=dd;room=r;}}}
-    if(!room)continue;const ns=nearestSide(boxes.get(room.id),P(f.x,f.y));
-    spec.fixtures.push({kind:f.kind,room:room.name,side:ns.side,at:ns.at});
+    if(!room)continue;let sf;
+    if(FIX[f.kind].mount==="ceiling"){const cb=clearBoxOf(boxes.get(room.id));sf={kind:f.kind,room:room.name,pos:[r2((f.x-cb.x0)/(cb.x1-cb.x0)),r2((f.y-cb.y0)/(cb.y1-cb.y0))]};}
+    else{const ns=nearestSide(boxes.get(room.id),P(f.x,f.y));sf={kind:f.kind,room:room.name,side:ns.side,at:ns.at};}
+    for(const k of FIX_PROPS)if(f[k]!==undefined)sf[k]=f[k];spec.fixtures.push(sf);
   }
   return spec;
 }
@@ -542,7 +629,7 @@ function clashes(){
   const out=[];const aabb=f=>{const d=FIX[f.kind];const a=f.rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a));const hw=(d.w*c+d.h*s)/2,hh=(d.w*s+d.h*c)/2;return {x0:f.x-hw,y0:f.y-hh,x1:f.x+hw,y1:f.y+hh};};
   const inter=(A,B)=>Math.max(0,Math.min(A.x1,B.x1)-Math.max(A.x0,B.x0))*Math.max(0,Math.min(A.y1,B.y1)-Math.max(A.y0,B.y0));
   const roomOf=f=>{const r=doc.rooms.find(r=>pointInPoly(P(f.x,f.y),r.pts));return r?r.name:"outside";};
-  const F=doc.fixtures;
+  const F=doc.fixtures.filter(f=>!overFloor(f.kind));
   for(let i=0;i<F.length;i++)for(let j=i+1;j<F.length;j++)if(inter(aabb(F[i]),aabb(F[j]))>0.01)out.push(`${FIX[F[i].kind].label} overlaps ${FIX[F[j].kind].label} (${roomOf(F[i])})`);
   for(const o of doc.openings){if(o.type!=="door")continue;const g=openingGeom(o);if(!g)continue;
     const m=mul(g.n,g.w.t/2+0.05);const xs=[g.p0.x+m.x,g.p0.x-m.x,g.p1.x+m.x,g.p1.x-m.x],ys=[g.p0.y+m.y,g.p0.y-m.y,g.p1.y+m.y,g.p1.y-m.y];const O={x0:Math.min(...xs),y0:Math.min(...ys),x1:Math.max(...xs),y1:Math.max(...ys)};
@@ -573,8 +660,8 @@ function reportMd(builderNotes, files){
 }
 
 /* ---------- DXF (R12 ASCII, metres, layered) ---------- */
-const DXF_LAYERS=[["A-WALL",7],["A-DOOR",3],["A-GLAZ",4],["A-AREA",8],["A-AREA-IDEN",2],["P-FIXT",6],["A-EQPM",30],["P-EQPM",140],["M-EQPM",5],["E-EQPM",1]];
-const FIX_LAYER={wc:"P-FIXT",basin:"P-FIXT",sink:"P-FIXT",shower:"P-FIXT",tub:"P-FIXT",fd:"P-FIXT",washer:"A-EQPM",dryer:"A-EQPM",dw:"A-EQPM",range:"A-EQPM",fridge:"A-EQPM",wh:"P-EQPM",ahu:"M-EQPM",acu:"M-EQPM",panel:"E-EQPM"};
+const DXF_LAYERS=[["A-WALL",7],["A-DOOR",3],["A-GLAZ",4],["A-AREA",8],["A-AREA-IDEN",2],["P-FIXT",6],["A-EQPM",30],["P-EQPM",140],["M-EQPM",5],["E-EQPM",1],["F-FIRE",10],["M-EXHT",150],["P-GAS",40],["A-CASE",9]];
+const FIX_LAYER={wc:"P-FIXT",basin:"P-FIXT",sink:"P-FIXT",shower:"P-FIXT",tub:"P-FIXT",fd:"P-FIXT",washer:"A-EQPM",dryer:"A-EQPM",dw:"A-EQPM",range:"A-EQPM",fridge:"A-EQPM",wh:"P-EQPM",ahu:"M-EQPM",acu:"M-EQPM",panel:"E-EQPM",smoke:"F-FIRE",smoke_sounder:"F-FIRE",heat:"F-FIRE",facp:"F-FIRE",extinguisher:"F-FIRE",av_outdoor:"F-FIRE",exhaust:"M-EXHT",hood:"M-EXHT",fresh_air:"M-EQPM",water_tank:"P-EQPM",pump:"P-EQPM",lpg:"P-GAS"};
 function fixPrims(k){
   const d=FIX[k],w=d.w,h=d.h,x0=-w/2,y0=-h/2;const R=(x,y,ww,hh)=>({t:"rect",x,y,w:ww,h:hh}),C=(cx,cy,r)=>({t:"circle",cx,cy,r}),E=(cx,cy,rx,ry)=>({t:"ellipse",cx,cy,rx,ry}),Ln=(x1,y1,x2,y2)=>({t:"line",x1,y1,x2,y2}),T=s=>({t:"text",s});
   switch(k){
@@ -593,6 +680,18 @@ function fixPrims(k){
     case "acu":return [R(x0,y0,w,h),C(0,0,0.32),T("AC")];
     case "panel":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),Ln(-x0,y0,x0,-y0),T("EP")];
     case "fd":return [C(0,0,0.1),Ln(-0.07,-0.07,0.07,0.07),Ln(-0.07,0.07,0.07,-0.07)];
+    case "smoke":return [C(0,0,0.075),T("S")];
+    case "smoke_sounder":return [C(0,0,0.075),C(0,0,0.11),T("S")];
+    case "heat":return [C(0,0,0.075),T("H")];
+    case "exhaust":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),Ln(-x0,y0,x0,-y0)];
+    case "facp":return [R(x0,y0,w,h),T("FAP")];
+    case "extinguisher":return [C(0,0,w/2),T("FE")];
+    case "hood":return [R(x0,y0,w,h),T("HOOD")];
+    case "av_outdoor":return [R(x0,y0,w,h),T("AV")];
+    case "lpg":return [R(x0,y0,w,h),T("LPG")];
+    case "fresh_air":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),T("FA")];
+    case "water_tank":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),Ln(-x0,y0,x0,-y0),T("TANK")];
+    case "pump":return [C(0,0,0.18),T("P")];
   }
   return [R(x0,y0,w,h)];
 }
@@ -630,6 +729,8 @@ function toDxf(){
     else if(op.style==="sliding"){const m=mul(G.n,t*0.18),half=op.w/2+0.04;line("A-DOOR",add(G.p0,m),add(add(G.p0,mul(G.d,half)),m));line("A-DOOR",sub(sub(G.p1,mul(G.d,half)),m),sub(G.p1,m));}
     else if(op.style==="garage"){line("A-DOOR",G.p0,G.p1);line("A-DOOR",add(G.p0,mul(sn,t/2+0.35)),add(G.p1,mul(sn,t/2+0.35)));}
   }
+  // counters
+  for(const r of doc.rooms)for(const c of counterRects(r))poly("A-CASE",[P(c.x0,c.y0),P(c.x1,c.y0),P(c.x1,c.y1),P(c.x0,c.y1)],true);
   // fixtures
   for(const f of doc.fixtures){
     const L=FIX_LAYER[f.kind]||"P-FIXT";const a=f.rot*Math.PI/180,cs=Math.cos(a),sn=Math.sin(a);const T=(x,y)=>P(f.x+x*cs-y*sn,f.y+x*sn+y*cs);
@@ -893,8 +994,13 @@ const IFC_CHARS="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_
 function ifcGuid(){const b=require("crypto").randomBytes(16);b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;let n=0n;for(const x of b)n=(n<<8n)|BigInt(x);let s="";for(let i=0;i<22;i++){s=IFC_CHARS[Number(n&63n)]+s;n>>=6n;}return s;}
 const ifcNum=v=>{let s=String(Math.round(v*1e6)/1e6);if(s==="-0")s="0";if(!/[.eE]/.test(s))s+=".";return s;};
 const ifcStr=v=>"'"+String(v).replace(/\\/g,"\\\\").replace(/'/g,"''").replace(/[^\x20-\x7E]/g,ch=>"\\X2\\"+ch.codePointAt(0).toString(16).toUpperCase().padStart(4,"0")+"\\X0\\")+"'";
-const FIX_3D_H={wc:0.75,basin:0.85,sink:0.9,shower:0.06,tub:0.55,washer:0.85,dryer:0.85,dw:0.85,range:0.9,fridge:1.8,wh:1.5,ahu:1.3,acu:0.8,panel:0.6,fd:0.02};
-const FIX_IFC={wc:["IFCSANITARYTERMINAL","TOILETPAN"],basin:["IFCSANITARYTERMINAL","WASHHANDBASIN"],sink:["IFCSANITARYTERMINAL","SINK"],shower:["IFCSANITARYTERMINAL","SHOWER"],tub:["IFCSANITARYTERMINAL","BATH"],
+/* mounting height of a fixture base (m above floor): ceiling items sit under the room ceiling */
+const FIX_WALL_Z={panel:1.2,facp:1.2,extinguisher:1.0,hood:1.6,av_outdoor:2.5};
+function fixZ(f){const d=FIX[f.kind];if(d.mount==="ceiling"){const r=doc.rooms.find(r=>pointInPoly(P(f.x,f.y),r.pts));return (r?r.ceil:2.7)-(FIX_3D_H[f.kind]||0.05);}return FIX_WALL_Z[f.kind]||0;}
+const FIX_3D_H={smoke:0.05,smoke_sounder:0.05,heat:0.05,exhaust:0.1,facp:0.5,extinguisher:0.5,hood:0.3,av_outdoor:0.2,lpg:1.2,fresh_air:0.6,water_tank:1.2,pump:0.5,wc:0.75,basin:0.85,sink:0.9,shower:0.06,tub:0.55,washer:0.85,dryer:0.85,dw:0.85,range:0.9,fridge:1.8,wh:1.5,ahu:1.3,acu:0.8,panel:0.6,fd:0.02};
+const FIX_IFC={smoke:["IFCSENSOR","SMOKESENSOR"],smoke_sounder:["IFCSENSOR","SMOKESENSOR"],heat:["IFCSENSOR","HEATSENSOR"],facp:["IFCUNITARYCONTROLELEMENT","ALARMPANEL"],av_outdoor:["IFCALARM","SIREN"],
+  exhaust:["IFCFAN","PROPELLORAXIAL"],hood:["IFCFAN",null],fresh_air:["IFCUNITARYEQUIPMENT","AIRHANDLER"],water_tank:["IFCTANK","STORAGE"],lpg:["IFCTANK","PRESSUREVESSEL"],pump:["IFCPUMP",null],
+  wc:["IFCSANITARYTERMINAL","TOILETPAN"],basin:["IFCSANITARYTERMINAL","WASHHANDBASIN"],sink:["IFCSANITARYTERMINAL","SINK"],shower:["IFCSANITARYTERMINAL","SHOWER"],tub:["IFCSANITARYTERMINAL","BATH"],
   fd:["IFCWASTETERMINAL","FLOORTRAP"],washer:["IFCELECTRICAPPLIANCE","WASHINGMACHINE"],dryer:["IFCELECTRICAPPLIANCE","TUMBLEDRYER"],dw:["IFCELECTRICAPPLIANCE","DISHWASHER"],range:["IFCELECTRICAPPLIANCE","ELECTRICCOOKER"],
   fridge:["IFCELECTRICAPPLIANCE","REFRIGERATOR"],wh:["IFCELECTRICAPPLIANCE","FREESTANDINGWATERHEATER"],ahu:["IFCUNITARYEQUIPMENT","AIRHANDLER"],acu:["IFCUNITARYEQUIPMENT","SPLITSYSTEM"],panel:["IFCELECTRICDISTRIBUTIONBOARD","DISTRIBUTIONBOARD"]};
 function toIfc(fileName){
@@ -949,7 +1055,7 @@ function toIfc(fileName){
   if(spaces.length)E(`IFCRELAGGREGATES(${G()},$,$,$,${storey},(${spaces.join(",")}))`);
   // fixtures and MEP equipment, with their services as a property set
   for(const f of doc.fixtures){
-    const def=FIX[f.kind],[cls,pt]=FIX_IFC[f.kind]||["IFCBUILDINGELEMENTPROXY",null];const a=-(f.rot||0)*Math.PI/180;const z0=f.kind==="panel"?1.2:0;
+    const def=FIX[f.kind],[cls,pt]=FIX_IFC[f.kind]||["IFCBUILDINGELEMENTPROXY",null];const a=-(f.rot||0)*Math.PI/180;const z0=fixZ(f);
     const el=E(`${cls}(${G()},$,${S(def.label)},$,$,${place(f.x,-f.y,z0,a)},${shape([solidAt(rect(def.w,def.h),0,0,0,FIX_3D_H[f.kind]||0.8)])},$,${pt?"."+pt+".":".NOTDEFINED."})`);
     const props=[E(`IFCPROPERTYSINGLEVALUE('Services',$,IFCLABEL(${S(def.svc.join(", "))}),$)`)];
     const room=doc.rooms.find(r=>pointInPoly(P(f.x,f.y),r.pts));if(room)props.push(E(`IFCPROPERTYSINGLEVALUE('Room',$,IFCLABEL(${S(room.name)}),$)`));
@@ -986,7 +1092,7 @@ function writeAll(dir,name,notes){
   return {files,ready:rep.ready,clashes:rep.clashes,failed_checks:rep.checks.filter(c=>!c.ok).map(c=>c.h+(c.detail?` — ${c.detail}`:""))};
 }
 /* geometry helpers handed to codecheck.js (it reads the current global doc through openingGeom) */
-function codecheckGeom(){return {P,add,sub,mul,dot,cross,dist,norm,pointInPoly,boxOf,openingGeom,wallLen,FIX};}
+function codecheckGeom(){return {P,add,sub,mul,dot,cross,dist,norm,pointInPoly,boxOf,openingGeom,wallLen,FIX,counterRects,extT:opts.extT};}
 function runCodecheck(pack,dir,name){
   const cc=require("./codecheck");let rep;
   try{rep=cc.run(doc,codecheckGeom(),{pack});}catch(e){fail(e.message);}

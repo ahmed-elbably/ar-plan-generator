@@ -47,6 +47,35 @@ The spec is the only thing Claude writes. The engine (`scripts/arplan.js build`)
 - With `--pack dubai` the engine also adds a floor drain (`fd`) to every bathroom, WC, kitchen and laundry that has none (DBC K.10.3.2.3). You may still place them yourself.
 - Exactly one `wh`, one `ahu` and one `panel` per dwelling, in a laundry, garage, mech or store room. At least one `acu` against an outside wall.
 
+### Design data for the code check (optional, v0.5)
+
+Everything below is optional. A rule whose data is missing is reported NOT CHECKABLE, never passed, so write what the design actually decides.
+
+**Project level** (top of the spec):
+```json
+"building_type": "villa", "storeys": 1, "building_h": 4.5, "ceiling_h": 3.0, "glass": 0.75,
+"gas": "electric", "hassantuk": true, "sprinklered": false,
+"plot": {"x": -3.5, "y": -4, "w": 34.5, "d": 24, "road": ["N"], "sikka": [], "setbacks": {"road": 3}},
+"window_defaults": {"h": 1.5, "sill": 0.9, "op": "casement"}
+```
+- `plot` is in plan coordinates (same axes as rooms). `road` / `sikka` list the plot sides on a road or sikka; other sides are neighbours. Give `setbacks` from the DCR / affection plan; missing ones fall back to DBC Table K.1 and the report says so.
+- `ceiling_h` is the designed clear height for every room (override per room); `glass` is the net glazing share of window / glazed-door openings (frames excluded, typically 0.7–0.8).
+- `window_defaults` applies to every window unless the window says otherwise.
+- `building_type`: `villa` or `townhouse` (then add `party_wall_h` in hours). `gas`: `electric`, `lpg` (add an `lpg` fixture outdoors) or `piped`.
+
+**Rooms:** `"ceiling_h": 2.6` (e.g. bathrooms with a false ceiling), and for kitchens `"counters": [{"side": "N", "from": 0, "to": 1, "depth": 0.6}]` (`from` / `to` along that wall, 0–1; depth in m).
+
+**Windows:** `sill`, `h` (m), `op` (`fixed`, `sliding`, `casement`, `hung`, `tilt`), `glass`; `operator_h` only for windows with mechanical opening gear. Escape windows need `op` and `h`.
+**Doors:** `"glazed": true` (with `h`) for glazed doors that count as daylight, e.g. a sliding door to a terrace.
+
+**More fixture kinds** (same `room`, `side`, `at` as other fixtures):
+- ceiling-mounted, placed inside the room (`pos: [fx, fy]`, fractions of the room, default near the top-centre): `smoke`, `smoke_sounder` (bedrooms), `heat` (kitchens), `exhaust` (with `lps` and `mode`: `demand` / `continuous`)
+- wall-mounted above floor fixtures: `facp` (fire alarm panel, near the front door), `extinguisher` (kitchen, by the exit door), `hood` (over the range, with `lps`, `mode`)
+- outdoors, outside the named wall: `av_outdoor` (alarm sounder / strobe on the façade facing the road), `lpg`
+- on the floor: `fresh_air` (with `lps`), `water_tank` (with `litres`, inside a conditioned room), `pump`
+- `panel` may carry `top_h` (height of the DB top, m).
+Ceiling and wall-mounted items never clash with floor fixtures or doorways.
+
 ## Layout rules
 
 - Rooms never overlap. Pack them into a compact footprint with no leftover gaps inside the building.

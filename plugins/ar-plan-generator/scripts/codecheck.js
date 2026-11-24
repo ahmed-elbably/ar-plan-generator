@@ -103,7 +103,14 @@ function buildModel(doc, G) {
     }
     ga += a; if (m.type !== "garage") cond += a;
   }
-  return {doc, G, rooms, roomAt, indoor, doors, windows, windowsOf, sideOf, fixtures, leaves, ga, cond};
+  // building footprint to the outer wall faces (outdoor rooms excluded), used for setbacks and façades
+  const ind = rooms.filter(m => m.type !== "outdoor"), e = (G.extT || 0.25) / 2;
+  const footprint = ind.length ? {x0: Math.min(...ind.map(m => m.box.x0)) - e, y0: Math.min(...ind.map(m => m.box.y0)) - e, x1: Math.max(...ind.map(m => m.box.x1)) + e, y1: Math.max(...ind.map(m => m.box.y1)) + e} : null;
+  const facadeOf = c => { const f = footprint; const d = {N: Math.abs(c.y - f.y0), S: Math.abs(c.y - f.y1), W: Math.abs(c.x - f.x0), E: Math.abs(c.x - f.x1)}; return Object.keys(d).sort((p, q) => d[p] - d[q])[0]; };
+  const isOpenKitchen = m => doors.some(d => d.style === "opening" && (d.a === m || d.b === m) && [d.a, d.b].some(r => r && r !== m && ["living", "dining", "hall"].includes(r.type)));
+  const has = ks => fixtures.some(f => ks.includes(f.kind));
+  const layer = {fire: has(["smoke", "smoke_sounder", "heat", "facp", "av_outdoor"]), vent: has(["exhaust", "hood", "fresh_air"]), services: has(["water_tank", "pump"])};
+  return {doc, G, rooms, roomAt, indoor, doors, windows, windowsOf, sideOf, fixtures, leaves, ga, cond, footprint, facadeOf, isOpenKitchen, layer};
 }
 
 /* ---------- small helpers ---------- */
@@ -126,6 +133,24 @@ function rayToBox(c, dir, b) {
   return t;
 }
 const neg = v => ({x: -v.x, y: -v.y});
+const boxDist = (c, b) => Math.hypot(Math.max(b.x0 - c.x, 0, c.x - b.x1), Math.max(b.y0 - c.y, 0, c.y - b.y1));
+// a design layer the plan does not have yet: not a failure, just not checkable
+const noLayer = what => ({status: "NOT CHECKABLE", items: [], needs: [what]});
+// rooms whose data is missing make the rule NOT CHECKABLE, unless something already fails
+function withMissing(res, missing, what) {
+  if (!missing.length) return res;
+  const need = `${what} for ${missing.slice(0, 6).join(", ")}${missing.length > 6 ? ` +${missing.length - 6} more` : ""}`;
+  if (res.status === "FAIL") return Object.assign(res, {note: `Also missing ${need}.`});
+  return Object.assign(res, {status: "NOT CHECKABLE", needs: [need]});
+}
+// clear opening of an operable window (opening size, frame not deducted)
+function escapeClear(w, p) {
+  const op = w.o.op, hGiven = (w.o.given || []).includes("h");
+  const cw = op === "sliding" ? w.w / 2 : (op === "casement" || op === "hung") ? w.w : 0;
+  const ch = op === "hung" ? w.h / 2 : (op === "casement" || op === "sliding") ? w.h : 0;
+  const ok = hGiven && cw >= p.min_w - EPS && ch >= p.min_h - EPS && cw * ch >= p.min_area - EPS && w.sill <= p.max_bottom + EPS;
+  return {ok, desc: `${mm(cw)} × ${mm(ch)} = ${(Math.round(cw * ch * 100) / 100)} m² (${op}${hGiven ? "" : ", height not given"})`};
+}
 
 /* ---------- measure functions ---------- */
 const MEASURES = {
@@ -201,7 +226,7 @@ const MEASURES = {
       let plus = rayToBox(fx.c, fx.u, b), minus = rayToBox(fx.c, neg(fx.u), b), what = {plus: "wall", minus: "wall"};
       let adj = Infinity, adjName = "";
       for (const o of M.fixtures) {
-        if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind)) continue;   // floor drains are not obstructions
+        if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind) || o.def.mount) continue;   // floor drains, ceiling and wall-mounted items are not obstructions
         const pts = o.corners.map(q => local(fx, q, G)), [l0, l1] = range(pts.map(q => q.l)), [d0, d1] = range(pts.map(q => q.d));
         if (Math.min(d1, fx.hd) - Math.max(d0, -fx.hd) <= 0.001) continue;     // not beside this fixture
         if (p.kinds.includes(o.kind)) {                                       // adjacent WC / basin: centre to centre
@@ -228,7 +253,7 @@ const MEASURES = {
         if (Math.min(l1, fx.hw) - Math.max(l0, -fx.hw) <= 0.001 || d1 <= fx.hd + 0.001) return Infinity;
         return Math.max(0, d0 - fx.hd);
       };
-      for (const o of M.fixtures) { if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind)) continue; const g = inFront(o.corners); if (g < fix) { fix = g; fixName = o.label; } }
+      for (const o of M.fixtures) { if (o === fx || o.room !== fx.room || (p.ignore || []).includes(o.kind) || o.def.mount) continue; const g = inFront(o.corners); if (g < fix) { fix = g; fixName = o.label; } }
       for (const lf of M.leaves) { if (lf.room !== fx.room) continue; door = Math.min(door, inFront(lf.pts)); }
       const wallOrDoor = Math.min(wall, door), wd = door < wall ? "door leaf" : "wall";
       const ok = wallOrDoor >= p.to_wall - EPS && fix >= p.to_fixture - EPS;
@@ -302,6 +327,254 @@ const MEASURES = {
     const gas = M.doc.gas || p.default_gas;
     if (gas === "electric") return {status: "N/A", items: [], note: M.doc.gas ? "Plan is all-electric." : "Assumed all-electric (pack default): no LPG on site."};
     return {status: "NOT CHECKABLE", items: [], needs: ["LPG cylinder location"]};
+  },
+
+  /* ---------- v0.5 rules on designed data (spec fields and new fixture kinds) ---------- */
+  kitchen_manoeuvre(M, p) {
+    const out = [], missing = [];
+    for (const m of M.rooms.filter(m => m.type === "kitchen")) {
+      const cs = M.G.counterRects(m.r); if (!cs.length) { missing.push(m.name); continue; }
+      const b = m.clear;
+      for (const c of cs) {
+        let gap, opp = "wall";
+        const facing = {N: "S", S: "N", W: "E", E: "W"}[c.side];
+        const others = cs.filter(o => o.side === facing && (c.side === "N" || c.side === "S" ? Math.min(o.x1, c.x1) - Math.max(o.x0, c.x0) > 0.01 : Math.min(o.y1, c.y1) - Math.max(o.y0, c.y0) > 0.01));
+        if (c.side === "N") { gap = b.y1 - c.y1; for (const o of others) if (o.y0 - c.y1 < gap) { gap = o.y0 - c.y1; opp = "opposite counter"; } }
+        if (c.side === "S") { gap = c.y0 - b.y0; for (const o of others) if (c.y0 - o.y1 < gap) { gap = c.y0 - o.y1; opp = "opposite counter"; } }
+        if (c.side === "W") { gap = b.x1 - c.x1; for (const o of others) if (o.x0 - c.x1 < gap) { gap = o.x0 - c.x1; opp = "opposite counter"; } }
+        if (c.side === "E") { gap = c.x0 - b.x0; for (const o of others) if (c.x0 - o.x1 < gap) { gap = c.x0 - o.x1; opp = "opposite counter"; } }
+        out.push(item(gap >= p.min - EPS, [m.id], `${m.name} ${c.side} counter`, `${fmt(gap)} m to ${opp}`, `≥ ${p.min} m`));
+      }
+    }
+    return withMissing(verdict(out), missing, "kitchen counters");
+  },
+
+  ceiling_heights(M, p) {
+    const out = [], missing = [];
+    for (const m of M.rooms.filter(m => m.type !== "outdoor")) {
+      if (!m.r.ceil_set) { missing.push(m.name); continue; }
+      const hab = p.habitable_types.includes(m.type), lim = hab ? p.habitable : p.other;
+      out.push(item(m.r.ceil >= lim - EPS, [m.id], m.name, `${fmt(m.r.ceil)} m`, `≥ ${lim} m${hab ? " (living / bedroom)" : ""}`));
+    }
+    return withMissing(verdict(out), missing, "designed ceiling height");
+  },
+
+  glazing_ratio(M, p) {
+    const out = [], missing = [], defGlass = M.doc.glass;
+    for (const m of M.rooms.filter(m => p.types.includes(m.type) && (p.staff === undefined || m.staff === p.staff))) {
+      const ops = M.windowsOf(m).concat(M.doors.filter(d => d.o.glazed && (d.a === m || d.b === m)));
+      if (ops.some(o => !(o.o.given || []).includes("h") && o.type === "window") || ops.some(o => (o.o.glass ?? defGlass) === undefined)) { missing.push(m.name); continue; }
+      const net = ops.reduce((s, o) => s + o.w * o.h * (o.o.glass ?? defGlass), 0), ratio = net / m.area;
+      out.push(item(ratio >= p.min_ratio - 1e-6, [m.id], m.name, `${Math.round(ratio * 1000) / 10}% (${fmt(net)} m² net glazing / ${m2(m.area)})`, `≥ ${p.min_ratio * 100}%`));
+    }
+    return withMissing(verdict(out), missing, "window height and net glazing ratio (glass)");
+  },
+
+  window_sill(M, p) {
+    const out = [], missing = [];
+    for (const w of M.windows) {
+      const room = w.a && w.a.type !== "outdoor" ? w.a : w.b; const nm = room ? room.name : "?";
+      if (!(w.o.given || []).includes("sill")) { missing.push(nm); continue; }
+      out.push(item(w.sill >= p.min - EPS, [w.id], `Window in ${nm}`, mm(w.sill), `≥ ${mm(p.min)}`));
+    }
+    return withMissing(verdict(out), [...new Set(missing)], "designed window sill height");
+  },
+
+  window_operator(M, p) {
+    const ws = M.windows.filter(w => (w.o.given || []).includes("operator_h"));
+    if (!ws.length) return {status: "N/A", items: [], note: "No windows with mechanical opening means declared (give operator_h for those that have them)."};
+    return verdict(ws.map(w => item(w.o.operator_h >= p.min - EPS && w.o.operator_h <= p.max + EPS, [w.id], "Window operator", mm(w.o.operator_h), `${mm(p.min)}–${mm(p.max)}`)));
+  },
+
+  building_height(M, p) {
+    if (M.doc.building_h === undefined) return {status: "NOT CHECKABLE", items: [], needs: ["building height (building_h)"]};
+    return verdict([item(M.doc.building_h <= p.max + EPS, [], "Building", `${fmt(M.doc.building_h)} m`, `≤ ${p.max} m`)]);
+  },
+
+  setbacks(M, p) {
+    const plot = M.doc.plot; if (!plot) return {status: "NOT CHECKABLE", items: [], needs: ["plot boundary with road / sikka sides"]};
+    const fp = M.footprint, type = M.doc.building_type || "villa", def = p.defaults[type] || p.defaults.villa;
+    const dist = {N: fp.y0 - plot.y, S: plot.y + plot.d - fp.y1, W: fp.x0 - plot.x, E: plot.x + plot.w - fp.x1};
+    const usedDefault = [];
+    const out = ["N", "E", "S", "W"].map(s => {
+      const cat = plot.road.includes(s) ? "road" : plot.sikka.includes(s) ? "sikka" : "neighbour";
+      let lim = plot.setbacks && plot.setbacks[cat]; if (lim === undefined) { lim = def[cat]; usedDefault.push(cat); }
+      return item(dist[s] >= lim - EPS, [], `${s} side (${cat})`, `${fmt(dist[s])} m from the outer wall face`, `≥ ${lim} m`);
+    });
+    const r = verdict(out);
+    if (usedDefault.length) r.note = `Setbacks for ${[...new Set(usedDefault)].join(", ")} taken from DBC Table K.1 (${type}) because the plot gives none (pack assumption).`;
+    return r;
+  },
+
+  party_wall(M, p) {
+    const t = M.doc.building_type;
+    if (!t) return {status: "NOT CHECKABLE", items: [], needs: ["building type (villa / townhouse)"]};
+    if (t !== "townhouse") return {status: "N/A", items: [], note: "Detached villa: no party wall."};
+    if (M.doc.party_wall_h === undefined) return {status: "NOT CHECKABLE", items: [], needs: ["party wall fire rating in hours (party_wall_h)"]};
+    const lim = M.doc.sprinklered ? p.sprinklered : p.default;
+    return verdict([item(M.doc.party_wall_h >= lim, [], "Party wall", `${M.doc.party_wall_h} h`, `≥ ${lim} h${M.doc.sprinklered ? " (sprinklered)" : ""}`)]);
+  },
+
+  detection_system(M, p) {
+    if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
+    const det = M.fixtures.filter(f => p.detectors.includes(f.kind)), panel = M.fixtures.filter(f => f.kind === "facp");
+    return verdict([item(det.length > 0 && panel.length > 0, det.concat(panel).map(f => f.id), "Villa", `${det.length} detector(s), ${panel.length} panel(s)`, "smoke detection system with a panel")]);
+  },
+
+  detectors_by_room(M, p) {
+    if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
+    const out = [];
+    for (const [type, kinds] of Object.entries(p.rooms)) for (const m of M.rooms.filter(m => m.type === type)) {
+      const has = M.fixtures.filter(f => f.room === m && kinds.includes(f.kind));
+      out.push(item(has.length > 0, [m.id].concat(has.map(f => f.id)), m.name, has.length ? has.map(f => f.label).join(", ") : "none", kinds.map(k => k.replace("_", " + ")).join(" or ")));
+    }
+    return verdict(out);
+  },
+
+  kitchen_detector(M, p) {
+    if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
+    const kit = M.rooms.filter(m => m.type === "kitchen" && (p.open ? M.isOpenKitchen(m) : !M.isOpenKitchen(m)));
+    if (!kit.length) return {status: "N/A", items: [], note: p.open ? "No open kitchen." : "No closed kitchen."};
+    return verdict(kit.map(m => {
+      const heat = M.fixtures.filter(f => f.room === m && p.kitchen_kinds.includes(f.kind));
+      if (!p.open) return item(heat.length > 0, [m.id], m.name, heat.length ? heat.map(f => f.label).join(", ") : "no heat detector", "heat detector (or listed kitchen detector)");
+      // open kitchen: heat detector in the kitchen and a smoke detector >= 3 m from the counter in the adjoining living room
+      const living = M.doors.filter(d => d.style === "opening" && (d.a === m || d.b === m)).map(d => d.a === m ? d.b : d.a).filter(r => r && p.living_types.includes(r.type));
+      const counters = M.G.counterRects(m.r).map(c => ({x: (c.x0 + c.x1) / 2, y: (c.y0 + c.y1) / 2, box: c}));
+      const ref = counters.length ? counters : M.fixtures.filter(f => f.room === m && p.counter_kinds.includes(f.kind)).map(f => ({x: f.c.x, y: f.c.y}));
+      const sm = M.fixtures.filter(f => living.includes(f.room) && p.smoke_kinds.includes(f.kind));
+      const far = sm.filter(f => ref.every(r => r.box ? boxDist(f.c, r.box) >= p.min_dist - EPS : M.G.dist(f.c, r) >= p.min_dist - EPS));
+      return item(heat.length > 0 && far.length > 0, [m.id], m.name, `${heat.length} heat detector(s); ${far.length} smoke detector(s) ≥ ${p.min_dist} m from the counter in ${living.map(r => r.name).join(", ") || "no adjoining living room"}`,
+        `heat detector + smoke detector ≥ ${p.min_dist} m from the counter`, counters.length ? undefined : "distance measured from the sink / range (no counters in the plan)");
+    }));
+  },
+
+  facp_location(M) {
+    if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
+    const panels = M.fixtures.filter(f => f.kind === "facp");
+    if (!panels.length) return verdict([item(false, [], "Fire alarm panel", "none", "panel near the front door")]);
+    const entrances = M.doors.filter(d => d.toOutside && d.style !== "garage" && M.indoor(d.into || d.a || d.b));
+    const entRooms = new Set(entrances.flatMap(d => [d.a, d.b]).filter(M.indoor));
+    const fx = panels[0], near = entRooms.has(fx.room), dd = Math.min(...entrances.map(d => M.G.dist(d.g.c, fx.c)));
+    if (near) return verdict([item(true, [fx.id], `Panel in ${fx.room.name}`, `${fmt(dd)} m from an entrance door`, "near the front door")]);
+    return {status: "NOT CHECKABLE", by: "reviewer", items: [item(false, [fx.id], `Panel in ${fx.room ? fx.room.name : "?"}`, `${fmt(dd)} m from the nearest entrance door, not in an entrance room`, "near the front door")],
+            note: "\"Near the front door\" has no number in the code; the reviewer judges this placement."};
+  },
+
+  av_outdoor(M) {
+    if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
+    const av = M.fixtures.filter(f => f.kind === "av_outdoor");
+    if (!av.length) return verdict([item(false, [], "Outdoor AV device", "none", "visible from the approach road")]);
+    const plot = M.doc.plot; if (!plot) return {status: "NOT CHECKABLE", items: [], needs: ["road side of the plot (plot.road)"]};
+    return verdict(av.map(f => { const s = M.facadeOf(f.c); return item(plot.road.includes(s), [f.id], "Outdoor AV device", `on the ${s} façade`, `façade facing the road (${plot.road.join(", ") || "none given"})`); }));
+  },
+
+  flag_true(M, p) {
+    const v = M.doc[p.field];
+    if (v === undefined) return {status: "NOT CHECKABLE", items: [], needs: [p.needs]};
+    return verdict([item(v === true, [], p.label, v ? "yes" : "no", "yes")]);
+  },
+
+  escape_secondary(M, p) {
+    if (M.doc.sprinklered === true) return {status: "PASS", items: [], note: "Villa is sprinkler protected: no secondary means required."};
+    const out = [], missing = [];
+    for (const m of M.rooms.filter(m => p.types.includes(m.type))) {
+      const direct = M.doors.some(d => d.toOutside && d.style !== "garage" && (d.a === m || d.b === m));
+      if (direct) { out.push(item(true, [m.id], m.name, "door directly to the outside", "secondary means of escape")); continue; }
+      const ws = M.windowsOf(m);
+      if (ws.some(w => !w.o.op || (w.o.op !== "fixed" && !(w.o.given || []).includes("h")))) { missing.push(m.name); continue; }
+      const best = ws.map(w => escapeClear(w, p)).find(e => e.ok);
+      out.push(item(!!best, [m.id], m.name, best ? `escape window ${best.desc}` : (ws.length ? "no operable window large enough" : "no window"), "door to outside or an escape window (F-10)",
+        best ? "window opening size; frame not deducted" : undefined));
+    }
+    return withMissing(verdict(out), missing, "window operation type (op)");
+  },
+
+  escape_window(M, p) {
+    const out = [];
+    for (const m of M.rooms.filter(m => p.types.includes(m.type))) {
+      const ws = M.windowsOf(m).filter(w => w.o.op && w.o.op !== "fixed");
+      if (!ws.length) continue;
+      const e = ws.map(w => escapeClear(w, p)), best = e.find(x => x.ok) || e[0];
+      out.push(item(!!e.find(x => x.ok), [m.id], m.name, best.desc, `≥ ${mm(p.min_w)} wide, ≥ ${mm(p.min_h)} high, ≥ ${p.min_area} m², bottom ≤ ${p.max_bottom} m`, "window opening size; frame not deducted"));
+    }
+    if (!out.length) return {status: "NOT CHECKABLE", items: [], needs: ["operable windows with their operation type (op)"]};
+    return verdict(out);
+  },
+
+  extinguisher_kitchen(M) {
+    if (!M.layer.fire && !M.fixtures.some(f => f.kind === "extinguisher")) return noLayer("fire safety layer (extinguisher)");
+    return verdict(M.rooms.filter(m => m.type === "kitchen").map(m => {
+      const ex = M.fixtures.filter(f => f.room === m && f.kind === "extinguisher");
+      const doorD = ex.length ? Math.min(...M.doors.filter(d => d.a === m || d.b === m).map(d => M.G.dist(d.g.c, ex[0].c))) : null;
+      return item(ex.length > 0, [m.id], m.name, ex.length ? `extinguisher ${fmt(doorD)} m from a kitchen door` : "none", "extinguisher inside the kitchen next to the exit door");
+    }));
+  },
+
+  water_tank(M, p) {
+    const t = M.fixtures.filter(f => f.kind === "water_tank");
+    if (!t.length) return M.layer.services ? verdict([item(false, [], "Water tank", "none", "cold water storage tank")]) : noLayer("water services layer (tank, pump)");
+    return verdict(t.map(f => {
+      const ok = f.room && f.room.type !== "outdoor" && !p.unconditioned_types.includes(f.room.type);
+      return item(ok, [f.id], `Tank in ${f.room ? f.room.name : "outside"}`, `${f.room ? f.room.type : "outside"}${f.f.litres ? `, ${f.f.litres} l` : ""}`, "inside a conditioned space, not exposed outdoors",
+        f.f.litres ? "capacity must cover 24 h demand (DEWA); check the sizing" : "no capacity given");
+    }));
+  },
+
+  db_height(M, p) {
+    const dbs = M.fixtures.filter(f => f.kind === "panel");
+    if (!dbs.length || dbs.some(f => f.f.top_h === undefined)) return {status: "NOT CHECKABLE", items: [], needs: ["DB mounting height to the top (top_h)"]};
+    return verdict(dbs.map(f => item(f.f.top_h <= p.max + EPS, [f.id], "DB", `top at ${fmt(f.f.top_h)} m`, `≤ ${p.max} m`)));
+  },
+
+  fresh_air(M, p) {
+    if (!M.layer.vent) return noLayer("ventilation layer (exhaust fans, hoods, fresh-air unit)");
+    const fa = M.fixtures.filter(f => f.kind === "fresh_air"), nbr = Math.max(1, M.rooms.filter(m => m.type === "bedroom").length);
+    const q = p.a * M.cond + p.b * (nbr + 1);
+    if (!fa.length) return verdict([item(false, [], "Fresh air", "no fresh-air unit", `${Math.round(q)} L/s mechanical outdoor air`)]);
+    if (fa.some(f => f.f.lps === undefined)) return {status: "NOT CHECKABLE", items: [], needs: ["fresh-air unit airflow (lps)"]};
+    const sum = fa.reduce((s, f) => s + f.f.lps, 0);
+    return verdict([item(sum >= q - 0.5, fa.map(f => f.id), "Fresh-air unit(s)", `${sum} L/s`, `≥ ${Math.round(q)} L/s = ${p.a} × ${m2(M.cond)} + ${p.b} × (${nbr} + 1)`)]);
+  },
+
+  mech_ventilation_present(M) {
+    if (!M.layer.vent) return noLayer("ventilation layer (exhaust fans, hoods, fresh-air unit)");
+    const fa = M.fixtures.filter(f => f.kind === "fresh_air");
+    return verdict([item(fa.length > 0, fa.map(f => f.id), "Mechanical ventilation", fa.length ? "fresh-air unit provided" : "none: relies on windows", "mechanical outdoor air")]);
+  },
+
+  local_exhaust(M, p) {
+    if (!M.layer.vent) return noLayer("ventilation layer (exhaust fans, hoods, fresh-air unit)");
+    return verdict(M.rooms.filter(m => p.types.includes(m.type)).map(m => {
+      const ex = M.fixtures.filter(f => f.room === m && (f.kind === "exhaust" || (m.type === "kitchen" && f.kind === "hood")));
+      return item(ex.length > 0, [m.id].concat(ex.map(f => f.id)), m.name, ex.length ? ex.map(f => f.label).join(", ") : "no exhaust", m.type === "kitchen" ? "range hood or exhaust fan" : "exhaust fan");
+    }));
+  },
+
+  exhaust_rates(M, p) {
+    if (!M.layer.vent) return noLayer("ventilation layer (exhaust fans, hoods, fresh-air unit)");
+    const units = M.fixtures.filter(f => (f.kind === "exhaust" || f.kind === "hood") && f.room && (f.room.type === "bathroom" || f.room.type === "kitchen"));
+    const missing = units.filter(f => f.f.lps === undefined || !f.f.mode).map(f => `${f.label} in ${f.room.name}`);
+    const mine = units.filter(f => f.f.mode === p.mode && f.f.lps !== undefined);
+    const out = mine.map(f => {
+      const r = f.room, vol = r.area * (r.r.ceil || 2.7), ach = l => Math.round(l * vol * 1000 / 3600);
+      let lim, txt;
+      if (r.type === "bathroom") { lim = p.bathroom; txt = `${lim} L/s (bathroom)`; }
+      else if (p.mode === "continuous") { lim = ach(p.kitchen_ach); txt = `${p.kitchen_ach} ach = ${lim} L/s (enclosed kitchen)`; }
+      else if (f.kind === "hood") { lim = p.kitchen_hood; txt = `${lim} L/s (vented range hood)`; }
+      else { lim = Math.min(p.kitchen_fan, ach(p.kitchen_ach)); txt = `${p.kitchen_fan} L/s or ${p.kitchen_ach} ach = ${lim} L/s (kitchen fan)`; }
+      return item(f.f.lps >= lim - 0.5, [f.id], `${f.label} in ${r.name}`, `${f.f.lps} L/s ${p.mode}`, `≥ ${txt}`);
+    });
+    if (!out.length && !missing.length) return {status: "N/A", items: [], note: `No ${p.mode} exhaust units.`};
+    return withMissing(verdict(out), missing, "exhaust airflow (lps) and mode (demand / continuous)");
+  },
+
+  lpg_location(M) {
+    const gas = M.doc.gas || "electric";
+    if (gas !== "lpg") return {status: "N/A", items: [], note: M.doc.gas ? `Gas: ${gas}.` : "Assumed all-electric (pack default): no LPG on site."};
+    const cyl = M.fixtures.filter(f => f.kind === "lpg");
+    if (!cyl.length) return verdict([item(false, [], "LPG", "LPG declared but no cylinder location", "cylinders outdoors")]);
+    return verdict(cyl.map(f => item(!f.room || f.room.type === "outdoor", [f.id], "LPG cylinders", f.room && f.room.type !== "outdoor" ? `inside ${f.room.name}` : "outdoors", "not indoors")));
   },
 
   /* estimates shown with NOT CHECKABLE rules: never a pass */

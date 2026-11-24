@@ -44,8 +44,9 @@ test("example UAE villa (v0.5 spec, built with --pack dubai): no fails, known ga
   assert.equal(R["K-06"].items.length, 26);                          // every leaf door checked
   assert.equal(R["P-01"].items.length, 8);                           // 8 wet rooms, each with a floor drain
   assert.equal(R["K-23"].items.length, 13);                          // 6 WCs + 7 basins
-  for (const id of ["K-01", "K-02", "K-03", "K-06", "K-12", "K-13", "K-20", "K-21", "K-22", "K-23", "P-01", "F-08", "F-09", "F-13", "E-01"]) assert.equal(R[id].status, "PASS", id);
-  for (const id of ["K-05", "K-07", "F-01", "E-03", "V-01"]) assert.equal(R[id].status, "NOT CHECKABLE", id);
+  for (const id of ["K-01", "K-02", "K-03", "K-04", "K-05", "K-06", "K-07", "K-08", "K-09", "K-12", "K-13", "K-14", "K-15", "K-20", "K-21", "K-22", "K-23", "P-01", "F-07", "F-08", "F-09", "F-09b", "F-10", "F-13", "E-01"]) assert.equal(R[id].status, "PASS", id);
+  // device layers the spec leaves to the engine (phase 4): not checkable yet, never a pass
+  for (const id of ["F-01", "F-02", "P-03", "E-03", "V-01", "V-02"]) assert.equal(R[id].status, "NOT CHECKABLE", id);
   assert.equal(R["F-15"].status, "N/A");
 });
 
@@ -115,5 +116,60 @@ test("build --pack dubai repairs placement but never overrides the spec", () => 
   for (const id of ["K-22", "K-23"]) for (const i of R[id].items.filter(x => !x.ok)) {
     const room = i.label.split(" in ")[1];
     assert.ok(notes.some(n => n.includes(` in ${room}: no position keeps`) || n.includes(` in ${room} could not clear`)), `${id} ${i.label} failed silently`);
+  }
+});
+
+/* ---------- v0.5 design data: full villa, round trip, planted violations ---------- */
+const FULL = path.join(ROOT, "tests", "fixtures", "dubai-villa-full.spec.json");
+const fullSpec = () => JSON.parse(fs.readFileSync(FULL, "utf8"));
+
+test("full-data villa: every checkable rule passes; only phase 4/5 and multi-building gaps remain", () => {
+  const rep = buildAndCheck(fullSpec(), true), R = byId(rep);
+  assert.equal(rep.summary.clashes, 0);
+  assert.deepEqual(Object.values(R).filter(r => r.status === "FAIL" || r.status === "ADVISE").map(r => r.id), []);
+  const nc = Object.values(R).filter(r => r.status === "NOT CHECKABLE").map(r => r.id).sort();
+  assert.deepEqual(nc, ["E-03", "E-04", "E-05", "E-06", "E-07", "E-08", "E-09", "E-10", "F-12", "K-16", "K-17", "K-24", "P-02", "V-06", "V-07"]);
+  for (const id of ["K-04", "K-05", "K-07", "K-08", "K-09", "K-14", "K-15", "F-01", "F-02", "F-03", "F-05", "F-06", "F-07", "F-09b", "F-10", "F-14", "P-03", "E-02", "V-01", "V-02", "V-03", "V-05"])
+    assert.equal(R[id].status, "PASS", id);
+});
+
+test("plan -> spec -> plan keeps every v0.5 field (same rule statuses)", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-rt-"));
+  execFileSync(process.execPath, [ENGINE, "build", FULL, "--out", dir, "--name", "a", "--pack", "dubai"]);
+  const spec = execFileSync(process.execPath, [ENGINE, "to-spec", path.join(dir, "a.plan.json")], {encoding: "utf8"});
+  const s = JSON.parse(spec);
+  assert.equal(s.plot.road[0], "N"); assert.equal(s.hassantuk, true); assert.equal(s.glass, 0.75);
+  assert.ok(s.rooms.find(r => r.name === "Kitchen").counters.length === 2);
+  assert.ok(s.windows.every(w => w.sill !== undefined && w.op));
+  assert.ok(s.fixtures.some(f => f.kind === "fresh_air" && f.lps === 75 && f.mode === "continuous"));
+  const a = byId(JSON.parse(fs.readFileSync(path.join(dir, "a.codecheck.json"), "utf8")));
+  const b = byId(buildAndCheck(s, true));
+  for (const id of Object.keys(a)) assert.equal(b[id].status, a[id].status, id);
+});
+
+test("planted v0.5 violations are caught, one rule each", () => {
+  const plant = (fn) => { const s = fullSpec(); fn(s); return byId(buildAndCheck(s, true)); };
+  const room = (s, n) => s.rooms.find(r => r.name === n);
+  const fx = (s, k, rm) => s.fixtures.find(f => f.kind === k && (!rm || f.room === rm));
+  const cases = {
+    "K-04": s => room(s, "Kitchen").counters.push({side: "S", from: 0, to: 0.5, depth: 3.6}),   // 1.1 m between counters
+    "K-05": s => { room(s, "Bedroom 3").ceiling_h = 2.6; },
+    "K-07": s => { s.windows.find(w => w.room === "Bedroom 3").w = 1.0; },
+    "K-09": s => { s.windows.find(w => w.room === "Bedroom 2").sill = 0.8; },
+    "K-14": s => { s.building_h = 17; },
+    "K-15": s => { s.plot.y = -2; s.plot.d = 22; },                                               // road setback 1.875 m
+    "F-02": s => { s.fixtures.splice(s.fixtures.indexOf(fx(s, "smoke_sounder", "Bedroom 2")), 1); },
+    "F-07": s => { s.hassantuk = false; },
+    "F-15": s => { s.gas = "lpg"; },                                                              // LPG declared, no cylinders
+    "P-03": s => { Object.assign(fx(s, "water_tank"), {room: "Garage", side: "W"}); },
+    "E-02": s => { fx(s, "panel").top_h = 2.1; },
+    "V-01": s => { fx(s, "fresh_air").lps = 40; },
+    "V-03": s => { fx(s, "exhaust", "Bath 2").lps = 15; }
+  };
+  for (const [id, fn] of Object.entries(cases)) {
+    const R = plant(fn);
+    assert.equal(R[id].status, "FAIL", `${id} not caught`);
+    const others = Object.values(R).filter(r => r.status === "FAIL" && r.id !== id).map(r => r.id);
+    assert.deepEqual(others, [], `${id} also tripped ${others}`);
   }
 });

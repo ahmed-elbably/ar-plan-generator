@@ -8,7 +8,9 @@
 (function(){
   "use strict";
   const ROOM_COL={bedroom:"#8FA7D6",bathroom:"#76BFC6",kitchen:"#E2B163",living:"#AFC688",dining:"#CDB98A",laundry:"#9FB3C4",garage:"#BEBEB5",hall:"#D8D1BE",closet:"#C4B3D9",mech:"#D49E9A",office:"#98C4A4",outdoor:"#A9D19E",other:"#CFCFCF"};
-  const FIX={wc:[0.45,0.70],basin:[0.55,0.45],sink:[0.80,0.55],shower:[0.90,0.90],tub:[1.70,0.75],washer:[0.65,0.65],dryer:[0.65,0.65],dw:[0.60,0.60],range:[0.75,0.65],fridge:[0.80,0.75],wh:[0.60,0.60],ahu:[0.80,0.80],acu:[0.90,0.90],panel:[0.40,0.15],fd:[0.20,0.20]};
+  const FIX={wc:[0.45,0.70],basin:[0.55,0.45],sink:[0.80,0.55],shower:[0.90,0.90],tub:[1.70,0.75],washer:[0.65,0.65],dryer:[0.65,0.65],dw:[0.60,0.60],range:[0.75,0.65],fridge:[0.80,0.75],wh:[0.60,0.60],ahu:[0.80,0.80],acu:[0.90,0.90],panel:[0.40,0.15],fd:[0.20,0.20],
+    smoke:[0.15,0.15],smoke_sounder:[0.15,0.15],heat:[0.15,0.15],exhaust:[0.30,0.30],facp:[0.40,0.12],extinguisher:[0.20,0.20],hood:[0.75,0.50],
+    av_outdoor:[0.30,0.15],lpg:[0.80,0.50],fresh_air:[0.90,0.60],water_tank:[1.20,1.20],pump:[0.50,0.40]};
   const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
@@ -83,7 +85,9 @@
       else if(o.style==="garage"){const p=box(o.w,(o.h||2.4),0.06,matSteel);p.position.set(cx,(o.h||2.4)/2,cy);p.rotation.y=ang;g.add(p);}
       g.userData.kind=o.type;opens.add(g);
     }
-    // fixtures as simple proxies
+    // fixtures as simple proxies; ceiling items hang under the ceiling of the room they are in
+    const ceilAt=f=>{for(const r of plan.rooms||[]){const xs=r.pts.map(p=>p.x),ys=r.pts.map(p=>p.y);if(f.x>=Math.min(...xs)&&f.x<=Math.max(...xs)&&f.y>=Math.min(...ys)&&f.y<=Math.max(...ys))return r.ceil||2.7;}return 2.7;};
+    const matFire=M({color:0xB3261E,roughness:.5}),matVent=M({color:0x1F5FBF,roughness:.5});
     for(const f of plan.fixtures||[]){
       const dm=FIX[f.kind]||[0.5,0.5],fw=dm[0],fd=dm[1];const g=new THREE.Group();
       const add=(m,x,y,z)=>{m.position.set(x,y,z);g.add(m);return m;};
@@ -101,6 +105,16 @@
         case "acu":add(box(fw,0.8,fd,matSteel),0,0.4,0);{const fan=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.02,24),matDark);add(fan,0,0.81,0);}break;
         case "panel":add(box(fw,0.6,fd,matDark),0,1.5,0);break;
         case "fd":{const c=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.01,16),matSteel);add(c,0,0.005,0);}break;
+        case "smoke":case "smoke_sounder":case "heat":{const c=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.075,0.05,20),matFire);add(c,0,ceilAt(f)-0.025,0);}break;
+        case "exhaust":add(box(fw,0.08,fd,matVent),0,ceilAt(f)-0.04,0);break;
+        case "facp":add(box(fw,0.5,fd,matFire),0,1.45,0);break;
+        case "extinguisher":{const c=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.5,16),matFire);add(c,0,1.25,0);}break;
+        case "hood":add(box(fw,0.3,fd,matSteel),0,1.75,0);break;
+        case "av_outdoor":add(box(fw,0.2,fd,matFire),0,2.6,0);break;
+        case "lpg":for(const dx of [-0.2,0.2]){const c=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,1.2,16),matSteel);add(c,dx,0.6,0);}break;
+        case "fresh_air":add(box(fw,0.6,fd,matVent),0,0.3,0);break;
+        case "water_tank":add(box(fw,1.2,fd,matEquip),0,0.6,0);break;
+        case "pump":add(box(fw,0.5,fd,matSteel),0,0.25,0);break;
         default:add(box(fw,0.8,fd,matEquip),0,0.4,0);
       }
       g.position.set(f.x,0,f.y);g.rotation.y=-(f.rot||0)*Math.PI/180;fixes.add(g);
