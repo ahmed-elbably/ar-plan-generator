@@ -35,9 +35,9 @@
  "summary": {
   "FAIL": 0,
   "ADVISE": 0,
-  "NOT CHECKABLE": 29,
-  "PASS": 28,
-  "N/A": 4,
+  "NOT CHECKABLE": 9,
+  "PASS": 46,
+  "N/A": 6,
   "OUT OF SCOPE": 3
  },
  "results": [
@@ -56,7 +56,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "30.9 m², 5.815 × 5.315 m clear",
@@ -65,7 +65,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "53.7 m², 7.88 × 6.815 m clear",
@@ -74,7 +74,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "16.9 m², 4.015 × 4.215 m clear",
@@ -83,7 +83,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "17.2 m², 4.08 × 4.215 m clear",
@@ -92,7 +92,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "17.2 m², 4.08 × 4.215 m clear",
@@ -101,7 +101,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "27.0 m², 6.415 × 4.215 m clear",
@@ -124,7 +124,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "8.7 m², 2.88 × 3.015 m clear",
@@ -147,7 +147,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen",
      "value": "23.3 m², 4.38 × 5.315 m clear",
@@ -170,7 +170,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen N counter",
      "value": "4.715 m to wall",
@@ -179,7 +179,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen E counter",
      "value": "3.78 m to wall",
@@ -202,7 +202,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "3 m",
@@ -211,7 +211,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r2lpoe"
+      "r2kle4"
      ],
      "label": "Lobby",
      "value": "3 m",
@@ -220,7 +220,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r38y2f"
+      "r3si9l"
      ],
      "label": "Guest WC",
      "value": "2.6 m",
@@ -229,7 +229,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r47q3w"
+      "r49l49"
      ],
      "label": "Pantry",
      "value": "3 m",
@@ -238,7 +238,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen",
      "value": "3 m",
@@ -247,7 +247,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "3 m",
@@ -256,7 +256,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r79118"
+      "r7o85j"
      ],
      "label": "Maid bath",
      "value": "2.6 m",
@@ -265,7 +265,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r8wd3l"
+      "r8o7gk"
      ],
      "label": "Garage",
      "value": "3 m",
@@ -274,7 +274,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r9gwpx"
+      "r92490"
      ],
      "label": "Mech",
      "value": "3 m",
@@ -283,7 +283,7 @@
     {
      "ok": true,
      "element_ids": [
-      "raiq0y"
+      "raga88"
      ],
      "label": "Laundry",
      "value": "3 m",
@@ -292,7 +292,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rbw88s"
+      "rbavvm"
      ],
      "label": "Family corridor",
      "value": "3 m",
@@ -301,7 +301,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rcf1aq"
+      "rczczz"
      ],
      "label": "Bath 4",
      "value": "2.6 m",
@@ -310,7 +310,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rd6hbd"
+      "rd8yru"
      ],
      "label": "Dressing 4",
      "value": "3 m",
@@ -319,7 +319,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rej2rf"
+      "reliiw"
      ],
      "label": "Dressing 3",
      "value": "3 m",
@@ -328,7 +328,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rf6a5e"
+      "rfw0lh"
      ],
      "label": "Bath 3",
      "value": "2.6 m",
@@ -337,7 +337,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "3 m",
@@ -346,7 +346,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rhjt81"
+      "rhg48s"
      ],
      "label": "Dressing 2",
      "value": "3 m",
@@ -355,7 +355,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ri4jmm"
+      "ri9wv1"
      ],
      "label": "Bath 2",
      "value": "2.6 m",
@@ -364,7 +364,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rjtv83"
+      "rjxqiv"
      ],
      "label": "Master closet",
      "value": "3 m",
@@ -373,7 +373,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rkxqyj"
+      "rk4dh1"
      ],
      "label": "Master bath",
      "value": "2.6 m",
@@ -382,7 +382,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "3 m",
@@ -391,7 +391,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "3 m",
@@ -400,7 +400,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "3 m",
@@ -409,7 +409,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "3 m",
@@ -432,7 +432,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2dz0uy"
+      "o2dlfij"
      ],
      "label": "Door Outside → Lobby",
      "value": "1400 mm",
@@ -441,7 +441,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2eqe0g"
+      "o2es6rh"
      ],
      "label": "Door Lobby → Majlis",
      "value": "1000 mm",
@@ -450,7 +450,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2fph64"
+      "o2fymrd"
      ],
      "label": "Door Lobby → Guest WC",
      "value": "800 mm",
@@ -459,7 +459,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2g1glu"
+      "o2ggivq"
      ],
      "label": "Door Lobby → Family corridor",
      "value": "1400 mm",
@@ -468,7 +468,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2h2bq1"
+      "o2hgf9o"
      ],
      "label": "Door Family corridor → Kitchen",
      "value": "950 mm",
@@ -477,7 +477,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2i9o5q"
+      "o2i996x"
      ],
      "label": "Door Kitchen → Pantry",
      "value": "950 mm",
@@ -486,7 +486,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2jnq89"
+      "o2jc1cl"
      ],
      "label": "Door Kitchen → Laundry",
      "value": "950 mm",
@@ -495,7 +495,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2k9w5m"
+      "o2kj0dk"
      ],
      "label": "Door Laundry → Maid room",
      "value": "950 mm",
@@ -504,7 +504,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2li0nu"
+      "o2l3v1h"
      ],
      "label": "Door Maid room → Maid bath",
      "value": "800 mm",
@@ -513,7 +513,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2me16l"
+      "o2m7zfa"
      ],
      "label": "Door Laundry → Mech",
      "value": "950 mm",
@@ -522,7 +522,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2nhz78"
+      "o2nh9ue"
      ],
      "label": "Door Garage → Mech",
      "value": "950 mm",
@@ -531,7 +531,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2obtpb"
+      "o2ooseg"
      ],
      "label": "Door Family corridor → Garage",
      "value": "950 mm",
@@ -540,7 +540,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2q8gpc"
+      "o2qeazq"
      ],
      "label": "Door Family corridor → Dressing 4",
      "value": "950 mm",
@@ -549,7 +549,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2rc6lw"
+      "o2rh11j"
      ],
      "label": "Door Dressing 4 → Bedroom 4",
      "value": "950 mm",
@@ -558,7 +558,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2ss3jy"
+      "o2s2s8r"
      ],
      "label": "Door Bedroom 4 → Bath 4",
      "value": "800 mm",
@@ -567,7 +567,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2t4e45"
+      "o2tty9c"
      ],
      "label": "Door Family corridor → Dressing 3",
      "value": "950 mm",
@@ -576,7 +576,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2upnf6"
+      "o2uv3l6"
      ],
      "label": "Door Dressing 3 → Bedroom 3",
      "value": "950 mm",
@@ -585,7 +585,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2v85y5"
+      "o2vngc2"
      ],
      "label": "Door Bedroom 3 → Bath 3",
      "value": "800 mm",
@@ -594,7 +594,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2wwzlv"
+      "o2wx3ai"
      ],
      "label": "Door Family corridor → Family living & dining",
      "value": "2400 mm",
@@ -603,7 +603,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2xyevf"
+      "o2xtklx"
      ],
      "label": "Door Family corridor → Dressing 2",
      "value": "950 mm",
@@ -612,7 +612,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2ysvy5"
+      "o2ydus6"
      ],
      "label": "Door Dressing 2 → Bedroom 2",
      "value": "950 mm",
@@ -621,7 +621,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o2zcaoz"
+      "o2zwmbn"
      ],
      "label": "Door Bedroom 2 → Bath 2",
      "value": "800 mm",
@@ -630,7 +630,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o30g5zv"
+      "o30vwx6"
      ],
      "label": "Door Family corridor → Master closet",
      "value": "950 mm",
@@ -639,7 +639,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o31mbi9"
+      "o319flg"
      ],
      "label": "Door Master closet → Master bedroom",
      "value": "950 mm",
@@ -648,7 +648,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o32lr2u"
+      "o32ds6h"
      ],
      "label": "Door Master bedroom → Master bath",
      "value": "800 mm",
@@ -657,7 +657,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o33ybih"
+      "o33whvt"
      ],
      "label": "Door Family living & dining → Terrace",
      "value": "3000 mm",
@@ -680,7 +680,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "18.6% (5.738 m² net glazing / 30.9 m²)",
@@ -689,7 +689,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen",
      "value": "11.6% (2.7 m² net glazing / 23.3 m²)",
@@ -698,7 +698,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "14.2% (7.65 m² net glazing / 53.7 m²)",
@@ -707,7 +707,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "19.9% (3.375 m² net glazing / 16.9 m²)",
@@ -716,7 +716,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "11.8% (2.025 m² net glazing / 17.2 m²)",
@@ -725,7 +725,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "11.8% (2.025 m² net glazing / 17.2 m²)",
@@ -734,7 +734,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "14.6% (3.938 m² net glazing / 27.0 m²)",
@@ -758,7 +758,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "11.7% (1.013 m² net glazing / 8.7 m²)",
@@ -782,7 +782,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3469e1"
+      "o34llnn"
      ],
      "label": "Window in Majlis",
      "value": "900 mm",
@@ -791,7 +791,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o358h84"
+      "o358uts"
      ],
      "label": "Window in Majlis",
      "value": "900 mm",
@@ -800,7 +800,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o36yrre"
+      "o36sh3w"
      ],
      "label": "Window in Majlis",
      "value": "900 mm",
@@ -809,7 +809,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o379owt"
+      "o37cg6c"
      ],
      "label": "Window in Kitchen",
      "value": "900 mm",
@@ -818,7 +818,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3809cb"
+      "o38k81d"
      ],
      "label": "Window in Maid room",
      "value": "900 mm",
@@ -827,7 +827,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o39mh77"
+      "o39dyw9"
      ],
      "label": "Window in Guest WC",
      "value": "1600 mm",
@@ -836,7 +836,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3a28fv"
+      "o3akkl2"
      ],
      "label": "Window in Maid bath",
      "value": "900 mm",
@@ -845,7 +845,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3bd70j"
+      "o3bnjdt"
      ],
      "label": "Window in Family corridor",
      "value": "900 mm",
@@ -854,7 +854,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3ck0rb"
+      "o3ccco1"
      ],
      "label": "Window in Bath 4",
      "value": "1600 mm",
@@ -863,7 +863,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3d1rnq"
+      "o3dga4q"
      ],
      "label": "Window in Bedroom 4",
      "value": "900 mm",
@@ -872,7 +872,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3esgz1"
+      "o3efog1"
      ],
      "label": "Window in Bedroom 4",
      "value": "900 mm",
@@ -881,7 +881,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3fuytb"
+      "o3f5teb"
      ],
      "label": "Window in Bedroom 3",
      "value": "900 mm",
@@ -890,7 +890,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3g2n25"
+      "o3grxk1"
      ],
      "label": "Window in Family living & dining",
      "value": "900 mm",
@@ -899,7 +899,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3hade1"
+      "o3hwul7"
      ],
      "label": "Window in Bedroom 2",
      "value": "900 mm",
@@ -908,7 +908,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3istm9"
+      "o3iyv6y"
      ],
      "label": "Window in Master bedroom",
      "value": "900 mm",
@@ -917,7 +917,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3jmnmb"
+      "o3jrrvu"
      ],
      "label": "Window in Master bedroom",
      "value": "900 mm",
@@ -926,7 +926,7 @@
     {
      "ok": true,
      "element_ids": [
-      "o3k2xuz"
+      "o3kmlsl"
      ],
      "label": "Window in Master bath",
      "value": "900 mm",
@@ -963,7 +963,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "windows on N + W",
@@ -972,7 +972,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen",
      "value": "depth 5.315 m, window wall 4.38 m (N)",
@@ -981,7 +981,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "depth 3.015 m, window wall 2.88 m (N)",
@@ -990,7 +990,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "depth 6.815 m, window wall 7.88 m (S)",
@@ -999,7 +999,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "windows on W + S",
@@ -1008,7 +1008,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "depth 4.215 m, window wall 4.08 m (S)",
@@ -1017,7 +1017,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "depth 4.215 m, window wall 4.08 m (S)",
@@ -1026,7 +1026,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "windows on S + E",
@@ -1049,7 +1049,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "3 window(s)",
@@ -1058,7 +1058,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "1 window(s)",
@@ -1067,7 +1067,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "1 window(s)",
@@ -1076,7 +1076,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "2 window(s)",
@@ -1085,7 +1085,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "1 window(s)",
@@ -1094,7 +1094,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "1 window(s)",
@@ -1103,7 +1103,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "2 window(s)",
@@ -1126,7 +1126,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r2lpoe"
+      "r2kle4"
      ],
      "label": "Lobby",
      "value": "3.38 m clear",
@@ -1135,7 +1135,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rbw88s"
+      "rbavvm"
      ],
      "label": "Family corridor",
      "value": "1.38 m clear",
@@ -1268,7 +1268,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r8wd3l"
+      "r8o7gk"
      ],
      "label": "Garage",
      "value": "1 bay(s) in garage",
@@ -1291,7 +1291,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r8wd3l"
+      "r8o7gk"
      ],
      "label": "Garage",
      "value": "5.315 × 6.015 m clear (single)",
@@ -1335,8 +1335,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3ls7ar",
-      "r38y2f"
+      "f3l2uuf",
+      "r3si9l"
      ],
      "label": "WC in Guest WC",
      "value": "840 mm to wall",
@@ -1345,8 +1345,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3m4hw8",
-      "r38y2f"
+      "f3mll23",
+      "r3si9l"
      ],
      "label": "Basin in Guest WC",
      "value": "490 mm to wall",
@@ -1355,8 +1355,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3t9ibd",
-      "r79118"
+      "f3teyj0",
+      "r7o85j"
      ],
      "label": "WC in Maid bath",
      "value": "440 mm to wall",
@@ -1365,8 +1365,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3vg6xz",
-      "r79118"
+      "f3v2kln",
+      "r7o85j"
      ],
      "label": "Basin in Maid bath",
      "value": "440 mm to wall",
@@ -1375,8 +1375,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f42b8ar",
-      "rcf1aq"
+      "f42s5u6",
+      "rczczz"
      ],
      "label": "WC in Bath 4",
      "value": "540 mm to Shower",
@@ -1385,8 +1385,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f43kql9",
-      "rcf1aq"
+      "f43hckn",
+      "rczczz"
      ],
      "label": "Basin in Bath 4",
      "value": "1240 mm to wall",
@@ -1395,8 +1395,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f458611",
-      "rf6a5e"
+      "f45bz36",
+      "rfw0lh"
      ],
      "label": "WC in Bath 3",
      "value": "540 mm to Shower",
@@ -1405,8 +1405,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f46f88h",
-      "rf6a5e"
+      "f46e0kj",
+      "rfw0lh"
      ],
      "label": "Basin in Bath 3",
      "value": "1240 mm to wall",
@@ -1415,8 +1415,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f48farg",
-      "ri4jmm"
+      "f48h56d",
+      "ri9wv1"
      ],
      "label": "WC in Bath 2",
      "value": "540 mm to Shower",
@@ -1425,8 +1425,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f497c42",
-      "ri4jmm"
+      "f49jakn",
+      "ri9wv1"
      ],
      "label": "Basin in Bath 2",
      "value": "1240 mm to wall",
@@ -1435,8 +1435,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4cdnt1",
-      "rkxqyj"
+      "f4cgo41",
+      "rk4dh1"
      ],
      "label": "WC in Master bath",
      "value": "480 mm to Bathtub",
@@ -1445,8 +1445,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4davcc",
-      "rkxqyj"
+      "f4ddlfe",
+      "rk4dh1"
      ],
      "label": "Basin in Master bath",
      "value": "740 mm to wall; 2050 mm to centre of Basin",
@@ -1455,8 +1455,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4exbhd",
-      "rkxqyj"
+      "f4ew762",
+      "rk4dh1"
      ],
      "label": "Basin in Master bath",
      "value": "1025 mm to wall; 2050 mm to centre of Basin",
@@ -1479,8 +1479,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3ls7ar",
-      "r38y2f"
+      "f3l2uuf",
+      "r3si9l"
      ],
      "label": "WC in Guest WC",
      "value": "1605 mm to wall",
@@ -1489,8 +1489,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3m4hw8",
-      "r38y2f"
+      "f3mll23",
+      "r3si9l"
      ],
      "label": "Basin in Guest WC",
      "value": "1420 mm to wall",
@@ -1499,8 +1499,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3t9ibd",
-      "r79118"
+      "f3teyj0",
+      "r7o85j"
      ],
      "label": "WC in Maid bath",
      "value": "765 mm to door leaf",
@@ -1509,8 +1509,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3vg6xz",
-      "r79118"
+      "f3v2kln",
+      "r7o85j"
      ],
      "label": "Basin in Maid bath",
      "value": "1855 mm to wall; 945 mm to Shower",
@@ -1519,8 +1519,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f42b8ar",
-      "rcf1aq"
+      "f42s5u6",
+      "rczczz"
      ],
      "label": "WC in Bath 4",
      "value": "1305 mm to wall; 845 mm to Basin",
@@ -1529,8 +1529,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f43kql9",
-      "rcf1aq"
+      "f43hckn",
+      "rczczz"
      ],
      "label": "Basin in Bath 4",
      "value": "1555 mm to wall; 845 mm to WC",
@@ -1539,8 +1539,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f458611",
-      "rf6a5e"
+      "f45bz36",
+      "rfw0lh"
      ],
      "label": "WC in Bath 3",
      "value": "1370 mm to wall; 910 mm to Basin",
@@ -1549,8 +1549,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f46f88h",
-      "rf6a5e"
+      "f46e0kj",
+      "rfw0lh"
      ],
      "label": "Basin in Bath 3",
      "value": "1620 mm to wall; 910 mm to WC",
@@ -1559,8 +1559,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f48farg",
-      "ri4jmm"
+      "f48h56d",
+      "ri9wv1"
      ],
      "label": "WC in Bath 2",
      "value": "1370 mm to wall; 910 mm to Basin",
@@ -1569,8 +1569,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f497c42",
-      "ri4jmm"
+      "f49jakn",
+      "ri9wv1"
      ],
      "label": "Basin in Bath 2",
      "value": "1620 mm to wall; 910 mm to WC",
@@ -1579,8 +1579,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4cdnt1",
-      "rkxqyj"
+      "f4cgo41",
+      "rk4dh1"
      ],
      "label": "WC in Master bath",
      "value": "3105 mm to wall",
@@ -1589,8 +1589,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4davcc",
-      "rkxqyj"
+      "f4ddlfe",
+      "rk4dh1"
      ],
      "label": "Basin in Master bath",
      "value": "2020 mm to wall; 1110 mm to Shower",
@@ -1599,8 +1599,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f4exbhd",
-      "rkxqyj"
+      "f4ew762",
+      "rk4dh1"
      ],
      "label": "Basin in Master bath",
      "value": "2020 mm to wall; 1260 mm to Bathtub",
@@ -1652,7 +1652,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r38y2f"
+      "r3si9l"
      ],
      "label": "Guest WC",
      "value": "1 floor drain(s)",
@@ -1661,7 +1661,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r5ddjx"
+      "r5ewx8"
      ],
      "label": "Kitchen",
      "value": "1 floor drain(s)",
@@ -1670,7 +1670,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r79118"
+      "r7o85j"
      ],
      "label": "Maid bath",
      "value": "1 floor drain(s)",
@@ -1679,7 +1679,7 @@
     {
      "ok": true,
      "element_ids": [
-      "raiq0y"
+      "raga88"
      ],
      "label": "Laundry",
      "value": "1 floor drain(s)",
@@ -1688,7 +1688,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rcf1aq"
+      "rczczz"
      ],
      "label": "Bath 4",
      "value": "1 floor drain(s)",
@@ -1697,7 +1697,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rf6a5e"
+      "rfw0lh"
      ],
      "label": "Bath 3",
      "value": "1 floor drain(s)",
@@ -1706,7 +1706,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ri4jmm"
+      "ri9wv1"
      ],
      "label": "Bath 2",
      "value": "1 floor drain(s)",
@@ -1715,7 +1715,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rkxqyj"
+      "rk4dh1"
      ],
      "label": "Master bath",
      "value": "1 floor drain(s)",
@@ -1800,10 +1800,27 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f4nxuib",
+      "f4oymoa",
+      "f4pdbhm",
+      "f4qrpus",
+      "f4r6567",
+      "f4s0wvf",
+      "f4t70n9",
+      "f4u0t05",
+      "f4vibzc",
+      "f4wqy64",
+      "f4xrf0o"
+     ],
+     "label": "Villa",
+     "value": "10 detector(s), 1 panel(s)",
+     "limit": "smoke detection system with a panel"
+    }
    ]
   },
   {
@@ -1816,10 +1833,98 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r6m5ut",
+      "f4pdbhm"
+     ],
+     "label": "Maid room",
+     "value": "Smoke detector + sounder",
+     "limit": "smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rlfs52",
+      "f4s0wvf"
+     ],
+     "label": "Bedroom 4",
+     "value": "Smoke detector + sounder",
+     "limit": "smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rmd8jq",
+      "f4t70n9"
+     ],
+     "label": "Bedroom 3",
+     "value": "Smoke detector + sounder",
+     "limit": "smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rnqrzo",
+      "f4u0t05"
+     ],
+     "label": "Bedroom 2",
+     "value": "Smoke detector + sounder",
+     "limit": "smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ro0fnz",
+      "f4vibzc"
+     ],
+     "label": "Master bedroom",
+     "value": "Smoke detector + sounder",
+     "limit": "smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r1rf9h",
+      "f4nxuib"
+     ],
+     "label": "Majlis",
+     "value": "Smoke detector",
+     "limit": "smoke or smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rgcty7",
+      "f4r6567"
+     ],
+     "label": "Family living & dining",
+     "value": "Smoke detector",
+     "limit": "smoke or smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r2kle4",
+      "f4oymoa"
+     ],
+     "label": "Lobby",
+     "value": "Smoke detector",
+     "limit": "smoke or smoke + sounder"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rbavvm",
+      "f4qrpus"
+     ],
+     "label": "Family corridor",
+     "value": "Smoke detector",
+     "limit": "smoke or smoke + sounder"
+    }
    ]
   },
   {
@@ -1832,10 +1937,17 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ewx8"
+     ],
+     "label": "Kitchen",
+     "value": "Heat detector",
+     "limit": "heat detector (or listed kitchen detector)"
+    }
    ]
   },
   {
@@ -1848,11 +1960,9 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
+   "status": "N/A",
    "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
-   ]
+   "note": "No open kitchen."
   },
   {
    "id": "F-05",
@@ -1864,10 +1974,17 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f4xrf0o"
+     ],
+     "label": "Panel in Lobby",
+     "value": "0.97 m from an entrance door",
+     "limit": "near the front door"
+    }
    ]
   },
   {
@@ -1880,10 +1997,17 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire detection layer (detectors and panel)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f4yn0sj"
+     ],
+     "label": "Outdoor AV device",
+     "value": "on the N façade",
+     "limit": "façade facing the road (N)"
+    }
    ]
   },
   {
@@ -1944,7 +2068,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "door route to outside",
@@ -1953,7 +2077,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "door route to outside",
@@ -1962,7 +2086,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "door route to outside",
@@ -1971,7 +2095,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "door route to outside",
@@ -1980,7 +2104,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "door route to outside",
@@ -1989,7 +2113,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "door route to outside",
@@ -1998,7 +2122,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "door route to outside",
@@ -2021,7 +2145,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2031,7 +2155,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "escape window 900 mm × 1500 mm = 1.35 m² (casement)",
@@ -2041,7 +2165,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "door directly to the outside",
@@ -2050,7 +2174,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "escape window 1500 mm × 1500 mm = 2.25 m² (casement)",
@@ -2060,7 +2184,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2070,7 +2194,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "escape window 1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2080,7 +2204,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "escape window 2000 mm × 1500 mm = 3 m² (casement)",
@@ -2104,7 +2228,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r1n7s2"
+      "r1rf9h"
      ],
      "label": "Majlis",
      "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2114,7 +2238,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r6xgtx"
+      "r6m5ut"
      ],
      "label": "Maid room",
      "value": "900 mm × 1500 mm = 1.35 m² (casement)",
@@ -2124,7 +2248,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rg8h9c"
+      "rgcty7"
      ],
      "label": "Family living & dining",
      "value": "2000 mm × 1500 mm = 3 m² (casement)",
@@ -2134,7 +2258,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rl0i3v"
+      "rlfs52"
      ],
      "label": "Bedroom 4",
      "value": "1500 mm × 1500 mm = 2.25 m² (casement)",
@@ -2144,7 +2268,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rmcjp9"
+      "rmd8jq"
      ],
      "label": "Bedroom 3",
      "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2154,7 +2278,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rntjke"
+      "rnqrzo"
      ],
      "label": "Bedroom 2",
      "value": "1800 mm × 1500 mm = 2.7 m² (casement)",
@@ -2164,7 +2288,7 @@
     {
      "ok": true,
      "element_ids": [
-      "ro1x6h"
+      "ro0fnz"
      ],
      "label": "Master bedroom",
      "value": "2000 mm × 1500 mm = 3 m² (casement)",
@@ -2225,7 +2349,7 @@
     {
      "ok": true,
      "element_ids": [
-      "r2lpoe"
+      "r2kle4"
      ],
      "label": "Lobby",
      "value": "3.38 m clear",
@@ -2234,7 +2358,7 @@
     {
      "ok": true,
      "element_ids": [
-      "rbw88s"
+      "rbavvm"
      ],
      "label": "Family corridor",
      "value": "1.38 m clear",
@@ -2252,10 +2376,17 @@
    "level": "shall",
    "verified": false,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "fire safety layer (extinguisher)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ewx8"
+     ],
+     "label": "Kitchen",
+     "value": "extinguisher 0.916 m from a kitchen door",
+     "limit": "extinguisher inside the kitchen next to the exit door"
+    }
    ]
   },
   {
@@ -2287,8 +2418,8 @@
     {
      "ok": true,
      "element_ids": [
-      "f3ykmbz",
-      "r9gwpx"
+      "f3ygwrl",
+      "r92490"
      ],
      "label": "DB in Mech",
      "value": "Mech (mech)",
@@ -2321,11 +2452,72 @@
    "requirement": "13 A BS 1363 shuttered, switched socket outlets; 15 A to BS 546; IP55 outdoors; shaver outlets to BS EN 61558 in bathrooms.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "socket outlets (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r3si9l"
+     ],
+     "label": "Guest WC",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r7o85j"
+     ],
+     "label": "Maid bath",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rczczz"
+     ],
+     "label": "Bath 4",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rfw0lh"
+     ],
+     "label": "Bath 3",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ri9wv1"
+     ],
+     "label": "Bath 2",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rk4dh1"
+     ],
+     "label": "Master bath",
+     "value": "shaver outlets only",
+     "limit": "no 13 A sockets; shaver outlets (shaver)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f6m8l0m"
+     ],
+     "label": "Socket outside (Terrace)",
+     "value": "IP55",
+     "limit": "IP55 weather-protected"
+    }
    ]
   },
   {
@@ -2337,11 +2529,16 @@
    "requirement": "Switches, AC / water heater DP switches and shaver outlets 1.25 m above FFL; general 13 A sockets 450 mm; kitchen sockets 150 mm above the worktop.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "socket outlets (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "51 accessories",
+     "value": "at their heights",
+     "limit": "Figure K.80 heights"
+    }
    ]
   },
   {
@@ -2353,12 +2550,16 @@
    "requirement": "No socket within 300 mm of the sink edge; no sockets or accessories above gas or electric hobs.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "socket outlets (engine-generated in Phase 4)",
-    "kitchen counters"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [],
+     "label": "7 kitchen sockets",
+     "value": "clear of sink and hob",
+     "limit": ""
+    }
    ]
   },
   {
@@ -2370,11 +2571,216 @@
    "requirement": "Radial final circuit: at most five 13 A sockets on a 20 A breaker; ring circuit: at most ten sockets on a 30 A breaker (rooms other than kitchen).",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "circuit schedule (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "C01"
+     ],
+     "label": "C01 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C02"
+     ],
+     "label": "C02 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C03"
+     ],
+     "label": "C03 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C04"
+     ],
+     "label": "C04 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C05"
+     ],
+     "label": "C05 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C06"
+     ],
+     "label": "C06 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C07"
+     ],
+     "label": "C07 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C08"
+     ],
+     "label": "C08 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C09"
+     ],
+     "label": "C09 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C10"
+     ],
+     "label": "C10 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C11"
+     ],
+     "label": "C11 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C12"
+     ],
+     "label": "C12 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C13"
+     ],
+     "label": "C13 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C14"
+     ],
+     "label": "C14 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C15"
+     ],
+     "label": "C15 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C16"
+     ],
+     "label": "C16 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C17"
+     ],
+     "label": "C17 Sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C18"
+     ],
+     "label": "C18 Sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C19"
+     ],
+     "label": "C19 Kitchen sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C20"
+     ],
+     "label": "C20 Kitchen sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C21"
+     ],
+     "label": "C21 Kitchen sockets",
+     "value": "4 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C22"
+     ],
+     "label": "C22 Kitchen sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C23"
+     ],
+     "label": "C23 Outdoor sockets",
+     "value": "2 points, 20 A radial",
+     "limit": "<= 5 points on 20 A (twin = 2)"
+    }
    ]
   },
   {
@@ -2386,11 +2792,19 @@
    "requirement": "Cooker control switch (BS 4177) separate from the appliance and within 2 m of it, on its own final circuit through a 100 mA ELCB.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "switches (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3n3e0m",
+      "f6f164w"
+     ],
+     "label": "Range in Kitchen",
+     "value": "switch 0.737 m away; dedicated circuit, 100 mA",
+     "limit": "switch <= 2 m, own circuit, 100 mA"
+    }
    ]
   },
   {
@@ -2402,11 +2816,29 @@
    "requirement": "Own final circuit, DP switch with neon and flex outlet; a water heater in a bathroom or WC has its switch immediately outside the room; heater circuits on 30 mA RCCB/ELCB.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "switches (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3rihoa",
+      "f6gtyu0"
+     ],
+     "label": "Washer in Laundry",
+     "value": "DP switch adjacent, own circuit, 30 mA",
+     "limit": "DP switch + flex outlet adjacent (bath heaters: outside the room), own circuit, heaters 30 mA"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3wy3bs",
+      "f6hata9"
+     ],
+     "label": "Water heater in Mech",
+     "value": "DP switch adjacent, own circuit, 30 mA",
+     "limit": "DP switch + flex outlet adjacent (bath heaters: outside the room), own circuit, heaters 30 mA"
+    }
    ]
   },
   {
@@ -2418,11 +2850,36 @@
    "requirement": "Each room AC unit on its own final circuit with an adjacent DP switch and flex outlet; minimum 20 A breaker and 4 mm2 wiring.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "circuit schedule (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f3xs58u"
+     ],
+     "label": "Furnace / AHU in Mech",
+     "value": "20 A, 4 mm2, own circuit",
+     "limit": "own circuit >= 20 A, >= 4 mm2, DP switch adjacent"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f3zj68v"
+     ],
+     "label": "AC condenser",
+     "value": "20 A, 4 mm2, own circuit",
+     "limit": "own circuit >= 20 A, >= 4 mm2, DP switch adjacent"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f40rycj"
+     ],
+     "label": "AC condenser",
+     "value": "20 A, 4 mm2, own circuit",
+     "limit": "own circuit >= 20 A, >= 4 mm2, DP switch adjacent"
+    }
    ]
   },
   {
@@ -2434,11 +2891,279 @@
    "requirement": "RCD/ELCB: 13 A sockets, water heaters, dishwashers, fridges, washers, domestic pumps 30 mA; window/split AC, FCU/AHU and cookers 100 mA; general lighting 30/100 mA.",
    "level": "shall",
    "verified": true,
-   "engine": "spec",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "circuit schedule (engine-generated in Phase 4)"
+   "engine": "now",
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "C01"
+     ],
+     "label": "C01 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C02"
+     ],
+     "label": "C02 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C03"
+     ],
+     "label": "C03 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C04"
+     ],
+     "label": "C04 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C05"
+     ],
+     "label": "C05 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C06"
+     ],
+     "label": "C06 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C07"
+     ],
+     "label": "C07 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C08"
+     ],
+     "label": "C08 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C09"
+     ],
+     "label": "C09 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C10"
+     ],
+     "label": "C10 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C11"
+     ],
+     "label": "C11 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C12"
+     ],
+     "label": "C12 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C13"
+     ],
+     "label": "C13 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C14"
+     ],
+     "label": "C14 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C15"
+     ],
+     "label": "C15 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C16"
+     ],
+     "label": "C16 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C17"
+     ],
+     "label": "C17 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C18"
+     ],
+     "label": "C18 Sockets",
+     "value": "30 mA",
+     "limit": "30 mA (sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C19"
+     ],
+     "label": "C19 Kitchen sockets",
+     "value": "30 mA",
+     "limit": "30 mA (kitchen sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C20"
+     ],
+     "label": "C20 Kitchen sockets",
+     "value": "30 mA",
+     "limit": "30 mA (kitchen sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C21"
+     ],
+     "label": "C21 Kitchen sockets",
+     "value": "30 mA",
+     "limit": "30 mA (kitchen sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C22"
+     ],
+     "label": "C22 Kitchen sockets",
+     "value": "30 mA",
+     "limit": "30 mA (kitchen sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C23"
+     ],
+     "label": "C23 Outdoor sockets",
+     "value": "30 mA",
+     "limit": "30 mA (outdoor sockets)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C24"
+     ],
+     "label": "C24 Range (Kitchen)",
+     "value": "100 mA",
+     "limit": "100 mA (cooker)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C25"
+     ],
+     "label": "C25 Washer (Laundry)",
+     "value": "30 mA",
+     "limit": "30 mA (washer)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C26"
+     ],
+     "label": "C26 Water heater (Mech)",
+     "value": "30 mA",
+     "limit": "30 mA (water heater)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C27"
+     ],
+     "label": "C27 Furnace / AHU (Mech)",
+     "value": "100 mA",
+     "limit": "100 mA (ahu)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C28"
+     ],
+     "label": "C28 AC condenser (outside, W façade)",
+     "value": "100 mA",
+     "limit": "100 mA (ac)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C29"
+     ],
+     "label": "C29 AC condenser (outside, E façade)",
+     "value": "100 mA",
+     "limit": "100 mA (ac)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "C30"
+     ],
+     "label": "C30 Fresh-air unit (Garage)",
+     "value": "100 mA",
+     "limit": "100 mA (fresh air)"
+    }
    ]
   },
   {
@@ -2465,10 +3190,17 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f57gyv0"
+     ],
+     "label": "Fresh-air unit(s)",
+     "value": "75 L/s",
+     "limit": "≥ 72 L/s = 0.15 × 337.9 m² + 3.5 × (5 + 1)"
+    }
    ]
   },
   {
@@ -2481,10 +3213,78 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "r3si9l",
+      "f5052cs"
+     ],
+     "label": "Guest WC",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r5ewx8",
+      "f515vb9"
+     ],
+     "label": "Kitchen",
+     "value": "Range hood",
+     "limit": "range hood or exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "r7o85j",
+      "f52p2g7"
+     ],
+     "label": "Maid bath",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rczczz",
+      "f53x4d9"
+     ],
+     "label": "Bath 4",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rfw0lh",
+      "f54krru"
+     ],
+     "label": "Bath 3",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "ri9wv1",
+      "f55y3hy"
+     ],
+     "label": "Bath 2",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "rk4dh1",
+      "f56tfm8"
+     ],
+     "label": "Master bath",
+     "value": "Exhaust fan",
+     "limit": "exhaust fan"
+    }
    ]
   },
   {
@@ -2497,10 +3297,71 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f5052cs"
+     ],
+     "label": "Exhaust fan in Guest WC",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f515vb9"
+     ],
+     "label": "Range hood in Kitchen",
+     "value": "50 L/s demand",
+     "limit": "≥ 50 L/s (vented range hood)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f52p2g7"
+     ],
+     "label": "Exhaust fan in Maid bath",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f53x4d9"
+     ],
+     "label": "Exhaust fan in Bath 4",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f54krru"
+     ],
+     "label": "Exhaust fan in Bath 3",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f55y3hy"
+     ],
+     "label": "Exhaust fan in Bath 2",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    },
+    {
+     "ok": true,
+     "element_ids": [
+      "f56tfm8"
+     ],
+     "label": "Exhaust fan in Master bath",
+     "value": "25 L/s demand",
+     "limit": "≥ 25 L/s (bathroom)"
+    }
    ]
   },
   {
@@ -2513,11 +3374,9 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
+   "status": "N/A",
    "items": [],
-   "needs": [
-    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
-   ]
+   "note": "No continuous exhaust units."
   },
   {
    "id": "V-05",
@@ -2529,10 +3388,17 @@
    "level": "shall",
    "verified": true,
    "engine": "now",
-   "status": "NOT CHECKABLE",
-   "items": [],
-   "needs": [
-    "ventilation layer (exhaust fans, hoods, fresh-air unit)"
+   "status": "PASS",
+   "items": [
+    {
+     "ok": true,
+     "element_ids": [
+      "f57gyv0"
+     ],
+     "label": "Mechanical ventilation",
+     "value": "fresh-air unit provided",
+     "limit": "mechanical outdoor air"
+    }
    ]
   },
   {

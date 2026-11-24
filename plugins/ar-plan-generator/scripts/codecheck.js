@@ -109,8 +109,10 @@ function buildModel(doc, G) {
   const facadeOf = c => { const f = footprint; const d = {N: Math.abs(c.y - f.y0), S: Math.abs(c.y - f.y1), W: Math.abs(c.x - f.x0), E: Math.abs(c.x - f.x1)}; return Object.keys(d).sort((p, q) => d[p] - d[q])[0]; };
   const isOpenKitchen = m => doors.some(d => d.style === "opening" && (d.a === m || d.b === m) && [d.a, d.b].some(r => r && r !== m && ["living", "dining", "hall"].includes(r.type)));
   const has = ks => fixtures.some(f => ks.includes(f.kind));
-  const layer = {fire: has(["smoke", "smoke_sounder", "heat", "facp", "av_outdoor"]), vent: has(["exhaust", "hood", "fresh_air"]), services: has(["water_tank", "pump"])};
-  return {doc, G, rooms, roomAt, indoor, doors, windows, windowsOf, sideOf, fixtures, leaves, ga, cond, footprint, facadeOf, isOpenKitchen, layer};
+  const layer = {fire: has(["smoke", "smoke_sounder", "heat", "facp", "av_outdoor"]), vent: has(["exhaust", "hood", "fresh_air"]), services: has(["water_tank", "pump"]),
+    elec: has(["socket", "socket_ip55", "shaver", "switch_dp", "cooker_switch"]) || !!(doc.circuits && doc.circuits.length)};
+  const circuitOf = f => (doc.circuits || []).find(cc => cc.items.includes(f.id));
+  return {doc, G, rooms, roomAt, indoor, doors, windows, windowsOf, sideOf, fixtures, leaves, ga, cond, footprint, facadeOf, isOpenKitchen, layer, circuitOf};
 }
 
 /* ---------- small helpers ---------- */
@@ -453,7 +455,9 @@ const MEASURES = {
     if (!M.layer.fire) return noLayer("fire detection layer (detectors and panel)");
     const panels = M.fixtures.filter(f => f.kind === "facp");
     if (!panels.length) return verdict([item(false, [], "Fire alarm panel", "none", "panel near the front door")]);
-    const entrances = M.doors.filter(d => d.toOutside && d.style !== "garage" && M.indoor(d.into || d.a || d.b));
+    // the front door: straight to the outside, not into a terrace or other outdoor room
+    let entrances = M.doors.filter(d => d.style !== "garage" && (!d.a || !d.b));
+    if (!entrances.length) entrances = M.doors.filter(d => d.toOutside && d.style !== "garage");
     const entRooms = new Set(entrances.flatMap(d => [d.a, d.b]).filter(M.indoor));
     const fx = panels[0], near = entRooms.has(fx.room), dd = Math.min(...entrances.map(d => M.G.dist(d.g.c, fx.c)));
     if (near) return verdict([item(true, [fx.id], `Panel in ${fx.room.name}`, `${fmt(dd)} m from an entrance door`, "near the front door")]);
@@ -577,6 +581,105 @@ const MEASURES = {
     return verdict(cyl.map(f => item(!f.room || f.room.type === "outdoor", [f.id], "LPG cylinders", f.room && f.room.type !== "outdoor" ? `inside ${f.room.name}` : "outdoors", "not indoors")));
   },
 
+  /* ---------- electrical layer (DBC K.9.1, DEWA 2017) ---------- */
+  socket_types(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    const out = [];
+    for (const m of M.rooms.filter(m => m.type === "bathroom")) {
+      const bad = M.fixtures.filter(f => f.room === m && (f.kind === p.general_kind || f.kind === p.outdoor_kind));
+      out.push(item(!bad.length, [m.id].concat(bad.map(f => f.id)), m.name, bad.length ? `${bad.length} 13 A socket(s)` : "shaver outlets only", `no 13 A sockets; shaver outlets (${p.bathroom_kind})`));
+    }
+    for (const f of M.fixtures.filter(f => f.kind === p.general_kind || f.kind === p.outdoor_kind)) {
+      const outside = !f.room || f.room.type === "outdoor" || f.f.outdoor;
+      if (outside) out.push(item(f.kind === p.outdoor_kind, [f.id], `Socket outside${f.room ? " (" + f.room.name + ")" : ""}`, f.kind === p.outdoor_kind ? "IP55" : "indoor type", "IP55 weather-protected"));
+    }
+    return verdict(out);
+  },
+
+  accessory_heights(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    const out = [], missing = [], worktop = M.doc.worktop_h;
+    for (const f of M.fixtures.filter(f => ["socket", "socket_ip55", "shaver", "switch_dp", "cooker_switch"].includes(f.kind))) {
+      const h = f.f.h_mount; if (h === undefined) { missing.push(f.label); continue; }
+      let lim, what;
+      if (f.kind === "shaver" || f.kind === "switch_dp" || f.kind === "cooker_switch") { lim = p.switch_h; what = "switches / shaver outlets"; }
+      else if (f.f.worktop) { if (worktop === undefined) { missing.push("worktop height"); continue; } lim = worktop + p.worktop_offset; what = `kitchen: worktop ${worktop} m + ${p.worktop_offset} m`; }
+      else { lim = p.socket_h; what = "general sockets"; }
+      out.push(item(Math.abs(h - lim) <= p.tol + EPS, [f.id], `${f.label}${f.room ? " in " + f.room.name : ""}`, mm(h), `${mm(lim)} (${what})`));
+    }
+    const bad = out.filter(i => !i.ok);
+    const res = verdict(bad.length ? bad : out.length ? [item(true, [], `${out.length} accessories`, "at their heights", "Figure K.80 heights")] : []);
+    return withMissing(res, [...new Set(missing)], "mounting height (h_mount)");
+  },
+
+  kitchen_socket_positions(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    const out = [];
+    const bx = f => ({x0: Math.min(...f.corners.map(q => q.x)), y0: Math.min(...f.corners.map(q => q.y)), x1: Math.max(...f.corners.map(q => q.x)), y1: Math.max(...f.corners.map(q => q.y))});
+    for (const m of M.rooms.filter(m => m.type === "kitchen")) {
+      const sinks = M.fixtures.filter(f => f.room === m && f.kind === "sink"), ranges = M.fixtures.filter(f => f.room === m && f.kind === "range");
+      for (const s of M.fixtures.filter(f => f.room === m && (f.kind === "socket" || f.kind === "socket_ip55"))) {
+        const dSink = sinks.length ? Math.min(...sinks.map(f => boxDist(s.c, bx(f)))) : Infinity;
+        // over the hob: the socket lies within the width of the range and right behind it, on its wall
+        const overHob = ranges.some(f => { const q = local(f, s.c, M.G); return Math.abs(q.l) < f.hw && q.d < 0 && q.d > -f.hd - 0.3; });
+        out.push(item(dSink >= p.sink_clear - EPS && !overHob, [s.id], `Socket in ${m.name}`, (dSink < Infinity ? `${mm(dSink)} from the sink` : "no sink") + (overHob ? "; above the hob" : ""), `>= ${mm(p.sink_clear)} from the sink edge, not above the hob`));
+      }
+    }
+    const bad = out.filter(i => !i.ok);
+    return verdict(bad.length ? bad : out.length ? [item(true, [], `${out.length} kitchen sockets`, "clear of sink and hob", "")] : []);
+  },
+
+  sockets_per_circuit(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    const cs = (M.doc.circuits || []).filter(c => /sockets$/.test(c.load));
+    if (!cs.length) return {status: "NOT CHECKABLE", items: [], needs: ["circuit schedule"]};
+    return verdict(cs.map(c => {
+      const pts = c.items.reduce((s, id) => { const f = M.fixtures.find(x => x.id === id); return s + (f && (f.kind === "socket" || f.kind === "socket_ip55") ? p.twin_points : 1); }, 0);
+      const ring = c.kind === "ring", max = ring ? p.ring_max : p.radial_max, brk = ring ? p.ring_breaker : p.radial_breaker;
+      return item(pts <= max && c.breaker === brk, [c.id], `${c.id} ${c.label}`, `${pts} points, ${c.breaker} A ${c.kind}`, `<= ${max} points on ${brk} A (twin = ${p.twin_points})`);
+    }));
+  },
+
+  cooker_control(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    return verdict(M.fixtures.filter(f => f.kind === "range").map(f => {
+      const sw = M.fixtures.filter(s => s.kind === "cooker_switch" && s.f.serves === f.id), c = M.circuitOf(f);
+      const d = sw.length ? Math.min(...sw.map(s => M.G.dist(s.c, f.c))) : Infinity;
+      const ok = d <= p.max_dist + EPS && c && c.kind === "dedicated" && c.rcd_ma === p.rcd;
+      return item(ok, [f.id].concat(sw.map(s => s.id)), `Range in ${f.room ? f.room.name : "?"}`, `${sw.length ? "switch " + fmt(d) + " m away" : "no cooker switch"}; ${c ? c.kind + " circuit, " + c.rcd_ma + " mA" : "no circuit"}`, `switch <= ${p.max_dist} m, own circuit, ${p.rcd} mA`);
+    }));
+  },
+
+  appliance_control(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    return verdict(M.fixtures.filter(f => p.kinds.includes(f.kind)).map(f => {
+      const sw = M.fixtures.filter(s => s.kind === "switch_dp" && s.f.serves === f.id)[0], c = M.circuitOf(f), probs = [];
+      if (!sw) probs.push("no DP switch");
+      else if (f.kind === "wh" && f.room && f.room.type === "bathroom") { if (sw.room === f.room) probs.push("switch inside the bathroom"); }
+      else if (M.G.dist(sw.c, f.c) > p.adjacent + Math.max(f.hw, f.hd)) probs.push(`switch ${fmt(M.G.dist(sw.c, f.c))} m away`);
+      if (!c || c.kind !== "dedicated") probs.push("not on its own circuit");
+      if (f.kind === "wh" && c && c.rcd_ma !== p.heater_rcd) probs.push(`${c.rcd_ma} mA`);
+      return item(!probs.length, [f.id].concat(sw ? [sw.id] : []), `${f.label}${f.room ? " in " + f.room.name : ""}`, probs.length ? probs.join("; ") : `DP switch adjacent, own circuit${c ? ", " + c.rcd_ma + " mA" : ""}`, "DP switch + flex outlet adjacent (bath heaters: outside the room), own circuit, heaters 30 mA");
+    }));
+  },
+
+  ac_circuits(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    return verdict(M.fixtures.filter(f => p.kinds.includes(f.kind)).map(f => {
+      const sw = M.fixtures.find(s => s.kind === "switch_dp" && s.f.serves === f.id), c = M.circuitOf(f), probs = [];
+      if (!sw) probs.push("no DP switch"); else if (M.G.dist(sw.c, f.c) > p.adjacent + Math.max(f.hw, f.hd)) probs.push("switch not adjacent");
+      if (!c || c.kind !== "dedicated") probs.push("not on its own circuit");
+      else { if (!(c.breaker >= p.min_breaker)) probs.push(`breaker ${c.breaker || "?"} A`); if (!(c.cable_mm2 >= p.min_cable)) probs.push(`cable ${c.cable_mm2 || "?"} mm2`); }
+      return item(!probs.length, [f.id], `${f.label}${f.room ? " in " + f.room.name : ""}`, probs.length ? probs.join("; ") : `${c.breaker} A, ${c.cable_mm2} mm2, own circuit`, `own circuit >= ${p.min_breaker} A, >= ${p.min_cable} mm2, DP switch adjacent`);
+    }));
+  },
+
+  rcd_ratings(M, p) {
+    if (!M.layer.elec) return noLayer("electrical layer (sockets, switches, circuits)");
+    const cs = M.doc.circuits || []; if (!cs.length) return {status: "NOT CHECKABLE", items: [], needs: ["circuit schedule"]};
+    return verdict(cs.filter(c => p.loads[c.load] !== undefined).map(c => item(c.rcd_ma === p.loads[c.load], [c.id], `${c.id} ${c.label}`, `${c.rcd_ma} mA`, `${p.loads[c.load]} mA (${c.load.replace("_", " ")})`)));
+  },
+
   /* estimates shown with NOT CHECKABLE rules: never a pass */
   glazing_ratio_estimate(M, p) {
     const rows = M.rooms.filter(m => p.types.includes(m.type) && (p.staff === undefined || m.staff === p.staff)).map(m => {
@@ -654,6 +757,17 @@ function toMarkdown(rep) {
   return L.join("\n");
 }
 
+/* values the generators use: from the same rules the checker applies, plus the pack's labelled layout defaults */
+function generatorRules(pack, rulesDir) {
+  rulesDir = rulesDir || path.join(__dirname, "..", "rules");
+  const {manifest, rules} = loadPack(pack, rulesDir);
+  const ok = (i, m) => { const r = rules.find(r => r.id === i); return r && r.measure === m ? r.params : null; };
+  const e4 = ok("E-04", "accessory_heights"), e5 = ok("E-05", "kitchen_socket_positions"), e6 = ok("E-06", "sockets_per_circuit"), e9 = ok("E-09", "ac_circuits"), e10 = ok("E-10", "rcd_ratings");
+  return {conv: manifest.generator || {},
+    devices: {detectors: (ok("F-02", "detectors_by_room") || {}).rooms, openKitchen: ok("F-04", "kitchen_detector"), exhaust: ok("V-03", "exhaust_rates"), freshAir: ok("V-01", "fresh_air")},
+    electrical: e4 && e6 && e10 ? {heights: e4, sink_clear: e5 ? e5.sink_clear : 0.3, circuits: e6, ac: e9 || {min_breaker: 20, min_cable: 4}, rcd: Object.assign({lighting: 30}, e10.loads)} : null};
+}
+
 /* values the engine uses while placing fixtures, taken from the same rules the checker applies */
 function placementRules(pack, rulesDir) {
   rulesDir = rulesDir || path.join(__dirname, "..", "rules");
@@ -667,4 +781,4 @@ function placementRules(pack, rulesDir) {
   return out;
 }
 
-module.exports = {run, toMarkdown, loadPack, placementRules, MEASURES, STATUS_ORDER};
+module.exports = {run, toMarkdown, loadPack, placementRules, generatorRules, buildModel, MEASURES, STATUS_ORDER};

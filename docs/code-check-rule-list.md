@@ -79,14 +79,14 @@ Engine status: **Now** = checkable with today's spec · **Spec+** = needs the sp
 |---|---|---|---|---|
 | E-01 | K.9.1.17.2 (p.~796) | DB **not** in: bathrooms/toilets, wet locations, bedrooms, kitchens, above sinks, store rooms, hot rooms, hazardous locations, under stairs | ✅ | Now |
 | E-02 | K.9.1.17.2 (p.~796) | DB top ≤ 2 m above FFL; accessible at all times | ✅ | Now (v0.5 design data) |
-| E-03 | K.9.1.13.2 (p.779–780) | Sockets BS 1363 13 A, shuttered, switched; IP55 outdoors | ✅ | Spec+ (generated) |
-| E-04 | K.9.1.17.4 (p.796) | Mounting: switches, AC/WH DP switches 1.25 m; general sockets 450 mm; kitchen sockets 150 mm above the worktop | ✅ | Spec+ |
-| E-05 | K.9.1.13.5, Fig K.72 (p.781) | Kitchen: no socket within **300 mm of the sink edge**; no socket or accessory **above hobs** | ✅ | Spec+ |
-| E-06 | DEWA 4.7.1 (p.46) / K.9.1.15.1 | Radial circuit ≤ **5** × 13 A sockets on 20 A; ring ≤ **10** sockets on 30 A (rooms other than kitchen) | ✅ (DEWA) | Spec+ |
-| E-07 | K.9.1.13.4 (p.780–781) | Cooker control switch (BS 4177) **within 2 m** of the appliance, separate circuit, **100 mA** ELCB | ✅ | Spec+ |
-| E-08 | K.9.1.13.6 (p.782) | Water heater / washing machine: own circuit, DP switch + flex outlet; WH in a bathroom has its switch **immediately outside** the room; heater circuits **30 mA** | ✅ | Spec+ |
-| E-09 | K.9.1.13.7 (p.782) | Each AC unit: own circuit, DP switch adjacent; min **20 A, 4 mm²** | ✅ | Spec+ |
-| E-10 | K.9.1.18.4, Table K.46 (p.800) | RCD ratings: sockets, WH, DW, fridge, washer, pumps **30 mA**; split AC, AHU, cooker **100 mA**; lighting 30/100 mA | ✅ | Spec+ |
+| E-03 | K.9.1.13.2 (p.779–780) | Sockets BS 1363 13 A, shuttered, switched; IP55 outdoors | ✅ | Now (engine-generated layer) |
+| E-04 | K.9.1.17.4 (p.796) | Mounting: switches, AC/WH DP switches 1.25 m; general sockets 450 mm; kitchen sockets 150 mm above the worktop | ✅ | Now (engine-generated layer) |
+| E-05 | K.9.1.13.5, Fig K.72 (p.781) | Kitchen: no socket within **300 mm of the sink edge**; no socket or accessory **above hobs** | ✅ | Now (engine-generated layer) |
+| E-06 | DEWA 4.7.1 (p.46) / K.9.1.15.1 | Radial circuit ≤ **5** × 13 A sockets on 20 A; ring ≤ **10** sockets on 30 A (rooms other than kitchen) | ✅ (DEWA) | Now (engine-generated layer) |
+| E-07 | K.9.1.13.4 (p.780–781) | Cooker control switch (BS 4177) **within 2 m** of the appliance, separate circuit, **100 mA** ELCB | ✅ | Now (engine-generated layer) |
+| E-08 | K.9.1.13.6 (p.782) | Water heater / washing machine: own circuit, DP switch + flex outlet; WH in a bathroom has its switch **immediately outside** the room; heater circuits **30 mA** | ✅ | Now (engine-generated layer) |
+| E-09 | K.9.1.13.7 (p.782) | Each AC unit: own circuit, DP switch adjacent; min **20 A, 4 mm²** | ✅ | Now (engine-generated layer) |
+| E-10 | K.9.1.18.4, Table K.46 (p.800) | RCD ratings: sockets, WH, DW, fridge, washer, pumps **30 mA**; split AC, AHU, cooker **100 mA**; lighting 30/100 mA | ✅ | Now (engine-generated layer) |
 | E-11 | K.9.1.15.1 (p.~789) | Lighting circuits ≤ 2,000 W, 2.5 mm², ≤ 16 A; 100 W per point if fittings unknown | ✅ | Out (load calc v2) |
 
 ### P — Water & drainage (DBC K.10.2 / K.10.3)

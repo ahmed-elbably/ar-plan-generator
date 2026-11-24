@@ -68,10 +68,19 @@ const FIX = {
   lpg:{label:"LPG cylinders", w:0.80, h:0.50, outdoor:true, svc:["gas"]},
   fresh_air:{label:"Fresh-air unit", w:0.90, h:0.60, svc:["vent","elec"]},
   water_tank:{label:"Water tank", w:1.20, h:1.20, svc:["water"]},
-  pump:{label:"Water pump", w:0.50, h:0.40, svc:["water","elec"]}
+  pump:{label:"Water pump", w:0.50, h:0.40, svc:["water","elec"]},
+  /* electrical layer (generated with --pack): wall-mounted at h_mount; serves = the appliance id; circuit = schedule id */
+  socket:{label:"Twin socket 13 A", w:0.16, h:0.06, mount:"wall", svc:["elec"]},
+  socket_ip55:{label:"Socket IP55", w:0.16, h:0.08, mount:"wall", svc:["elec"]},
+  shaver:{label:"Shaver outlet", w:0.12, h:0.06, mount:"wall", svc:["elec"]},
+  switch_dp:{label:"DP switch + flex outlet", w:0.10, h:0.06, mount:"wall", svc:["elec"]},
+  cooker_switch:{label:"Cooker control unit", w:0.12, h:0.06, mount:"wall", svc:["elec"]}
 };
+const ELEC_KINDS=["socket","socket_ip55","shaver","switch_dp","cooker_switch"];
 /* fixture properties a spec may carry through to the plan (airflow L/s, ventilation mode, tank litres, DB top height m) */
-const FIX_PROPS=["lps","mode","litres","top_h"];
+const FIX_PROPS=["lps","mode","litres","top_h","h_mount","serves","circuit","worktop","outdoor"];
+const PROP_NUM=["lps","litres","top_h","h_mount"],PROP_BOOL=["worktop","outdoor"];
+const propVal=(k,v)=>PROP_NUM.includes(k)?+v:PROP_BOOL.includes(k)?!!v:String(v);
 const overFloor=k=>!!(FIX[k]&&FIX[k].mount);   // ceiling- or wall-mounted: no floor clash
 
 function emptyDoc(){ return {format:"ar-plan", version:2, project:"Untitled house", level:"Level 1", units:"m", walls:[], openings:[], rooms:[], fixtures:[]}; }
@@ -162,6 +171,7 @@ function normalizeDoc(d){const o=emptyDoc();Object.assign(o,{project:d.project||
   (d.openings||[]).filter(x=>x&&x.wall).forEach((x,i)=>{const t=o.openings[i];if(!t)return;for(const k of ["op","glass","glazed","operator_h"])if(x[k]!==undefined)t[k]=x[k];if(Array.isArray(x.given))t.given=x.given.slice();});
   o.rooms=(d.rooms||[]).filter(r=>r&&Array.isArray(r.pts)&&r.pts.length>=3).map(r=>({id:r.id||uid("r"),name:r.name||"Room",type:ROOM_TYPES[r.type]?r.type:"other",ceil:+r.ceil||2.7,pts:r.pts.map(p=>P(+p.x,+p.y)),...(r.ceil_set?{ceil_set:true}:{}),...(counterList(r.counters).length?{counters:counterList(r.counters)}:{})}));
   o.fixtures=(d.fixtures||[]).filter(f=>f&&FIX[f.kind]).map(f=>{const q={id:f.id||uid("f"),kind:f.kind,x:+f.x,y:+f.y,rot:+f.rot||0};for(const k of FIX_PROPS)if(f[k]!==undefined)q[k]=f[k];if(f.auto)q.auto=true;return q;});
+  if(Array.isArray(d.circuits))o.circuits=d.circuits.map(c=>({...c,items:(c.items||[]).slice(),rooms:(c.rooms||[]).slice()}));if(num(d.worktop_h)!==undefined)o.worktop_h=+d.worktop_h;
   return o;}
 
 function drawCss(gapFill){return `
@@ -177,6 +187,7 @@ function drawCss(gapFill){return `
 .fxd{fill:#1B1D1A}
 .fxf{fill:#fff;stroke:#B3261E;stroke-width:1;vector-effect:non-scaling-stroke}.fxfl{fill:none;stroke:#B3261E;stroke-width:.6;vector-effect:non-scaling-stroke}
 .fxm{fill:#fff;stroke:#1F5FBF;stroke-width:1;vector-effect:non-scaling-stroke}.fxh{fill:none;stroke:#1B1D1A;stroke-width:.8;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.fxe{fill:#fff;stroke:#B26B00;stroke-width:1;vector-effect:non-scaling-stroke}.fxed{fill:#B26B00}
 .ctr{fill:#F3EFE6;stroke:#8A8577;stroke-width:.7;vector-effect:non-scaling-stroke}
 .fxt{font-family:"IBM Plex Mono",monospace;fill:#1B1D1A;text-anchor:middle;dominant-baseline:central}
 .rn{font-family:"IBM Plex Sans",Arial,sans-serif;font-weight:600;fill:#1B1D1A;text-anchor:middle;letter-spacing:.03em}
@@ -224,6 +235,11 @@ function fixSym(k,rot){
     case "fresh_air":return R(x0,y0,w,h,0,"fxm")+L(x0,y0,-x0,-y0)+T("FA",0.13);
     case "water_tank":return R(x0,y0,w,h)+L(x0,y0,-x0,-y0)+L(-x0,y0,x0,-y0)+T("TANK",0.16);
     case "pump":return C(0,0,0.18)+T("P",0.12);
+    case "socket":return R(x0,y0,w,h,0,"fxe")+L(-0.035,y0,-0.035,-y0)+L(0.035,y0,0.035,-y0);
+    case "socket_ip55":return R(x0,y0,w,h,0,"fxe")+L(x0,0,-x0,0);
+    case "shaver":return R(x0,y0,w,h,0,"fxe")+C(0,0,0.02,"fxe");
+    case "switch_dp":return R(x0,y0,w,h,0,"fxed");
+    case "cooker_switch":return R(x0,y0,w,h,0,"fxed")+C(0,0,0.018,"fxe");
   }
   return R(x0,y0,w,h);
 }
@@ -306,7 +322,7 @@ function mepChecks(){
   add(F.some(f=>f.kind==="wh"),"Water heater placed","hot-water source","");
   add(F.some(f=>f.kind==="ahu"),"Furnace / AHU placed","duct system origin","");
   add(F.some(f=>f.kind==="panel"),"Electrical panel placed","home-run origin","");
-  const stray=F.filter(f=>!FIX[f.kind].outdoor&&!R.some(r=>pointInPoly(P(f.x,f.y),r.pts)));
+  const stray=F.filter(f=>!FIX[f.kind].outdoor&&!f.outdoor&&!R.some(r=>pointInPoly(P(f.x,f.y),r.pts)));
   add(F.length>0&&!stray.length,"Fixtures sit inside rooms","each fixture gets a room",stray.length?`${stray.length} outside: `+stray.slice(0,3).map(f=>FIX[f.kind].label).join(", "):"");
   return list;
 }
@@ -390,7 +406,8 @@ function projectFields(s){const o={};if(!s)return o;
   if(/^(electric|lpg|piped)$/i.test(s.gas||""))o.gas=String(s.gas).toLowerCase();
   for(const k of ["storeys","building_h","party_wall_h"])if(num(s[k])!==undefined)o[k]=+s[k];
   for(const k of ["sprinklered","hassantuk"])if(typeof s[k]==="boolean")o[k]=s[k];
-  if(num(s.glass)!==undefined)o.glass=clamp(+s.glass,0,1);   // default net glazing ratio of windows and glazed doors
+  if(num(s.glass)!==undefined)o.glass=clamp(+s.glass,0,1);
+  if(s.generate&&typeof s.generate==="object"){o.generate={};for(const k of ["devices","electrical"])if(typeof s.generate[k]==="boolean")o.generate[k]=s.generate[k];}   // default net glazing ratio of windows and glazed doors
   return o;}
 const counterList=v=>(Array.isArray(v)?v:[]).map(c=>({side:normSide(c.side),from:clamp(num(c.from)??0,0,1),to:clamp(num(c.to)??1,0,1),depth:num(c.depth)??0.6})).filter(c=>c.side&&c.to>c.from);
 const WIN_OPS=["fixed","sliding","casement","hung","tilt"];
@@ -466,9 +483,9 @@ function specToDoc(spec,place){
       }
     }
     // keep-clear zones: every doorway (both sides) and every swing arc
-    const zones=[],leafZones=[];const bb=pts=>({x0:Math.min(...pts.map(p=>p.x)),y0:Math.min(...pts.map(p=>p.y)),x1:Math.max(...pts.map(p=>p.x)),y1:Math.max(...pts.map(p=>p.y))});
+    const zones=[],leafZones=[],bandZones=[];const bb=pts=>({x0:Math.min(...pts.map(p=>p.x)),y0:Math.min(...pts.map(p=>p.y)),x1:Math.max(...pts.map(p=>p.x)),y1:Math.max(...pts.map(p=>p.y))});
     for(const o of doc.openings){if(o.type!=="door")continue;const g=openingGeom(o);if(!g)continue;const t=g.w.t,e=mul(g.d,0.05);
-      const q0=sub(g.p0,e),q1=add(g.p1,e),m=mul(g.n,t/2+0.6);zones.push(bb([add(q0,m),add(q1,m),sub(q0,m),sub(q1,m)]));
+      const q0=sub(g.p0,e),q1=add(g.p1,e),m=mul(g.n,t/2+0.6);const band=bb([add(q0,m),add(q1,m),sub(q0,m),sub(q1,m)]);zones.push(band);bandZones.push(band);
       if(o.style==="swing"){const sn=mul(g.n,o.side);const lz=bb([add(g.p0,mul(sn,t/2)),add(g.p1,mul(sn,t/2)),add(g.p0,mul(sn,t/2+o.w)),add(g.p1,mul(sn,t/2+o.w))]);zones.push(lz);leafZones.push(lz);}}
     const placed=[];
     const ov=(A,B)=>Math.max(0,Math.min(A.x1,B.x1)-Math.max(A.x0,B.x0))*Math.max(0,Math.min(A.y1,B.y1)-Math.max(A.y0,B.y0));
@@ -493,6 +510,7 @@ function specToDoc(spec,place){
       const mnt=def.mount||"floor";
       if(placed.some(Q=>(Q.mount||"floor")===mnt&&ov(e.box,Q.box)>0.003))return false;
       if(!def.outdoor&&!def.mount&&zones.some(Z=>ov(e.box,Z)>0.003))return false;
+      if(def.mount==="wall"&&bandZones.some(Z=>ovs(e.box,Z)))return false;   // not in a doorway
       if(def.mount)return true;
       if(!strict||!C||def.outdoor||ignored(e.kind))return true;
       for(const Q of placed){if(Q.room!==e.room||ignored(Q.kind)||Q.mount)continue;
@@ -508,37 +526,56 @@ function specToDoc(spec,place){
       const mine=fixList.filter(fx=>find(fx.room)===room).map(fx=>normFix(fx.kind));
       if(mine.includes("fd"))continue;
       if(D.wet_types.includes(room.type)||mine.some(k=>D.wet_kinds.includes(k))){fixList.push({kind:"fd",room:room.name,side:"S",at:0.5,auto:true});rep.push(`Floor drain added in ${room.name} (${D.ref})`);}}}
+    // spec.generate: {devices:false} / {electrical:false} turns a generator off
+    const GEN=place&&place.gen,genOpt=spec.generate||{};
+    if(GEN&&genOpt.devices!==false){const cc=require("./codecheck"),gn=require("./generators");const M0=cc.buildModel(doc,codecheckGeom());
+      const canon=fixList.map(fx=>({...fx,kind:normFix(fx.kind),room:(find(fx.room)||{}).name}));
+      const dv=gn.devices({rooms:M0.rooms,doors:M0.doors.map(d=>({a:d.a,b:d.b,style:d.style,w:d.w,c:d.g.c,toOutside:d.toOutside})),spec:canon,rules:GEN.devices,conv:GEN.conv,plot:doc.plot,cond:M0.cond});
+      fixList.push(...dv.items);rep.push(...dv.notes);
+      const kinds={};for(const it of dv.items)kinds[it.kind]=(kinds[it.kind]||0)+1;
+      if(dv.items.length)rep.push("Generated: "+Object.entries(kinds).map(([k,c])=>c+" "+FIX[k].label.toLowerCase()).join(", "));}
     for(const fx of fixList){
       const kind=normFix(fx.kind);const def=kind&&FIX[kind];if(!def){rep.push(`Unknown fixture "${fx.kind}" skipped`);continue;}
-      const room=find(fx.room);if(!room){rep.push(`${def.label}: room "${fx.room}" not found`);continue;}
+      let room=find(fx.room);if(!room){rep.push(`${def.label}: room "${fx.room}" not found`);continue;}
       const box=boxes.get(room.id),cb=clearBox(box);const want=normSide(fx.side)||"N";const f=Number.isFinite(+fx.at)?clamp(+fx.at,0,1):0.5;
       if(def.mount==="ceiling"){
         const pos=Array.isArray(fx.pos)&&fx.pos.length===2?fx.pos.map(v=>clamp(+v||0.5,0,1)):null;
         const k=placed.filter(Q=>Q.room===room.id&&Q.mount==="ceiling").length;const longX=cb.x1-cb.x0>=cb.y1-cb.y0;
-        let fxp=pos?pos[0]:0.5,fyp=pos?pos[1]:0.3;   // default off-centre so the room label stays clearif(!pos&&k){const off=(Math.ceil(k/2)*(k%2?1:-1))*0.18;if(longX)fxp=clamp(0.5+off,0.1,0.9);else fyp=clamp(0.5+off,0.1,0.9);}
+        let fxp=pos?pos[0]:0.5,fyp=pos?pos[1]:0.3;   // default off-centre so the room label stays clear
+        if(!pos&&k){const off=(Math.ceil(k/2)*(k%2?1:-1))*0.18;if(longX)fxp=clamp(0.5+off,0.1,0.9);else fyp=clamp(0.3+off,0.1,0.9);}
         const c=P(r4(cb.x0+(cb.x1-cb.x0)*fxp),r4(cb.y0+(cb.y1-cb.y0)*fyp));
         placed.push({kind,room:room.id,c,box:fbox(def,c,0),mount:"ceiling"});
-        const fo={id:uid("f"),kind,x:c.x,y:c.y,rot:0};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=pk==="mode"?String(fx[pk]):+fx[pk];if(fx.auto)fo.auto=true;
+        const fo={id:uid("f"),kind,x:c.x,y:c.y,rot:0};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=propVal(pk,fx[pk]);if(fx.auto)fo.auto=true;
         doc.fixtures.push(fo);fixOk++;continue;}
-      const search=strict=>{
+      const search=(strict,rm,bx,cbx)=>{
         for(const s of (def.outdoor?[want]:ORDER[want])){
-          const S=SIDES[s];const L=dist(S.a(box),S.b(box));if(L<def.w+0.16)continue;
+          const S=SIDES[s];const L=dist(S.a(bx),S.b(bx));if(L<def.w+0.16)continue;
           const lo=def.w/2+0.08,hi=L-def.w/2-0.08,t0=clamp(L*(s===want?f:0.5),lo,hi);
           const st=C?0.05:0.1,cands=[t0];for(let k=1;k*st<=L;k++)cands.push(t0+k*st,t0-k*st);
-          for(const t of cands){if(t<lo-1e-9||t>hi+1e-9)continue;const p=poseAt(def,box,s,t);const e=entry(kind,def,p,room.id);
-            if(!legal(e,def,strict,cb))continue;return {...p,s,e,moved:Math.abs(t-t0)>0.35};}
+          for(const t of cands){if(t<lo-1e-9||t>hi+1e-9)continue;const p=poseAt(def,bx,s,t);const e=entry(kind,def,p,rm.id);
+            if(!legal(e,def,strict,cbx))continue;return {...p,s,e,moved:Math.abs(t-t0)>0.35};}
         }
         return null;};
-      let best=search(true),relaxed=false;
-      if(!best&&C&&!def.outdoor&&!ignored(kind)){best=search(false);relaxed=!!best;}
+      let best=search(true,room,box,cb),relaxed=false;
+      // generated items may name fallback rooms (e.g. a fresh-air unit: mech, then laundry, then garage)
+      if(!best&&Array.isArray(fx.alt_rooms))for(const an of fx.alt_rooms){const ar=find(an);if(!ar)continue;const ab=boxes.get(ar.id);const got=search(true,ar,ab,clearBox(ab));
+        if(got){best=got;room=ar;rep.push(`${def.label} placed in ${ar.name}: no room in ${fx.room}`);break;}}
+      if(!best&&C&&!def.outdoor&&!ignored(kind)){best=search(false,room,box,cb);relaxed=!!best;}
       if(!best){const S=SIDES[want];const L=dist(S.a(box),S.b(box));const p=poseAt(def,box,want,L<def.w+0.16?L/2:clamp(L*f,def.w/2+0.08,L-def.w/2-0.08));best={...p,s:want,clash:true,e:entry(kind,def,p,room.id)};}
       if(best.clash)rep.push(`${def.label} in ${room.name} could not clear doors or other fixtures`);
       else if(relaxed)rep.push(`${def.label} in ${room.name}: no position keeps the ${C.ref} clearances (${Math.round(C.to_side*1000)} mm side, ${Math.round(C.to_adjacent*1000)} mm between WC / basin centres, ${Math.round(C.to_wall*1000)} mm in front); enlarge or rearrange the room`);
       else if(best.s!==want&&!fx.auto)rep.push(`${def.label} in ${room.name} moved from ${want} to ${best.s} wall to keep ${C&&isWB(kind)?"clearances":"doors clear"}`);
       placed.push(best.e);
-      const fo={id:uid("f"),kind,x:r4(best.c.x),y:r4(best.c.y),rot:best.rot};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=pk==="mode"?String(fx[pk]):+fx[pk];if(fx.auto)fo.auto=true;
+      const fo={id:uid("f"),kind,x:r4(best.c.x),y:r4(best.c.y),rot:best.rot};for(const pk of FIX_PROPS)if(fx[pk]!==undefined)fo[pk]=propVal(pk,fx[pk]);if(fx.auto)fo.auto=true;
       doc.fixtures.push(fo);fixOk++;
     }
+    if(GEN&&GEN.electrical&&genOpt.electrical!==false&&!fixList.some(fx=>ELEC_KINDS.includes(normFix(fx.kind)))){
+      const cc=require("./codecheck"),gn=require("./generators");const M1=cc.buildModel(doc,codecheckGeom());
+      const el=gn.electrical({G:codecheckGeom(),footprint:M1.footprint,rooms:M1.rooms,doors:M1.doors.map(d=>({a:d.a,b:d.b,style:d.style,w:d.w,c:d.g.c,p0:d.g.p0,p1:d.g.p1,toOutside:d.toOutside})),
+        fixtures:M1.fixtures.map(x=>Object.assign(x,{rot:x.f.rot})),rules:GEN.electrical,conv:GEN.conv,uid});
+      for(const f of el.fixtures){f.x=r4(f.x);f.y=r4(f.y);if(f.outdoor===undefined)delete f.outdoor;doc.fixtures.push(f);}
+      doc.circuits=el.circuits;doc.worktop_h=GEN.conv.worktop_h||0.9;rep.push(...el.notes);
+      rep.push(`Generated electrical layer: ${el.fixtures.length} accessories on ${el.circuits.length} circuits`);fixOk+=el.fixtures.length;}
     return {doc,rep,stats:{rooms:doc.rooms.length,doors:doorsOk,windows:winOk,fixtures:fixOk}};
   }finally{doc=old;}
 }
@@ -571,6 +608,7 @@ function docToSpec(){
     spec.doors.push(opExtra(o,d));
   }
   for(const f of doc.fixtures){
+    if(f.auto)continue;
     let room=roomAt(P(f.x,f.y));
     if(!room){let bd=Infinity;for(const r of doc.rooms){const dd=polyEdgeDist(P(f.x,f.y),r.pts);if(dd<bd){bd=dd;room=r;}}}
     if(!room)continue;let sf;
@@ -654,14 +692,17 @@ function reportMd(builderNotes, files){
   L.push("","## Clashes","");
   if(cl.length)cl.forEach(x=>L.push(`- ⚠ ${x}`));else L.push("- None found (fixtures, doorways and door swings are clear).");
   if(builderNotes&&builderNotes.length){L.push("","## Builder notes","");builderNotes.forEach(x=>L.push(`- ${x}`));}
+  if(doc.circuits&&doc.circuits.length){L.push("","## Circuit schedule","","| Circuit | Serves | Type | Breaker | Cable | RCD | Points | Rooms |","|---|---|---|---|---|---|---|---|");
+    for(const c of doc.circuits)L.push(`| ${c.id} | ${c.label} | ${c.kind} | ${c.breaker?c.breaker+" A":"per load"} | ${c.cable_mm2?c.cable_mm2+" mm²":"per load"} | ${c.rcd_ma} mA | ${c.points} | ${(c.rooms||[]).join(", ")} |`);
+    L.push("","Sockets: twin 13 A counts as 2 points (DEWA 4.7.2). RCD ratings: DBC Table K.46. Breakers and cables marked \"per load\" are sized to the connected appliance.");}
   if(files&&files.length){L.push("","## Files","");files.forEach(f=>L.push(`- ${path.basename(f)}`));}
   L.push("","Coordinates are in metres: x to the east, y to the south. DXF flips y so north is up; 1 drawing unit = 1 m.");
   return {md:L.join("\n"),ready:`${ok}/${ck.length}`,clashes:cl.length,checks:ck};
 }
 
 /* ---------- DXF (R12 ASCII, metres, layered) ---------- */
-const DXF_LAYERS=[["A-WALL",7],["A-DOOR",3],["A-GLAZ",4],["A-AREA",8],["A-AREA-IDEN",2],["P-FIXT",6],["A-EQPM",30],["P-EQPM",140],["M-EQPM",5],["E-EQPM",1],["F-FIRE",10],["M-EXHT",150],["P-GAS",40],["A-CASE",9]];
-const FIX_LAYER={wc:"P-FIXT",basin:"P-FIXT",sink:"P-FIXT",shower:"P-FIXT",tub:"P-FIXT",fd:"P-FIXT",washer:"A-EQPM",dryer:"A-EQPM",dw:"A-EQPM",range:"A-EQPM",fridge:"A-EQPM",wh:"P-EQPM",ahu:"M-EQPM",acu:"M-EQPM",panel:"E-EQPM",smoke:"F-FIRE",smoke_sounder:"F-FIRE",heat:"F-FIRE",facp:"F-FIRE",extinguisher:"F-FIRE",av_outdoor:"F-FIRE",exhaust:"M-EXHT",hood:"M-EXHT",fresh_air:"M-EQPM",water_tank:"P-EQPM",pump:"P-EQPM",lpg:"P-GAS"};
+const DXF_LAYERS=[["A-WALL",7],["A-DOOR",3],["A-GLAZ",4],["A-AREA",8],["A-AREA-IDEN",2],["P-FIXT",6],["A-EQPM",30],["P-EQPM",140],["M-EQPM",5],["E-EQPM",1],["F-FIRE",10],["M-EXHT",150],["P-GAS",40],["A-CASE",9],["E-POWR",30]];
+const FIX_LAYER={wc:"P-FIXT",basin:"P-FIXT",sink:"P-FIXT",shower:"P-FIXT",tub:"P-FIXT",fd:"P-FIXT",washer:"A-EQPM",dryer:"A-EQPM",dw:"A-EQPM",range:"A-EQPM",fridge:"A-EQPM",wh:"P-EQPM",ahu:"M-EQPM",acu:"M-EQPM",panel:"E-EQPM",smoke:"F-FIRE",smoke_sounder:"F-FIRE",heat:"F-FIRE",facp:"F-FIRE",extinguisher:"F-FIRE",av_outdoor:"F-FIRE",exhaust:"M-EXHT",hood:"M-EXHT",fresh_air:"M-EQPM",water_tank:"P-EQPM",pump:"P-EQPM",lpg:"P-GAS",socket:"E-POWR",socket_ip55:"E-POWR",shaver:"E-POWR",switch_dp:"E-POWR",cooker_switch:"E-POWR"};
 function fixPrims(k){
   const d=FIX[k],w=d.w,h=d.h,x0=-w/2,y0=-h/2;const R=(x,y,ww,hh)=>({t:"rect",x,y,w:ww,h:hh}),C=(cx,cy,r)=>({t:"circle",cx,cy,r}),E=(cx,cy,rx,ry)=>({t:"ellipse",cx,cy,rx,ry}),Ln=(x1,y1,x2,y2)=>({t:"line",x1,y1,x2,y2}),T=s=>({t:"text",s});
   switch(k){
@@ -692,6 +733,7 @@ function fixPrims(k){
     case "fresh_air":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),T("FA")];
     case "water_tank":return [R(x0,y0,w,h),Ln(x0,y0,-x0,-y0),Ln(-x0,y0,x0,-y0),T("TANK")];
     case "pump":return [C(0,0,0.18),T("P")];
+    case "socket":case "socket_ip55":case "shaver":case "switch_dp":case "cooker_switch":return [R(x0,y0,w,h)];
   }
   return [R(x0,y0,w,h)];
 }
@@ -996,9 +1038,10 @@ const ifcNum=v=>{let s=String(Math.round(v*1e6)/1e6);if(s==="-0")s="0";if(!/[.eE
 const ifcStr=v=>"'"+String(v).replace(/\\/g,"\\\\").replace(/'/g,"''").replace(/[^\x20-\x7E]/g,ch=>"\\X2\\"+ch.codePointAt(0).toString(16).toUpperCase().padStart(4,"0")+"\\X0\\")+"'";
 /* mounting height of a fixture base (m above floor): ceiling items sit under the room ceiling */
 const FIX_WALL_Z={panel:1.2,facp:1.2,extinguisher:1.0,hood:1.6,av_outdoor:2.5};
-function fixZ(f){const d=FIX[f.kind];if(d.mount==="ceiling"){const r=doc.rooms.find(r=>pointInPoly(P(f.x,f.y),r.pts));return (r?r.ceil:2.7)-(FIX_3D_H[f.kind]||0.05);}return FIX_WALL_Z[f.kind]||0;}
-const FIX_3D_H={smoke:0.05,smoke_sounder:0.05,heat:0.05,exhaust:0.1,facp:0.5,extinguisher:0.5,hood:0.3,av_outdoor:0.2,lpg:1.2,fresh_air:0.6,water_tank:1.2,pump:0.5,wc:0.75,basin:0.85,sink:0.9,shower:0.06,tub:0.55,washer:0.85,dryer:0.85,dw:0.85,range:0.9,fridge:1.8,wh:1.5,ahu:1.3,acu:0.8,panel:0.6,fd:0.02};
-const FIX_IFC={smoke:["IFCSENSOR","SMOKESENSOR"],smoke_sounder:["IFCSENSOR","SMOKESENSOR"],heat:["IFCSENSOR","HEATSENSOR"],facp:["IFCUNITARYCONTROLELEMENT","ALARMPANEL"],av_outdoor:["IFCALARM","SIREN"],
+function fixZ(f){const d=FIX[f.kind];if(d.mount==="ceiling"){const r=doc.rooms.find(r=>pointInPoly(P(f.x,f.y),r.pts));return (r?r.ceil:2.7)-(FIX_3D_H[f.kind]||0.05);}if(f.h_mount!==undefined)return f.h_mount-(FIX_3D_H[f.kind]||0)/2;return FIX_WALL_Z[f.kind]||0;}
+const FIX_3D_H={socket:0.09,socket_ip55:0.09,shaver:0.09,switch_dp:0.09,cooker_switch:0.09,smoke:0.05,smoke_sounder:0.05,heat:0.05,exhaust:0.1,facp:0.5,extinguisher:0.5,hood:0.3,av_outdoor:0.2,lpg:1.2,fresh_air:0.6,water_tank:1.2,pump:0.5,wc:0.75,basin:0.85,sink:0.9,shower:0.06,tub:0.55,washer:0.85,dryer:0.85,dw:0.85,range:0.9,fridge:1.8,wh:1.5,ahu:1.3,acu:0.8,panel:0.6,fd:0.02};
+const FIX_IFC={socket:["IFCOUTLET","POWEROUTLET"],socket_ip55:["IFCOUTLET","POWEROUTLET"],shaver:["IFCOUTLET","POWEROUTLET"],switch_dp:["IFCSWITCHINGDEVICE","SWITCHDISCONNECTOR"],cooker_switch:["IFCSWITCHINGDEVICE","SWITCHDISCONNECTOR"],
+  smoke:["IFCSENSOR","SMOKESENSOR"],smoke_sounder:["IFCSENSOR","SMOKESENSOR"],heat:["IFCSENSOR","HEATSENSOR"],facp:["IFCUNITARYCONTROLELEMENT","ALARMPANEL"],av_outdoor:["IFCALARM","SIREN"],
   exhaust:["IFCFAN","PROPELLORAXIAL"],hood:["IFCFAN",null],fresh_air:["IFCUNITARYEQUIPMENT","AIRHANDLER"],water_tank:["IFCTANK","STORAGE"],lpg:["IFCTANK","PRESSUREVESSEL"],pump:["IFCPUMP",null],
   wc:["IFCSANITARYTERMINAL","TOILETPAN"],basin:["IFCSANITARYTERMINAL","WASHHANDBASIN"],sink:["IFCSANITARYTERMINAL","SINK"],shower:["IFCSANITARYTERMINAL","SHOWER"],tub:["IFCSANITARYTERMINAL","BATH"],
   fd:["IFCWASTETERMINAL","FLOORTRAP"],washer:["IFCELECTRICAPPLIANCE","WASHINGMACHINE"],dryer:["IFCELECTRICAPPLIANCE","TUMBLEDRYER"],dw:["IFCELECTRICAPPLIANCE","DISHWASHER"],range:["IFCELECTRICAPPLIANCE","ELECTRICCOOKER"],
@@ -1110,7 +1153,7 @@ function main(){
   }else if(cmd==="build"){
     const spec=readJson(a._[1]||fail("build needs a spec file"));
     if(a.units==="ft")doc.units="ft";doc.level=a.level||DEFAULT_LEVEL;
-    let place=null;if(a.pack){try{place=require("./codecheck").placementRules(a.pack);}catch(e){fail(e.message);}}
+    let place=null;if(a.pack){try{const cc=require("./codecheck");place=cc.placementRules(a.pack);place.gen=cc.generatorRules(a.pack);}catch(e){fail(e.message);}}
     const built=(()=>{try{return specToDoc(spec,place);}catch(e){if(e&&e.code==="no_rooms")fail("The spec has no usable rooms (each needs name, type, x, y, w, d).");throw e;}})();
     doc=built.doc;doc.level=a.level||DEFAULT_LEVEL;if(a.units==="ft")doc.units="ft";
     const name=a.name||slug(doc.project);const res=writeAll(a.out||".",name,built.rep);

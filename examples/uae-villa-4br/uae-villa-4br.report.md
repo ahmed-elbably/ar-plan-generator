@@ -4,7 +4,7 @@ UAE villa 4BR · 4 BR + 1 staff · 4 BA + 1 WC · 346.7 m² conditioned · garag
 
 | Gross area | Conditioned | Rooms | Doors | Windows | Fixtures |
 |---|---|---|---|---|---|
-| 404.8 m² | 346.7 m² | 25 | 27 | 17 | 38 |
+| 404.8 m² | 346.7 m² | 25 | 27 | 17 | 110 |
 
 ## Room schedule
 
@@ -62,7 +62,49 @@ UAE villa 4BR · 4 BR + 1 staff · 4 BA + 1 WC · 346.7 m² conditioned · garag
 - Floor drain added in Bath 3 (P-01 K.10.3.2.3)
 - Floor drain added in Bath 2 (P-01 K.10.3.2.3)
 - Floor drain added in Master bath (P-01 K.10.3.2.3)
+- Fresh-air unit 75 L/s (ASHRAE 62.2 Eq. 4-1b)
+- Generated: 4 smoke detector, 5 smoke detector + sounder, 1 heat detector, 1 fire alarm panel, 1 outdoor alarm (av), 1 fire extinguisher, 6 exhaust fan, 1 range hood, 1 fresh-air unit
 - Basin in Guest WC moved from N to E wall to keep clearances
+- Fresh-air unit placed in Garage: no room in Mech
+- Generated electrical layer: 51 accessories on 31 circuits
+
+## Circuit schedule
+
+| Circuit | Serves | Type | Breaker | Cable | RCD | Points | Rooms |
+|---|---|---|---|---|---|---|---|
+| C01 | Sockets | radial | 20 A | per load | 30 mA | 4 | Majlis |
+| C02 | Sockets | radial | 20 A | per load | 30 mA | 4 | Majlis |
+| C03 | Sockets | radial | 20 A | per load | 30 mA | 2 | Lobby |
+| C04 | Sockets | radial | 20 A | per load | 30 mA | 4 | Maid room |
+| C05 | Sockets | radial | 20 A | per load | 30 mA | 2 | Maid room |
+| C06 | Sockets | radial | 20 A | per load | 30 mA | 4 | Garage |
+| C07 | Sockets | radial | 20 A | per load | 30 mA | 4 | Mech, Laundry |
+| C08 | Sockets | radial | 20 A | per load | 30 mA | 4 | Family corridor, Family living & dining |
+| C09 | Sockets | radial | 20 A | per load | 30 mA | 4 | Family living & dining |
+| C10 | Sockets | radial | 20 A | per load | 30 mA | 2 | Family living & dining |
+| C11 | Sockets | radial | 20 A | per load | 30 mA | 4 | Bedroom 4 |
+| C12 | Sockets | radial | 20 A | per load | 30 mA | 2 | Bedroom 4 |
+| C13 | Sockets | radial | 20 A | per load | 30 mA | 4 | Bedroom 3 |
+| C14 | Sockets | radial | 20 A | per load | 30 mA | 2 | Bedroom 3 |
+| C15 | Sockets | radial | 20 A | per load | 30 mA | 4 | Bedroom 2 |
+| C16 | Sockets | radial | 20 A | per load | 30 mA | 2 | Bedroom 2 |
+| C17 | Sockets | radial | 20 A | per load | 30 mA | 4 | Master bedroom |
+| C18 | Sockets | radial | 20 A | per load | 30 mA | 2 | Master bedroom |
+| C19 | Kitchen sockets | radial | 20 A | per load | 30 mA | 4 | Kitchen |
+| C20 | Kitchen sockets | radial | 20 A | per load | 30 mA | 4 | Kitchen |
+| C21 | Kitchen sockets | radial | 20 A | per load | 30 mA | 4 | Kitchen |
+| C22 | Kitchen sockets | radial | 20 A | per load | 30 mA | 2 | Kitchen |
+| C23 | Outdoor sockets | radial | 20 A | per load | 30 mA | 2 | Terrace |
+| C24 | Range (Kitchen) | dedicated | per load | per load | 100 mA | 1 | Kitchen |
+| C25 | Washer (Laundry) | dedicated | per load | per load | 30 mA | 1 | Laundry |
+| C26 | Water heater (Mech) | dedicated | per load | per load | 30 mA | 1 | Mech |
+| C27 | Furnace / AHU (Mech) | dedicated | 20 A | 4 mm² | 100 mA | 1 | Mech |
+| C28 | AC condenser (outside, W façade) | dedicated | 20 A | 4 mm² | 100 mA | 1 |  |
+| C29 | AC condenser (outside, E façade) | dedicated | 20 A | 4 mm² | 100 mA | 1 |  |
+| C30 | Fresh-air unit (Garage) | dedicated | per load | per load | 100 mA | 1 | Garage |
+| C31 | Shaver outlets (lighting circuit) | lighting | 16 A | per load | 30 mA | 7 | Guest WC, Maid bath, Bath 4, Bath 3, Bath 2, Master bath |
+
+Sockets: twin 13 A counts as 2 points (DEWA 4.7.2). RCD ratings: DBC Table K.46. Breakers and cables marked "per load" are sized to the connected appliance.
 
 ## Files
 

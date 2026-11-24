@@ -10,7 +10,7 @@
   const ROOM_COL={bedroom:"#8FA7D6",bathroom:"#76BFC6",kitchen:"#E2B163",living:"#AFC688",dining:"#CDB98A",laundry:"#9FB3C4",garage:"#BEBEB5",hall:"#D8D1BE",closet:"#C4B3D9",mech:"#D49E9A",office:"#98C4A4",outdoor:"#A9D19E",other:"#CFCFCF"};
   const FIX={wc:[0.45,0.70],basin:[0.55,0.45],sink:[0.80,0.55],shower:[0.90,0.90],tub:[1.70,0.75],washer:[0.65,0.65],dryer:[0.65,0.65],dw:[0.60,0.60],range:[0.75,0.65],fridge:[0.80,0.75],wh:[0.60,0.60],ahu:[0.80,0.80],acu:[0.90,0.90],panel:[0.40,0.15],fd:[0.20,0.20],
     smoke:[0.15,0.15],smoke_sounder:[0.15,0.15],heat:[0.15,0.15],exhaust:[0.30,0.30],facp:[0.40,0.12],extinguisher:[0.20,0.20],hood:[0.75,0.50],
-    av_outdoor:[0.30,0.15],lpg:[0.80,0.50],fresh_air:[0.90,0.60],water_tank:[1.20,1.20],pump:[0.50,0.40]};
+    av_outdoor:[0.30,0.15],lpg:[0.80,0.50],fresh_air:[0.90,0.60],water_tank:[1.20,1.20],pump:[0.50,0.40],socket:[0.16,0.06],socket_ip55:[0.16,0.08],shaver:[0.12,0.06],switch_dp:[0.10,0.06],cooker_switch:[0.12,0.06]};
   const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
@@ -87,7 +87,7 @@
     }
     // fixtures as simple proxies; ceiling items hang under the ceiling of the room they are in
     const ceilAt=f=>{for(const r of plan.rooms||[]){const xs=r.pts.map(p=>p.x),ys=r.pts.map(p=>p.y);if(f.x>=Math.min(...xs)&&f.x<=Math.max(...xs)&&f.y>=Math.min(...ys)&&f.y<=Math.max(...ys))return r.ceil||2.7;}return 2.7;};
-    const matFire=M({color:0xB3261E,roughness:.5}),matVent=M({color:0x1F5FBF,roughness:.5});
+    const matFire=M({color:0xB3261E,roughness:.5}),matVent=M({color:0x1F5FBF,roughness:.5}),matElec=M({color:0xB26B00,roughness:.5});
     for(const f of plan.fixtures||[]){
       const dm=FIX[f.kind]||[0.5,0.5],fw=dm[0],fd=dm[1];const g=new THREE.Group();
       const add=(m,x,y,z)=>{m.position.set(x,y,z);g.add(m);return m;};
@@ -115,6 +115,7 @@
         case "fresh_air":add(box(fw,0.6,fd,matVent),0,0.3,0);break;
         case "water_tank":add(box(fw,1.2,fd,matEquip),0,0.6,0);break;
         case "pump":add(box(fw,0.5,fd,matSteel),0,0.25,0);break;
+        case "socket":case "socket_ip55":case "shaver":case "switch_dp":case "cooker_switch":add(box(fw,0.09,fd,matElec),0,f.h_mount||0.45,0);break;
         default:add(box(fw,0.8,fd,matEquip),0,0.4,0);
       }
       g.position.set(f.x,0,f.y);g.rotation.y=-(f.rot||0)*Math.PI/180;fixes.add(g);

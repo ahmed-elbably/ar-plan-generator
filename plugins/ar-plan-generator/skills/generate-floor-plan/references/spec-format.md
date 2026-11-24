@@ -76,6 +76,13 @@ Everything below is optional. A rule whose data is missing is reported NOT CHECK
 - `panel` may carry `top_h` (height of the DB top, m).
 Ceiling and wall-mounted items never clash with floor fixtures or doorways.
 
+### What the engine generates with `--pack dubai` (v0.5)
+
+You do not need to place these; write them only to override the engine's choice.
+- **Fire and ventilation devices:** smoke detectors (sounder type in bedrooms) in bedrooms, living / dining rooms and halls; a heat detector in each kitchen (an open kitchen's living-room detector goes ≥ 3 m from it); the fire alarm panel by the front door; the outdoor AV device on the road façade (needs `plot.road`); a kitchen extinguisher by the door; an exhaust fan in each bathroom / WC (25 L/s) and a range hood over the range (50 L/s); one fresh-air unit sized by ASHRAE 62.2 (mech room, else laundry, garage or store).
+- **Electrical layer:** twin 13 A sockets at 450 mm (counts per room are layout defaults in `rules/dubai.json` → `generator`, not code), kitchen counter sockets 150 mm above the worktop and 300 mm clear of the sink, never over the hob; fridge and dishwasher sockets; shaver outlets beside basins (no 13 A sockets in bathrooms); DP switches beside the water heater, washer, AHU, AC condensers (IP55 isolator outside), fresh-air unit and pump; a cooker control unit beside the range; IP55 sockets facing terraces; and a circuit schedule (radials of ≤ 5 points with a twin counting 2, every appliance on its own circuit, RCD ratings from DBC Table K.46). The schedule is in `<slug>.report.md` and `plan.json` (`circuits`).
+- Anything you place in a room is kept and not duplicated. Turn a generator off with `"generate": {"devices": false}` or `{"electrical": false}` (for example when the MEP consultant supplies their own layout).
+
 ## Layout rules
 
 - Rooms never overlap. Pack them into a compact footprint with no leftover gaps inside the building.

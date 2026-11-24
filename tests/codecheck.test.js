@@ -44,9 +44,12 @@ test("example UAE villa (v0.5 spec, built with --pack dubai): no fails, known ga
   assert.equal(R["K-06"].items.length, 26);                          // every leaf door checked
   assert.equal(R["P-01"].items.length, 8);                           // 8 wet rooms, each with a floor drain
   assert.equal(R["K-23"].items.length, 13);                          // 6 WCs + 7 basins
-  for (const id of ["K-01", "K-02", "K-03", "K-04", "K-05", "K-06", "K-07", "K-08", "K-09", "K-12", "K-13", "K-14", "K-15", "K-20", "K-21", "K-22", "K-23", "P-01", "F-07", "F-08", "F-09", "F-09b", "F-10", "F-13", "E-01"]) assert.equal(R[id].status, "PASS", id);
-  // device layers the spec leaves to the engine (phase 4): not checkable yet, never a pass
-  for (const id of ["F-01", "F-02", "P-03", "E-03", "V-01", "V-02"]) assert.equal(R[id].status, "NOT CHECKABLE", id);
+  // the spec gives design data; the engine generated detectors, panel, AV, extinguisher, hood, fans, fresh air and the electrical layer
+  for (const id of ["K-01", "K-02", "K-03", "K-04", "K-05", "K-06", "K-07", "K-08", "K-09", "K-12", "K-13", "K-14", "K-15", "K-20", "K-21", "K-22", "K-23", "P-01",
+                    "F-01", "F-02", "F-03", "F-05", "F-06", "F-07", "F-08", "F-09", "F-09b", "F-10", "F-13", "F-14", "E-01",
+                    "E-03", "E-04", "E-05", "E-06", "E-07", "E-08", "E-09", "E-10", "V-01", "V-02", "V-03", "V-05"]) assert.equal(R[id].status, "PASS", id);
+  const nc = Object.values(R).filter(r => r.status === "NOT CHECKABLE").map(r => r.id).sort();
+  assert.deepEqual(nc, ["E-02", "F-12", "K-16", "K-17", "K-24", "P-02", "P-03", "V-06", "V-07"]);   // DB height and tank are design choices; the rest reviewer / multi-building
   assert.equal(R["F-15"].status, "N/A");
 });
 
@@ -128,8 +131,9 @@ test("full-data villa: every checkable rule passes; only phase 4/5 and multi-bui
   assert.equal(rep.summary.clashes, 0);
   assert.deepEqual(Object.values(R).filter(r => r.status === "FAIL" || r.status === "ADVISE").map(r => r.id), []);
   const nc = Object.values(R).filter(r => r.status === "NOT CHECKABLE").map(r => r.id).sort();
-  assert.deepEqual(nc, ["E-03", "E-04", "E-05", "E-06", "E-07", "E-08", "E-09", "E-10", "F-12", "K-16", "K-17", "K-24", "P-02", "V-06", "V-07"]);
-  for (const id of ["K-04", "K-05", "K-07", "K-08", "K-09", "K-14", "K-15", "F-01", "F-02", "F-03", "F-05", "F-06", "F-07", "F-09b", "F-10", "F-14", "P-03", "E-02", "V-01", "V-02", "V-03", "V-05"])
+  assert.deepEqual(nc, ["F-12", "K-16", "K-17", "K-24", "P-02", "V-06", "V-07"]);                 // reviewer (phase 5) and multi-building only
+  for (const id of ["K-04", "K-05", "K-07", "K-08", "K-09", "K-14", "K-15", "F-01", "F-02", "F-03", "F-05", "F-06", "F-07", "F-09b", "F-10", "F-14", "P-03", "E-02",
+                    "E-03", "E-04", "E-05", "E-06", "E-07", "E-08", "E-09", "E-10", "V-01", "V-02", "V-03", "V-05"])
     assert.equal(R[id].status, "PASS", id);
 });
 
@@ -158,13 +162,54 @@ test("planted v0.5 violations are caught, one rule each", () => {
     "K-09": s => { s.windows.find(w => w.room === "Bedroom 2").sill = 0.8; },
     "K-14": s => { s.building_h = 17; },
     "K-15": s => { s.plot.y = -2; s.plot.d = 22; },                                               // road setback 1.875 m
-    "F-02": s => { s.fixtures.splice(s.fixtures.indexOf(fx(s, "smoke_sounder", "Bedroom 2")), 1); },
+    "F-02": s => { s.generate = {devices: false}; s.fixtures.splice(s.fixtures.indexOf(fx(s, "smoke_sounder", "Bedroom 2")), 1); },   // generator off, else it fills the gap
     "F-07": s => { s.hassantuk = false; },
     "F-15": s => { s.gas = "lpg"; },                                                              // LPG declared, no cylinders
     "P-03": s => { Object.assign(fx(s, "water_tank"), {room: "Garage", side: "W"}); },
     "E-02": s => { fx(s, "panel").top_h = 2.1; },
     "V-01": s => { fx(s, "fresh_air").lps = 40; },
     "V-03": s => { fx(s, "exhaust", "Bath 2").lps = 15; }
+  };
+  for (const [id, fn] of Object.entries(cases)) {
+    const R = plant(fn);
+    assert.equal(R[id].status, "FAIL", `${id} not caught`);
+    const others = Object.values(R).filter(r => r.status === "FAIL" && r.id !== id).map(r => r.id);
+    assert.deepEqual(others, [], `${id} also tripped ${others}`);
+  }
+});
+
+/* ---------- phase 4: generators ---------- */
+test("generators keep what the spec placed and never duplicate it", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-gen-"));
+  execFileSync(process.execPath, [ENGINE, "build", FULL, "--out", dir, "--name", "g", "--pack", "dubai"]);
+  const plan = JSON.parse(fs.readFileSync(path.join(dir, "g.plan.json"), "utf8"));
+  const inRoom = (name, kind) => { const r = plan.rooms.find(x => x.name === name), xs = r.pts.map(p => p.x), ys = r.pts.map(p => p.y);
+    return plan.fixtures.filter(f => f.kind === kind && f.x >= Math.min(...xs) && f.x <= Math.max(...xs) && f.y >= Math.min(...ys) && f.y <= Math.max(...ys)); };
+  assert.equal(inRoom("Majlis", "smoke").length, 1);                     // hand-placed, not doubled
+  assert.equal(plan.fixtures.filter(f => f.kind === "fresh_air").length, 1);
+  assert.ok(plan.fixtures.filter(f => f.kind === "smoke").every(f => !f.auto));   // full spec placed all detectors itself
+  assert.ok(plan.fixtures.filter(f => f.kind === "socket").every(f => f.auto && f.circuit));
+  const spec = JSON.parse(execFileSync(process.execPath, [ENGINE, "to-spec", path.join(dir, "g.plan.json")], {encoding: "utf8"}));
+  assert.equal(spec.fixtures.filter(f => f.kind === "socket").length, 0);        // generated items are not written back
+});
+
+test("planted electrical violations are caught, one rule each", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "arplan-el-"));
+  execFileSync(process.execPath, [ENGINE, "build", FULL, "--out", dir, "--name", "e", "--pack", "dubai"]);
+  const base = fs.readFileSync(path.join(dir, "e.plan.json"), "utf8");
+  const plant = fn => { const p = JSON.parse(base); fn(p); const f = path.join(dir, "m.plan.json"); fs.writeFileSync(f, JSON.stringify(p)); return byId(codecheck(f)); };
+  const room = (p, n) => { const r = p.rooms.find(x => x.name === n), xs = r.pts.map(q => q.x), ys = r.pts.map(q => q.y); return {x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys)}; };
+  const kind = (p, k) => p.fixtures.find(f => f.kind === k);
+  const sockCircuit = p => p.circuits.find(c => c.load === "sockets");
+  const cases = {
+    "E-03": p => { const b = room(p, "Bath 2"); p.fixtures.push({id: "fx-bath", kind: "socket", x: (b.x0 + b.x1) / 2, y: b.y0 + 0.2, rot: 0, h_mount: 0.45}); },
+    "E-04": p => { p.fixtures.find(f => f.kind === "socket" && !f.worktop).h_mount = 0.3; },
+    "E-05": p => { const s = kind(p, "sink"), k = p.fixtures.find(f => f.worktop); k.x = s.x + 0.5; k.y = s.y - 0.3; },
+    "E-06": p => { const c = sockCircuit(p), extra = p.fixtures.filter(f => f.kind === "socket" && !c.items.includes(f.id) && f.circuit && p.circuits.find(x => x.id === f.circuit).load === "sockets")[0]; c.items.push(extra.id); },
+    "E-07": p => { p.fixtures = p.fixtures.filter(f => f.kind !== "cooker_switch"); },
+    "E-08": p => { const wh = kind(p, "wh"), sw = p.fixtures.find(f => f.serves === wh.id); sw.x += 3; },
+    "E-09": p => { const ac = kind(p, "ahu"); p.circuits.find(c => c.items.includes(ac.id)).breaker = 16; },
+    "E-10": p => { sockCircuit(p).rcd_ma = 100; }
   };
   for (const [id, fn] of Object.entries(cases)) {
     const R = plant(fn);
